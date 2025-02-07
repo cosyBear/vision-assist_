@@ -68,16 +68,6 @@ flutter:
   assets:
     - assets/images/
 
-  fonts:
-    - family: Times
-      fonts:
-        - asset: assets/fonts/times/times.ttf
-    - family: Calibri
-      fonts:
-        - asset: assets/fonts/calibri/times.ttf
-    - family: Verdana
-      fonts:
-        - asset: assets/fonts/verdana/times.ttf
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/to/resolution-aware-images
 

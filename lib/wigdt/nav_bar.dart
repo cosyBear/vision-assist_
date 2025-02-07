@@ -11,7 +11,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-      backgroundColor: const Color.fromRGBO(12, 12, 12, 1.0),
+      backgroundColor: const Color.fromRGBO(18, 18, 18, 1.0),
       // Black background
       leading: IconButton(
         icon: const Icon(Icons.home, color: Colors.white, size: 40),
@@ -44,11 +44,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.white, size: 40),
           onPressed: () => onIconPressed(22),
         ),
-        IconButton(
-          icon: const Icon(CupertinoIcons.globe, color: Colors.white, size: 40),
-          onPressed: () => onIconPressed(33),
-        ),
-        IconButton(onPressed: () => onIconPressed(2), icon: Icon(Icons.settings , color: Colors.white, size: 40))
+        IconButton(onPressed: () => onIconPressed(2), icon: Icon(Icons.settings , color: Colors.white, size: 40)),
       ],
     ),
     );
