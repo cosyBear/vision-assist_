@@ -14,7 +14,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color.fromRGBO(18, 18, 18, 1.0),
       // Black background
       leading: IconButton(
-        icon: const Icon(Icons.home, color: Colors.white, size: 40),
+        icon: const Icon(Icons.home, color: Colors.grey, size: 40),
         // White icon
         onPressed: () => onIconPressed(0),
       ),
@@ -36,15 +36,15 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.local_library_rounded,
-              color: Colors.white, size: 40),
+              color: Colors.grey, size: 40),
           onPressed: () => onIconPressed(1),
         ),
         IconButton(
           icon: const Icon(Icons.cloud_upload_outlined,
-              color: Colors.white, size: 40),
+              color: Colors.grey, size: 40),
           onPressed: () => onIconPressed(22),
         ),
-        IconButton(onPressed: () => onIconPressed(2), icon: Icon(Icons.settings , color: Colors.white, size: 40)),
+        IconButton(onPressed: () => onIconPressed(2), icon: Icon(Icons.settings , color: Colors.grey, size: 40)),
       ],
     ),
     );

@@ -28,8 +28,17 @@ class GlobalSetting extends StatelessWidget {
                   )),
             ],
           ),
-          Logo(),
-          Column(
+      Row(
+        children: [
+          SizedBox(width: MediaQuery.of(context).size.width * 0.1),
+          Image.asset(
+            'assets/images/logo.png',
+            width: MediaQuery.of(context).size.width * 0.3, // 30% of screen width
+            height: MediaQuery.of(context).size.width * 0.3, // Maintain proportional height
+          ),
+        ],
+      ),
+      Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
