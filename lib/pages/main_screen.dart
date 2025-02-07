@@ -51,9 +51,13 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _goToPage(0),
-        child: const Icon(Icons.arrow_upward),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        splashColor: Colors.transparent,
+        child: const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
     );
   }
 }
