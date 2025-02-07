@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:steady_eye_2/wigdt%20/app_setting_provider.dart';
-import '../wigdt /logo.dart';
+import 'package:steady_eye_2/wigdt/app_setting_provider.dart';
+import '../wigdt/logo.dart';
 import 'package:provider/provider.dart';
 
 class Mainpage extends StatelessWidget {
@@ -36,7 +36,7 @@ class Mainpage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    settings.setBackgroundColor(Colors.red);
+                    settings.setBackgroundColor(Colors.black);
                     },
                   style: TextButton.styleFrom(
                       backgroundColor: Color.fromRGBO(203, 105, 156, 1)

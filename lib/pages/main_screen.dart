@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../wigdt /nav_bar.dart';
+import '../wigdt/nav_bar.dart';
 import 'main_page.dart';
 import 'package:provider/provider.dart';
-import '../wigdt /app_setting_provider.dart';
+import '../wigdt/app_setting_provider.dart';
 import '../pages/setting.dart';
 
 class MainScreen extends StatefulWidget {

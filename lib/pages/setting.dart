@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:steady_eye_2/wigdt%20/logo.dart';
+import 'package:steady_eye_2/wigdt/logo.dart';
 import '../pages/text_size_fonts.dart';
 
 class GlobalSetting extends StatelessWidget {
