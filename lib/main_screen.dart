@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'Navbar.dart';
+import 'upload_page/upload_page.dart';
+import 'navbar.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: Navbar(onIconPressed: _goToPage),
       body: SafeArea(
         child: PageView(
@@ -40,18 +41,16 @@ class _MainScreenState extends State<MainScreen> {
           scrollDirection: Axis.vertical,
           physics: const PageScrollPhysics(),
           children: [
-            // Pass the callback to HomePage
-            // HomePage(onReadNow: () => _goToPage(1)),
-            // const OtherPage(),
+            const UploadPage(),
             // Add more pages if needed
           ],
         ),
 
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _goToPage(0),
-        child: const Icon(Icons.arrow_upward),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => _goToPage(0),
+      //   child: const Icon(Icons.arrow_upward),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
