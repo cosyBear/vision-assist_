@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'Navbar.dart';
+import '../wigdt /nav_bar.dart';
+import 'main_page.dart';
+import 'package:provider/provider.dart';
+import '../wigdt /app_setting_provider.dart';
+import '../pages/setting.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -10,8 +14,6 @@ class MainScreen extends StatefulWidget {
   }
 }
 
-
-
 class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
 
@@ -19,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   void _goToPage(int index) {
     _pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 400),
       curve: Curves.ease,
     );
   }
@@ -32,21 +34,20 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
     return Scaffold(
       appBar: Navbar(onIconPressed: _goToPage),
+      backgroundColor: settings.backgroundColor,
       body: SafeArea(
         child: PageView(
           controller: _pageController,
           scrollDirection: Axis.vertical,
           physics: const PageScrollPhysics(),
           children: [
-            // Pass the callback to HomePage
-            // HomePage(onReadNow: () => _goToPage(1)),
-            // const OtherPage(),
-            // Add more pages if needed
+            Mainpage(),
+            GlobalSetting()
           ],
         ),
-
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _goToPage(0),

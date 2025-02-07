@@ -18,8 +18,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         // White icon
         onPressed: () => onIconPressed(0),
       ),
-      title: Center(
-        child: GradientText(
+      title: Row(
+          mainAxisAlignment: MainAxisAlignment.center, // Centers the content
+          mainAxisSize: MainAxisSize.max, // Makes the Row take minimal width
+        children:[
+          const SizedBox(width: 100),
+          GradientText(
           "SteadyEye",
           style: const TextStyle(fontSize: 40),
           colors: const [
@@ -27,6 +31,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             Color.fromRGBO(22, 173, 201, 1.0),
           ],
         ),
+        ]
       ),
       actions: [
         IconButton(
@@ -37,14 +42,16 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.cloud_upload_outlined,
               color: Colors.white, size: 40),
-          onPressed: () => onIconPressed(2),
+          onPressed: () => onIconPressed(22),
         ),
         IconButton(
           icon: const Icon(CupertinoIcons.globe, color: Colors.white, size: 40),
-          onPressed: () => onIconPressed(3),
+          onPressed: () => onIconPressed(33),
         ),
+        IconButton(onPressed: () => onIconPressed(2), icon: Icon(Icons.settings , color: Colors.white, size: 40))
       ],
-    ));
+    ),
+    );
   }
 
   @override
