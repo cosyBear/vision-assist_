@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../upload_page/upload_page.dart';
 import '../wigdt/nav_bar.dart';
 import 'main_page.dart';
 import 'package:provider/provider.dart';
@@ -45,18 +46,22 @@ class _MainScreenState extends State<MainScreen> {
           physics: const PageScrollPhysics(),
           children: [
             Mainpage(),
+            UploadPage(),
             GlobalSetting()
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _goToPage(0),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        splashColor: Colors.transparent,
-        child: const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 0), // Ensures it's at the very bottom
+        child: FloatingActionButton(
+          onPressed: () => _goToPage(0),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          splashColor: Colors.transparent,
+          child: const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );
   }

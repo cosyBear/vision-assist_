@@ -37,12 +37,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.local_library_rounded,
               color: Colors.grey, size: 40),
-          onPressed: () => onIconPressed(1),
+          onPressed: () => onIconPressed(3),
         ),
         IconButton(
           icon: const Icon(Icons.cloud_upload_outlined,
               color: Colors.grey, size: 40),
-          onPressed: () => onIconPressed(22),
+          onPressed: () => onIconPressed(1),
         ),
         IconButton(onPressed: () => onIconPressed(2), icon: Icon(Icons.settings , color: Colors.grey, size: 40)),
       ],
