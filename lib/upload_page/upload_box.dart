@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../wigdt/app_setting_provider.dart';
+import 'package:provider/provider.dart';
+import 'display_page.dart';
+import 'dart:developer';
 
 class UploadBox extends StatelessWidget {
   final TextEditingController controller;
@@ -9,18 +13,19 @@ class UploadBox extends StatelessWidget {
   void _sendMessage(BuildContext context) {
     String text = controller.text.trim();
     if (text.isNotEmpty) {
-      print(text);
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => DisplayPage(text: text),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DisplayPage(text: text),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Container(
@@ -40,9 +45,11 @@ class UploadBox extends StatelessWidget {
                     controller: _scrollController,
                     child: TextField(
                       controller: controller,
-                      maxLines: null, // Allows unlimited input
-                      keyboardType: TextInputType.multiline, // Multi-line input
-                      style: const TextStyle(fontSize: 30, color: Colors.white),
+                      maxLines: null,
+                      // Allows unlimited input
+                      keyboardType: TextInputType.multiline,
+                      // Multi-line input
+                      style: TextStyle(fontSize: 30, color: settings.textColor),
                       decoration: const InputDecoration(
                         hintText: "Enter text...",
                         border: InputBorder.none, // Remove default border
@@ -61,12 +68,12 @@ class UploadBox extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.attach_file,
                         color: Colors.grey[600], size: 30),
-                    onPressed: () => print("File uploaded"),
+                    onPressed: () => log("File uploaded"),
                   ),
                   IconButton(
                     icon: Icon(Icons.camera_alt,
                         color: Colors.grey[600], size: 30),
-                    onPressed: () => print("Picture taken"),
+                    onPressed: () => log("Picture taken"),
                   ),
                 ],
               ),
@@ -75,8 +82,9 @@ class UploadBox extends StatelessWidget {
               bottom: -5,
               right: -5,
               child: IconButton(
-                icon: Icon(Icons.send, color: Color.fromRGBO(203, 105, 156, 1), size: 30),
-                onPressed: () => _sendMessage(context),
+                icon: Icon(Icons.send, color: Colors.pink, size: 30),
+                onPressed: () =>
+                    _sendMessage(context), // ✅ Context is passed here!
               ),
             ),
           ],

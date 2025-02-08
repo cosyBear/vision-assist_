@@ -45,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
           scrollDirection: Axis.vertical,
           physics: const PageScrollPhysics(),
           children: [
-            Mainpage(),
+            Mainpage(goToPage: _goToPage),
             UploadPage(),
             GlobalSetting()
           ],

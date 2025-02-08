@@ -4,7 +4,8 @@ import '../wigdt/logo.dart';
 import 'package:provider/provider.dart';
 
 class Mainpage extends StatelessWidget {
-  const Mainpage({super.key});
+  final void Function(int) goToPage; // Accepts _goToPage function
+  const Mainpage({super.key, required this.goToPage}); // Constructor update
 
   @override
   Widget build(BuildContext context) {
@@ -15,22 +16,26 @@ class Mainpage extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start, // Align Row's contents to the left
+          mainAxisAlignment: MainAxisAlignment.start,
+          // Align Row's contents to the left
           children: [
             // LOGO takes **60% of the width**
             Expanded(
               flex: 6, // **60% of space**
               child: Align(
-                alignment: Alignment.centerLeft, // Align logo to the left of the space
+                alignment: Alignment.centerLeft,
+                // Align logo to the left of the space
                 child: Logo(),
               ),
             ),
             // TEXT takes **40% of the width**
             Expanded(
-              flex: 4, // **40% of space**
+              flex: 4,
+              // **40% of space**
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start of its space
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // Align text to the start of its space
                 children: [
                   // First text: Vision
                   Text(
@@ -38,7 +43,7 @@ class Mainpage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: screenWidth * 0.06,
                       color: settings.textColor,
-                      fontFamily: 'Inria Serif',
+                      fontFamily: settings.fontFamily,
                     ),
                     textAlign: TextAlign.start, // Align text to the left
                   ),
@@ -48,17 +53,18 @@ class Mainpage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: screenWidth * 0.020,
                       color: settings.textColor,
-                      fontFamily: 'Inria Serif',
+                      fontFamily: settings.fontFamily,
                       fontStyle: FontStyle.italic,
                     ),
                     textAlign: TextAlign.start, // Align text to the left
                   ),
                   // Add space between text and button
-                  SizedBox(height: screenWidth * 0.02), // Add space between the text and button
+                  SizedBox(height: screenWidth * 0.02),
+                  // Add space between the text and button
                   // TextButton
                   TextButton(
                     onPressed: () {
-                      settings.setBackgroundColor(Colors.black);
+                      goToPage(1); // Navigate to UploadPage (index 1)
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: const Color.fromRGBO(203, 105, 156, 1),
@@ -69,7 +75,7 @@ class Mainpage extends StatelessWidget {
                       "Read now",
                       style: TextStyle(
                         fontSize: screenWidth * 0.020,
-                        fontFamily: 'Inria Serif',
+                        fontFamily: settings.fontFamily,
                         color: settings.textColor,
                       ),
                     ),

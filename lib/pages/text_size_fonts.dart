@@ -23,6 +23,15 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
     });
   }
 
+  // Helper function to determine contrasting color
+  Color _getContrastingColor(Color backgroundColor) {
+    double brightness = (0.299 * backgroundColor.r +
+        0.587 * backgroundColor.g +
+        0.114 * backgroundColor.b) /
+        255;
+    return brightness > 0.5 ? Colors.black : Colors.white; // Dark or light text
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
@@ -38,7 +47,6 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //buttons
                 _buildFontButton(settings, "Arial", "Arial", fontSize),
                 _buildFontButton(settings, "Verdana", "Verdana", fontSize),
                 _buildFontButton(settings, "Calibri", "Calibri", fontSize),
@@ -50,9 +58,9 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
 
             // Sample Text with Dynamic Font Size
             Text(
-              "Sample i I Text",
+              "I love Reading!",
               style: TextStyle(
-                fontSize: fontSize, // Now updates correctly
+                fontSize: fontSize,
                 color: settings.textColor,
                 fontFamily: settings.fontFamily,
               ),
@@ -64,33 +72,34 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.remove_circle_outline,
-                    color: Colors.black,
-                    size: 40,
-                  ),
+                // Subtract Button
+                _buildAdjustButton(
+                  settings,
+                  icon: Icons.remove_circle_outline,
                   onPressed: () {
                     if (fontSize > 10) {
                       setState(() {
                         fontSize -= 1;
-                        settings.setFontSize(fontSize); // Update provider
+                        settings.setFontSize(fontSize);
                       });
                     }
                   },
                 ),
+
                 Text(
                   fontSize.toStringAsFixed(1),
                   style: const TextStyle(fontSize: 18),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add_circle_outline_sharp,
-                      color: Colors.black, size: 40),
+
+                // Add Button
+                _buildAdjustButton(
+                  settings,
+                  icon: Icons.add_circle_outline_sharp,
                   onPressed: () {
                     if (fontSize < 40) {
                       setState(() {
                         fontSize += 1;
-                        settings.setFontSize(fontSize); // Update provider
+                        settings.setFontSize(fontSize);
                       });
                     }
                   },
@@ -104,8 +113,11 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
   }
 
   // Function to Create Font Selection Buttons
-  Widget _buildFontButton(AppSettingProvider settings, String label,
-      String fontFamily, double fontSize) {
+  Widget _buildFontButton(
+      AppSettingProvider settings, String label, String fontFamily, double fontSize) {
+    final contrastingTextColor = _getContrastingColor(settings.textColor);
+    final contrastingBorderColor = contrastingTextColor == Colors.black ? Colors.white : Colors.black;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: TextButton(
@@ -113,18 +125,42 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
           settings.setFontFamily(fontFamily);
         },
         style: TextButton.styleFrom(
-          backgroundColor: settings.textColor,
+          backgroundColor: settings.textColor.withOpacity(0.9), // Ensures it stands out
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
+            side: BorderSide(color: contrastingBorderColor, width: 2.0), // Ensures visibility
           ),
         ),
         child: Text(
           label,
           style: TextStyle(
-              fontSize: fontSize,
-              color: Colors.black), // Now uses dynamic font size
+            fontSize: fontSize,
+            color: contrastingTextColor, // Dynamically set to contrast with button background
+          ),
         ),
+      ),
+    );
+  }
+
+  // Function to Create Add/Subtract Buttons
+  Widget _buildAdjustButton(
+      AppSettingProvider settings, {
+        required IconData icon,
+        required VoidCallback onPressed,
+      }) {
+    final contrastingColor = _getContrastingColor(settings.backgroundColor);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: IconButton(
+        icon: Icon(
+          icon,
+          size: 40,
+          color: contrastingColor, // Dynamic icon color
+        ),
+        onPressed: onPressed,
+        splashRadius: 28,
       ),
     );
   }

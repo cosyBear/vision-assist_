@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'upload_box.dart';
 import 'upload_text.dart';
+import '../wigdt/app_setting_provider.dart';
+import 'package:provider/provider.dart';
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
@@ -14,8 +16,10 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: settings.backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
