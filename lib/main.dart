@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'pages/main_screen.dart';
+import 'general/main_screen.dart';
 import 'wigdt/app_setting_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'database/setting_box.dart'; // Import the settings box
+import 'package:flutter/services.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter is ready for async operations
-
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+  ]);
   await Hive.initFlutter(); // Initialize Hive storage
   await SettingBox.init(); // Open settings box before app starts
 
