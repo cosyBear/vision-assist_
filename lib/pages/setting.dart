@@ -58,7 +58,7 @@ class GlobalSetting extends StatelessWidget {
           style: TextStyle(
             fontSize: screenWidth * 0.020,
             fontFamily: settings.fontFamily,
-            color: Colors.white,
+            color: settings.textColor,
             fontWeight: FontWeight.bold,
           ),
         ),
