@@ -9,6 +9,20 @@ class BackGroundTextColor extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
 
+    // Get screen width
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Determine the grid size based on the screen width
+    double gridWidth = screenWidth < 600 ? 250 : screenWidth * 0.3;  // 250 for small screens, 30% of screen width for larger screens
+    double gridHeight = screenWidth < 600 ? 290 : screenWidth * 0.35; // Adjust height based on screen size
+
+    // Determine preview box size based on screen width
+    double previewBoxSize = screenWidth < 600 ? 120 : screenWidth * 0.2;  // 120 for small screens, 20% of screen width for larger screens
+
+    // Determine the spacing values based on screen width
+    double crossAxisSpacing = screenWidth < 600 ? 20.0 : screenWidth * 0.05; // 20 for small screens, 5% of screen width for larger screens
+    double mainAxisSpacing = screenWidth < 600 ? 50.0 : screenWidth * 0.1;   // 50 for small screens, 10% of screen width for larger screens
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: settings.backgroundColor, // Dynamic background color
@@ -44,6 +58,10 @@ class BackGroundTextColor extends StatelessWidget {
                       label: "Text Color", // Label for this grid
                       fontSize: settings.fontSize,
                       textColor: settings.textColor,
+                      gridWidth: gridWidth,
+                      gridHeight: gridHeight,
+                      crossAxisSpacing: crossAxisSpacing,
+                      mainAxisSpacing: mainAxisSpacing,
                     ),
                   ),
                 ),
@@ -56,6 +74,7 @@ class BackGroundTextColor extends StatelessWidget {
                       settings.textColor,
                       settings.backgroundColor,
                       settings.fontSize,
+                      previewBoxSize, // Pass dynamic size for preview box
                     ),
                   ],
                 ),
@@ -74,6 +93,10 @@ class BackGroundTextColor extends StatelessWidget {
                       label: "Background Color", // Label for this grid
                       fontSize: settings.fontSize,
                       textColor: settings.textColor,
+                      gridWidth: gridWidth,
+                      gridHeight: gridHeight,
+                      crossAxisSpacing: crossAxisSpacing,
+                      mainAxisSpacing: mainAxisSpacing,
                     ),
                   ),
                 ),
@@ -91,10 +114,19 @@ class BackGroundTextColor extends StatelessWidget {
     required String label,
     required double fontSize,
     required Color textColor,
+    required double gridWidth,
+    required double gridHeight,
+    required double crossAxisSpacing,
+    required double mainAxisSpacing,
   }) {
+    // Conditionally change the label text if its length is greater than 20
+    if(label=="Background Color" && fontSize>20){
+      label="Bg Color";
+    }
+
     return Container(
-      width: 250, // Fixed width
-      height: 290, // Fixed height to fit two rows of boxes
+      width: gridWidth, // Responsive width
+      height: gridHeight, // Responsive height
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -103,8 +135,8 @@ class BackGroundTextColor extends StatelessWidget {
         children: [
           GridView.count(
             crossAxisCount: 2, // 2 columns for 2x2 layout
-            crossAxisSpacing: 20.0, // Spacing between columns
-            mainAxisSpacing: 50.0, // Spacing between rows
+            crossAxisSpacing: crossAxisSpacing, // Responsive column spacing
+            mainAxisSpacing: mainAxisSpacing,   // Responsive row spacing
             physics: const NeverScrollableScrollPhysics(), // Disable scrolling
             children: colors
                 .map((color) => GestureDetector(
@@ -131,7 +163,7 @@ class BackGroundTextColor extends StatelessWidget {
           ),
           Center(
             child: Text(
-              label,
+              label, // Use the modified label here
               style: TextStyle(
                 fontSize: fontSize, // You can adjust the font size here
                 fontWeight: FontWeight.bold,
@@ -145,12 +177,13 @@ class BackGroundTextColor extends StatelessWidget {
     );
   }
 
+
   // Widget for the center "Preview" box
-  Widget _buildTextBox(String text, Color textColor, Color backgroundColor, double fontSize) {
+  Widget _buildTextBox(String text, Color textColor, Color backgroundColor, double fontSize, double previewBoxSize) {
     Color borderColor = backgroundColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
     return Container(
-      width: 120,
-      height: 120,
+      width: previewBoxSize,  // Dynamic width for preview box
+      height: previewBoxSize, // Dynamic height for preview box
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(color: borderColor),
