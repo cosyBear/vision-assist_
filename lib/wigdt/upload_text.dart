@@ -15,7 +15,7 @@ class UploadText extends StatelessWidget {
       child: Text(
         "Upload, insert or take a picture",
         style:  TextStyle(
-          fontSize: 30,
+          fontSize: settings.fontSize,
           fontWeight: FontWeight.bold,
           color:settings.textColor,
         ),

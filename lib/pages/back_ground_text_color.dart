@@ -17,7 +17,7 @@ class BackGroundTextColor extends StatelessWidget {
     double gridHeight = screenWidth < 600 ? 290 : screenWidth * 0.35; // Adjust height based on screen size
 
     // Determine preview box size based on screen width
-    double previewBoxSize = screenWidth < 600 ? 120 : screenWidth * 0.2;  // 120 for small screens, 20% of screen width for larger screens
+    double previewBoxSize = screenWidth < 600 ? 120 : screenWidth * 0.22;  // 120 for small screens, 20% of screen width for larger screens
 
     // Determine the spacing values based on screen width
     double crossAxisSpacing = screenWidth < 600 ? 20.0 : screenWidth * 0.05; // 20 for small screens, 5% of screen width for larger screens

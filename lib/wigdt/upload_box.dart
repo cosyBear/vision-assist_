@@ -29,8 +29,8 @@ class UploadBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Container(
-        width: 700,
-        height: 150,
+        width: MediaQuery.of(context).size.width * 0.7,
+        height: MediaQuery.of(context).size.width * 0.2,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
@@ -49,7 +49,7 @@ class UploadBox extends StatelessWidget {
                       // Allows unlimited input
                       keyboardType: TextInputType.multiline,
                       // Multi-line input
-                      style: TextStyle(fontSize: 30, color: settings.textColor),
+                      style: TextStyle(fontFamily: settings.fontFamily,fontSize: settings.fontSize, color: settings.textColor),
                       decoration: const InputDecoration(
                         hintText: "Enter text...",
                         border: InputBorder.none, // Remove default border
@@ -67,12 +67,12 @@ class UploadBox extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(Icons.attach_file,
-                        color: Colors.grey[600], size: 30),
+                        color: Colors.grey[600], size: 45),
                     onPressed: () => log("File uploaded"),
                   ),
                   IconButton(
                     icon: Icon(Icons.camera_alt,
-                        color: Colors.grey[600], size: 30),
+                        color: Colors.grey[600], size: 45),
                     onPressed: () => log("Picture taken"),
                   ),
                 ],
@@ -82,7 +82,7 @@ class UploadBox extends StatelessWidget {
               bottom: -5,
               right: -5,
               child: IconButton(
-                icon: Icon(Icons.send, color: Color.fromRGBO(203, 105, 156, 1), size: 30),
+                icon: Icon(Icons.send, color: Color.fromRGBO(203, 105, 156, 1), size: 45),
                 onPressed: () =>
                     _sendMessage(context), // ✅ Context is passed here!
               ),
