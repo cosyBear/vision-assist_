@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../upload_page/upload_page.dart';
-import '../wigdt/nav_bar.dart';
-import 'main_page.dart';
+import '../pages/upload_page.dart';
+import 'navbar.dart';
+import '../pages/main_page.dart';
 import 'package:provider/provider.dart';
 import '../wigdt/app_setting_provider.dart';
 import '../pages/setting.dart';
@@ -45,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
           scrollDirection: Axis.vertical,
           physics: const PageScrollPhysics(),
           children: [
-            Mainpage(),
+            Mainpage(goToPage: _goToPage),
             UploadPage(),
             GlobalSetting()
           ],
