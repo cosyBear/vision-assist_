@@ -82,7 +82,7 @@ class UploadBox extends StatelessWidget {
               bottom: -5,
               right: -5,
               child: IconButton(
-                icon: Icon(Icons.send, color: Colors.pink, size: 30),
+                icon: Icon(Icons.send, color: Color.fromRGBO(203, 105, 156, 1), size: 30),
                 onPressed: () =>
                     _sendMessage(context), // ✅ Context is passed here!
               ),
