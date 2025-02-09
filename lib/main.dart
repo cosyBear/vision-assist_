@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'pages/main_screen.dart';
+import 'general/main_screen.dart';
 import 'wigdt/app_setting_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'database/setting_box.dart'; // Import the settings box

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../wigdt/app_setting_provider.dart';
+import 'app_setting_provider.dart';
 import 'package:provider/provider.dart';
 
 class UploadText extends StatelessWidget {

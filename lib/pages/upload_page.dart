@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'upload_box.dart';
-import 'upload_text.dart';
+import '../wigdt/upload_box.dart';
+import '../wigdt/upload_text.dart';
 import '../wigdt/app_setting_provider.dart';
 import 'package:provider/provider.dart';
 

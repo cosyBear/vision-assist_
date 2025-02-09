@@ -10,7 +10,7 @@ class SettingBox {
 
     // Check if keys exist, if not, set default values only on the first launch
     if (!settingsBox.containsKey('backgroundColor')) {
-      settingsBox.put('backgroundColor', Colors.amber.value); // Store as int (ARGB value)
+      settingsBox.put('backgroundColor', Colors.black.value); // Store as int (ARGB value)
     }
     if (!settingsBox.containsKey('textColor')) {
       settingsBox.put('textColor', Colors.white.value); // Store as int (ARGB value)
@@ -19,7 +19,7 @@ class SettingBox {
       settingsBox.put('fontSize', 20.0); // Default font size
     }
     if (!settingsBox.containsKey('fontFamily')) {
-      settingsBox.put('fontFamily', 'Roboto'); // Default font family
+      settingsBox.put('fontFamily', 'Inria Serif'); // Default font family
     }
     if (!settingsBox.containsKey('fontWeight')) {
       settingsBox.put('fontWeight', FontWeight.normal.index); // Store as index

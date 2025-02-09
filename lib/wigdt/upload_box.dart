@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../wigdt/app_setting_provider.dart';
+import 'app_setting_provider.dart';
 import 'package:provider/provider.dart';
-import 'display_page.dart';
+import '../pages/display_page.dart';
 import 'dart:developer';
 
 class UploadBox extends StatelessWidget {
