@@ -13,8 +13,8 @@ class BackGroundTextColor extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Determine the grid size based on the screen width
-    double gridWidth = screenWidth < 600 ? 250 : screenWidth * 0.3;  // 250 for small screens, 30% of screen width for larger screens
-    double gridHeight = screenWidth < 600 ? 290 : screenWidth * 0.35; // Adjust height based on screen size
+    double gridWidth = screenWidth < 600 ? 250 : screenWidth * 0.25;  // 250 for small screens, 30% of screen width for larger screens
+    double gridHeight = screenWidth < 600 ? 290 : screenWidth * 0.30; // Adjust height based on screen size
 
     // Determine preview box size based on screen width
     double previewBoxSize = screenWidth < 600 ? 120 : screenWidth * 0.22;  // 120 for small screens, 20% of screen width for larger screens
