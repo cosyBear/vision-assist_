@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_setting_provider.dart';
 import 'package:provider/provider.dart';
-import '../pages/display_page.dart';
+// import '../pages/display_page.dart';
 import 'dart:developer';
+import '../pages/scrolling_text_page.dart';
 
 class UploadBox extends StatelessWidget {
   final TextEditingController controller;
@@ -83,7 +84,7 @@ class UploadBox extends StatelessWidget {
               right: -5,
               child: ElevatedButton(
                 onPressed: () {
-                  print('Button Pressed!');
+                  _sendMessage(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white, // White background
