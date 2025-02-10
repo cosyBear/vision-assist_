@@ -16,7 +16,7 @@ class UploadBox extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DisplayPage(text: text),
+          builder: (context) => ScrollingText(title: text),
         ),
       );
     }
@@ -81,10 +81,22 @@ class UploadBox extends StatelessWidget {
             Positioned(
               bottom: -5,
               right: -5,
-              child: IconButton(
-                icon: Icon(Icons.send, color: Color.fromRGBO(203, 105, 156, 1), size: 30),
-                onPressed: () =>
-                    _sendMessage(context), // ✅ Context is passed here!
+              child: ElevatedButton(
+                onPressed: () {
+                  print('Button Pressed!');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // White background
+                  side: BorderSide(color: Colors.purple, width: 2), // Purple border
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                  ),
+                  minimumSize: Size(200, 60), // Custom size (width: 200, height: 60)
+                ),
+                child: Text(
+                  'Send',
+                  style: TextStyle(color: Colors.purple, fontSize: 18), // Purple text with larger font
+                ),
               ),
             ),
           ],
