@@ -10,6 +10,7 @@ class AppSettingProvider with ChangeNotifier {
   double _fontSize = 20;
   String _fontFamily = 'Roboto';
   FontWeight _fontWeight = FontWeight.normal;
+  double _scrollSpeed = 2;
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -21,6 +22,7 @@ class AppSettingProvider with ChangeNotifier {
   String get fontFamily => _fontFamily;
   FontWeight get fontWeight => _fontWeight;
   Color get textColor => _textColor;
+  double get getScrollSpeed => _scrollSpeed;
 
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
@@ -30,6 +32,7 @@ class AppSettingProvider with ChangeNotifier {
     _fontSize = SettingBox.getSetting('fontSize', 20.0); // Default font size: 20
     _fontFamily = SettingBox.getSetting('fontFamily', 'Roboto'); // Default font: Roboto
     _fontWeight = _getFontWeightFromHive('fontWeight', FontWeight.normal); // Default font weight: normal
+    _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0);
 
     // Notify listeners that settings have been loaded
     notifyListeners();
@@ -41,12 +44,20 @@ class AppSettingProvider with ChangeNotifier {
     return colorValue != null ? Color(colorValue) : defaultColor;
   }
 
+
   // ✅ Convert saved int value of FontWeight to FontWeight enum
   FontWeight _getFontWeightFromHive(String key, FontWeight defaultWeight) {
     int? weightIndex = SettingBox.getSetting(key, null);
     return weightIndex != null ? FontWeight.values[weightIndex] : defaultWeight;
   }
 
+
+
+  void setScrollSpeed(double speed){
+    _scrollSpeed = speed;
+    SettingBox.saveSetting("scrollSpeed", speed);
+    notifyListeners();
+  }
   // ✅ Save settings
   void setBackgroundColor(Color color) {
     _backgroundColor = color;

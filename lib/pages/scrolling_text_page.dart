@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
 import '../wigdt/app_setting_provider.dart';
 
@@ -16,78 +15,83 @@ class ScrollingText extends StatefulWidget {
 class _ScrollingTextState extends State<ScrollingText> {
   bool _shouldScroll = true;
   bool _isPaused = false;
+  bool _hasScrolledToEnd = false;
   late ScrollController _scrollController;
   double _scrollPosition = 0.0;
   late double _scrollSpeed;
   Timer? _scrollTimer;
   String? _speedLabel;
 
+  double xPos = 200; // Draggable button X position
+  double yPos = 200; // Draggable button Y position
+  double textOffset = 0; // Offset for adjusting text position
+
   @override
   void initState() {
     super.initState();
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
-    _scrollSpeed = settings.scrollSpeed;
+    _scrollSpeed = settings.getScrollSpeed;
     _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _calculateScrollTime();
+      _startScrollingAnimation();
     });
   }
 
-  void _calculateScrollTime() {
-    final settings = Provider.of<AppSettingProvider>(context, listen: false);
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    num containerWidth = screenWidth < 600 ? 400 : screenWidth * 0.8;
-
-    TextStyle textStyle = TextStyle(
-      fontSize: settings.fontSize,
-      fontFamily: settings.fontFamily,
-      fontWeight: settings.fontWeight,
-    );
-
-    double textWidth = getTextWidth(widget.title, textStyle);
-    double distanceToScroll = textWidth + containerWidth;
-
-    int estimatedScrollTime =
-        ((distanceToScroll / _scrollSpeed) * 1000).toInt();
-
-    Timer(Duration(milliseconds: estimatedScrollTime), () {
-      if (mounted) {
-        setState(() {
-          _shouldScroll = false;
-        });
-      }
-    });
-
-    startScrolling();
-  }
-
-  void startScrolling() {
+  /// **Smooth scrolling animation (stops at end)**
+  void _startScrollingAnimation() {
     _scrollTimer?.cancel();
-    _scrollTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
-      if (_shouldScroll && !_isPaused) {
-        setState(() {
-          _scrollPosition += _scrollSpeed;
-        });
 
+    _scrollTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
+      if (_shouldScroll && !_isPaused && !_hasScrolledToEnd) {
         if (_scrollController.hasClients) {
-          _scrollController.jumpTo(_scrollPosition);
+          _scrollPosition += _scrollSpeed;
+
+          double maxScroll = _scrollController.position.maxScrollExtent;
+
+          if (_scrollPosition >= maxScroll) {
+            _scrollController.jumpTo(maxScroll); // Ensure last part is visible
+            _scrollPosition = maxScroll;
+            _shouldScroll = false;
+            _hasScrolledToEnd = true; // Mark scrolling as done
+            timer.cancel();
+          } else {
+            _scrollController.jumpTo(_scrollPosition);
+          }
         }
-      } else {
-        timer.cancel();
       }
     });
   }
 
-  void increaseScrollSpeed() {
+  /// **Detect if the button is above or below the text and move text slightly**
+  void _onDragUpdate(DragUpdateDetails details) {
     setState(() {
-      _scrollSpeed += 0.5;
+      xPos += details.delta.dx;
+      yPos += details.delta.dy;
+
+      // Get screen size and middle position of text
+      double screenHeight = MediaQuery.of(context).size.height;
+      double textMiddleY = screenHeight / 2;
+
+      // **Move text slightly up or down based on button's position**
+      if (yPos > textMiddleY + 20) {
+        textOffset = -20; // Move text UP if button is below
+      } else if (yPos < textMiddleY - 20) {
+        textOffset = 20; // Move text DOWN if button is above
+      } else {
+        textOffset = 0; // Keep text at normal position
+      }
+    });
+  }
+
+  /// **Increase Speed**
+  void _increaseScrollSpeed() {
+    setState(() {
+      _scrollSpeed += 1.0;
       _shouldScroll = true;
-      _scrollPosition = 0.0;
       _speedLabel = '${_scrollSpeed.toStringAsFixed(1)}';
     });
 
-    _calculateScrollTime();
+    _startScrollingAnimation();
 
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
@@ -96,17 +100,17 @@ class _ScrollingTextState extends State<ScrollingText> {
     });
   }
 
+  /// **Decrease Speed**
   void _decreaseScrollSpeed() {
     setState(() {
       if (_scrollSpeed > 1.0) {
-        _scrollSpeed -= 0.5;
+        _scrollSpeed -= 1.0;
         _shouldScroll = true;
-        _scrollPosition = 0.0;
         _speedLabel = '${_scrollSpeed.toStringAsFixed(1)}';
       }
     });
 
-    _calculateScrollTime();
+    _startScrollingAnimation();
 
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
@@ -115,24 +119,15 @@ class _ScrollingTextState extends State<ScrollingText> {
     });
   }
 
+  /// **Pause/Resume**
   void _togglePause() {
     setState(() {
       _isPaused = !_isPaused;
     });
 
     if (!_isPaused) {
-      startScrolling();
+      _startScrollingAnimation();
     }
-  }
-
-  double getTextWidth(String text, TextStyle style) {
-    final textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout();
-
-    return textPainter.width;
   }
 
   @override
@@ -140,7 +135,6 @@ class _ScrollingTextState extends State<ScrollingText> {
     final settings = Provider.of<AppSettingProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double containerWidth = screenWidth < 600 ? 400 : screenWidth * 0.8;
-    _scrollSpeed = settings.scrollSpeed;
 
     return Scaffold(
       appBar: AppBar(
@@ -154,33 +148,32 @@ class _ScrollingTextState extends State<ScrollingText> {
       ),
       body: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: containerWidth,
-                  height: settings.fontSize * 1.2,
-                  child: _shouldScroll
-                      ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    controller: _scrollController,
-                    child: Text(
-                      widget.title,
-                      style: TextStyle(
-                        color: settings.textColor,
-                        fontSize: settings.fontSize,
-                        fontFamily: settings.fontFamily,
-                        fontWeight: settings.fontWeight,
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
-                  )
-                      : Text(
-                    widget.title,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    textAlign: TextAlign.start,
+          // **Draggable using GestureDetector**
+          Positioned(
+            left: xPos,
+            top: yPos,
+            child: GestureDetector(
+              onPanUpdate: _onDragUpdate,
+              child: Icon(Icons.add_circle, color: Colors.white, size: 50),
+            ),
+          ),
+
+          // **Smooth Scrolling Text (Moves up/down based on draggable position)**
+          Positioned(
+            top: MediaQuery.of(context).size.height / 2 - 100 + textOffset, // Move based on button
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              width: containerWidth,
+              height: settings.fontSize * 1.2,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                controller: _scrollController,
+                child: Align(
+                  alignment: Alignment.topCenter, // Ensures final part is visible
+
+                  child: Text(
+                    widget.title, // No repeating, just the full text
                     style: TextStyle(
                       color: settings.textColor,
                       fontSize: settings.fontSize,
@@ -190,12 +183,11 @@ class _ScrollingTextState extends State<ScrollingText> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
-              ],
+              ),
             ),
           ),
 
-          // Aligning the speed label just above the play/pause button row
+          // **Speed Controls (+ / -) & Pause**
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -203,7 +195,6 @@ class _ScrollingTextState extends State<ScrollingText> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Place the speed label above the buttons
                   if (_speedLabel != null)
                     Text(
                       _speedLabel!,
@@ -213,43 +204,32 @@ class _ScrollingTextState extends State<ScrollingText> {
                         color: Colors.grey,
                       ),
                     ),
-                  SizedBox(height: 10), // Space between label and buttons
-
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.remove_circle_outline,
-                            color: Colors.grey, size: 50),
+                        icon: Icon(Icons.remove_circle_outline, color: Colors.grey, size: 50),
                         onPressed: () {
                           _decreaseScrollSpeed();
                           settings.setScrollSpeed(_scrollSpeed);
                         },
-                        tooltip: 'Decrease Scroll Speed',
                       ),
                       IconButton(
                         icon: Icon(
-                          _isPaused
-                              ? Icons.play_circle_filled
-                              : Icons.pause_circle_filled,
+                          _isPaused ? Icons.play_circle_filled : Icons.pause_circle_filled,
                           size: 50,
                           color: Colors.grey,
                         ),
                         onPressed: _togglePause,
-                        tooltip:
-                        _isPaused ? 'Resume Scrolling' : 'Pause Scrolling',
                       ),
                       IconButton(
-                        icon: Icon(
-                          Icons.add_circle_outline_sharp,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
+                        icon: Icon(Icons.add_circle_outline_sharp, size: 50, color: Colors.grey),
                         onPressed: () {
-                          increaseScrollSpeed();
+                          _increaseScrollSpeed();
                           settings.setScrollSpeed(_scrollSpeed);
                         },
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -260,8 +240,6 @@ class _ScrollingTextState extends State<ScrollingText> {
       ),
     );
   }
-
-
 
   @override
   void dispose() {
