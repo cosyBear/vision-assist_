@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:steady_eye_2/wigdt/app_setting_provider.dart';
-import '../wigdt/logo.dart';
+import 'package:steady_eye_2/general/app_setting_provider.dart';
+import '../font_page/wigdt/logo.dart';
 import 'package:provider/provider.dart';
 
 class Mainpage extends StatelessWidget {

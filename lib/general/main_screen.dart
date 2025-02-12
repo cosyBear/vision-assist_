@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../pages/upload_page.dart';
+import '../pages/upload_page/upload_page.dart';
 import 'navbar.dart';
-import '../pages/main_page.dart';
+import '../pages/main_page/main_page.dart';
 import 'package:provider/provider.dart';
-import '../wigdt/app_setting_provider.dart';
-import '../pages/setting.dart';
+import 'app_setting_provider.dart';
+import '../pages/settings_page/setting.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../wigdt/app_setting_provider.dart';
+import '../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
 
 class TextSizeFonts extends StatefulWidget {

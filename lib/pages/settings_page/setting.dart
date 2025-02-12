@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:steady_eye_2/wigdt/app_setting_provider.dart';
-import 'text_size_fonts.dart';
-import 'back_ground_text_color.dart';
+import 'package:steady_eye_2/general/app_setting_provider.dart';
+import '../font_page/text_size_fonts.dart';
+import '../color_page/back_ground_text_color.dart';
 
 class GlobalSetting extends StatelessWidget {
   const GlobalSetting({super.key});

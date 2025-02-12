@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../wigdt/app_setting_provider.dart';
+import '../../general/app_setting_provider.dart';
 
 class ScrollingText extends StatefulWidget {
   final String title;

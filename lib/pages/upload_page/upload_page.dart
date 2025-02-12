@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../wigdt/upload_box.dart';
-import '../wigdt/upload_text.dart';
-import '../wigdt/app_setting_provider.dart';
+import 'wigdt/upload_box.dart';
+import 'wigdt/upload_text.dart';
+import '../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
 
 class UploadPage extends StatefulWidget {

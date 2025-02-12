@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:steady_eye_2/wigdt/app_setting_provider.dart';
+import 'package:steady_eye_2/general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
 
 class BackGroundTextColor extends StatelessWidget {
