@@ -10,7 +10,7 @@ class TextSizeFonts extends StatefulWidget {
 }
 
 class _TextSizeFontsState extends State<TextSizeFonts> {
-  double fontSize = 16.0;
+  double fontSize = 20.0;
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                       style: const TextStyle(fontSize: 18, color: Colors.grey)),
                   _buildAdjustButton(settings,
                       icon: Icons.add_circle_outline_sharp, onPressed: () {
-                    if (fontSize < 40) {
+                    if (fontSize < 60) {
                       setState(() {
                         fontSize += 1;
                         settings.setFontSize(fontSize);
@@ -97,12 +97,8 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
 
   Widget _buildFontButton(AppSettingProvider settings, String label,
       String fontFamily, double fontSize, int index) {
-    Color borderColor = settings.backgroundColor.computeLuminance() > 0.5
-        ? Colors.black
-        : Colors.white;
-
     // Alternating colors based on index
-    Color buttonColor = (index % 2 == 0)
+    Color buttonBorder = (index % 2 == 0)
         ? const Color.fromRGBO(203, 105, 156, 1) // Pink
         : const Color.fromRGBO(22, 173, 201, 1); // Blue
 
@@ -110,8 +106,8 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: buttonColor,
-          side: BorderSide(color: borderColor, width: 1.5),
+          backgroundColor: settings.backgroundColor,
+          side: BorderSide(color: buttonBorder, width: 1.5),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

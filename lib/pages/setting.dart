@@ -31,8 +31,7 @@ class GlobalSetting extends StatelessWidget {
   }
 
   Widget _buildButton(BuildContext context, String text, Widget page,
-      AppSettingProvider settings, Color backgroundColor) {
-    Color borderColor = backgroundColor.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+      AppSettingProvider settings, Color borderColor) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
@@ -43,7 +42,7 @@ class GlobalSetting extends StatelessWidget {
           Navigator.push(context, MaterialPageRoute(builder: (context) => page));
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor,
+          backgroundColor: settings.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50.0),
             side: BorderSide(
