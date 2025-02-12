@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_setting_provider.dart';
 import 'package:provider/provider.dart';
-import '../pages/display_page.dart';
+// import '../pages/display_page.dart';
 import 'dart:developer';
+import '../pages/scrolling_text_page.dart';
 
 class UploadBox extends StatelessWidget {
   final TextEditingController controller;
@@ -16,7 +17,7 @@ class UploadBox extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DisplayPage(text: text),
+          builder: (context) => ScrollingText(title: text),
         ),
       );
     }
