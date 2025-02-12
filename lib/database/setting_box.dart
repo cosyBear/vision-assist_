@@ -24,6 +24,9 @@ class SettingBox {
     if (!settingsBox.containsKey('fontWeight')) {
       settingsBox.put('fontWeight', FontWeight.normal.index); // Store as index
     }
+    if(!settingsBox.containsKey('scrollSpeed')){
+      settingsBox.put('scrollSpeed', 2.0);
+    }
   }
 
   // Save and retrieve settings
