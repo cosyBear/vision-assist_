@@ -67,7 +67,14 @@ class Mainpage extends StatelessWidget {
                       goToPage(1); // Navigate to UploadPage (index 1)
                     },
                     style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(203, 105, 156, 1),
+                      backgroundColor: settings.backgroundColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                        side: BorderSide(
+                          color: const Color.fromRGBO(203, 105, 156, 1),
+                          width: 1.0,
+                        ),
+                      ),
                       minimumSize: Size(screenWidth * 0.20, 50),
                       padding: EdgeInsets.symmetric(vertical: 25),
                     ),
