@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*
+  This class is a preview of the text that will be displayed in the TextSizeFonts page.
+  It is used to show the user how the text will look like with the selected font and size.
+ */
 class TextPreview extends StatelessWidget {
   final String text;
   final Color textColor;

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*
+  This class is a grid that will display the colors and the label.
+  It is used to change the background and text color in the BackGroundTextColor page.
+ */
 class ColorGrid extends StatelessWidget {
   final List<Color> colors;
   final void Function(Color) onTap;

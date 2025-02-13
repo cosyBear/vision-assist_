@@ -4,7 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/color_grid.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/text_preview.dart';
 
-
+/*
+  This class is the main page for the BackGroundTextColor page.
+  It contains two ColorGrids that will allow the user to select the text and background color.
+  It also contains a TextPreview that will show the user how the text will look like with the selected colors.
+  The user can navigate back to the GlobalSetting page by pressing the back button.
+ */
 class BackGroundTextColor extends StatelessWidget {
   const BackGroundTextColor({super.key});
 
