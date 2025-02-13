@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import '../../general/app_setting_provider.dart';
+import 'widgt/adjust_button.dart';
+import 'widgt/font_button.dart';
+import 'widgt/font_size_display.dart';
+
+/*
+  This class is the main page for the TextSizeFonts.
+  It contains buttons for different fonts, a text display, and buttons to adjust the font size.
+  It uses the FontButton, FontSizeDisplay, and AdjustButton classes.
+ */
 
 class TextSizeFonts extends StatefulWidget {
   const TextSizeFonts({super.key});
@@ -46,10 +55,10 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildFontButton(settings, "Arial", "Arial", fontSize, 0),
-                  _buildFontButton(settings, "Verdana", "Verdana", fontSize, 1),
-                  _buildFontButton(settings, "Calibri", "Calibri", fontSize, 2),
-                  _buildFontButton(settings, "Times", "Times", fontSize, 3),
+                  FontButton(settings: settings, label: "Arial", fontFamily: "Arial", fontSize: fontSize, index: 0),
+                  FontButton(settings: settings, label: "Verdana", fontFamily: "Verdana", fontSize: fontSize, index: 1),
+                  FontButton(settings: settings, label: "Calibri", fontFamily: "Calibri", fontSize: fontSize, index: 2),
+                  FontButton(settings: settings, label: "Times", fontFamily: "Times", fontSize: fontSize, index: 3),
                 ],
               ),
               const SizedBox(height: 20),
@@ -66,8 +75,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildAdjustButton(settings,
-                      icon: Icons.remove_circle_outline, onPressed: () {
+                  AdjustButton(icon: Icons.remove_circle_outline, onPressed: () {
                     if (fontSize > 10) {
                       setState(() {
                         fontSize -= 1;
@@ -75,10 +83,8 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                       });
                     }
                   }),
-                  Text(fontSize.toStringAsFixed(1),
-                      style: const TextStyle(fontSize: 18, color: Colors.grey)),
-                  _buildAdjustButton(settings,
-                      icon: Icons.add_circle_outline_sharp, onPressed: () {
+                  FontSizeDisplay(fontSize: fontSize),
+                  AdjustButton(icon: Icons.add_circle_outline_sharp, onPressed: () {
                     if (fontSize < 60) {
                       setState(() {
                         fontSize += 1;
@@ -91,49 +97,6 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildFontButton(AppSettingProvider settings, String label,
-      String fontFamily, double fontSize, int index) {
-    // Alternating colors based on index
-    Color buttonBorder = (index % 2 == 0)
-        ? const Color.fromRGBO(203, 105, 156, 1) // Pink
-        : const Color.fromRGBO(22, 173, 201, 1); // Blue
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          backgroundColor: settings.backgroundColor,
-          side: BorderSide(color: buttonBorder, width: 1.5),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        ),
-        onPressed: () {
-          settings.setFontFamily(fontFamily);
-        },
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: fontSize,
-            color: settings.textColor,
-            fontFamily: fontFamily,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAdjustButton(AppSettingProvider settings,
-      {required IconData icon, required VoidCallback onPressed}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: IconButton(
-        icon: Icon(icon, size: 45, color: Colors.grey),
-        onPressed: onPressed,
       ),
     );
   }
