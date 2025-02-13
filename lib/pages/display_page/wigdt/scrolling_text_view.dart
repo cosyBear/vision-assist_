@@ -16,7 +16,6 @@ class ScrollingTextView extends StatefulWidget {
 
 class _ScrollingTextViewState extends State<ScrollingTextView> {
   bool _shouldScroll = true;
-  bool _isPaused = false;
   bool _hasScrolledToEnd = false;
   late ScrollController _scrollController;
   late double _scrollSpeed;
@@ -37,17 +36,22 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
   void _startScrollingAnimation() {
     _scrollTimer?.cancel();
     _scrollTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
-      if (_shouldScroll && !_isPaused && !_hasScrolledToEnd) {
-        if (_scrollController.hasClients) {
-          double maxScroll = _scrollController.position.maxScrollExtent;
-          if (_scrollController.offset >= maxScroll) {
-            _scrollController.jumpTo(maxScroll);
-            _shouldScroll = false;
-            _hasScrolledToEnd = true;
-            timer.cancel();
-          } else {
-            _scrollController.jumpTo(_scrollController.offset + _scrollSpeed);
-          }
+      final settings = Provider.of<AppSettingProvider>(context, listen: false);
+
+      if (settings.isPaused || _hasScrolledToEnd) {
+        // If paused, stop the scroll
+        return;
+      }
+
+      if (_scrollController.hasClients) {
+        double maxScroll = _scrollController.position.maxScrollExtent;
+        if (_scrollController.offset >= maxScroll) {
+          _scrollController.jumpTo(maxScroll);
+          _shouldScroll = false;
+          _hasScrolledToEnd = true;
+          timer.cancel();
+        } else {
+          _scrollController.jumpTo(_scrollController.offset + settings.getScrollSpeed);
         }
       }
     });
@@ -69,15 +73,21 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
-          child: Text(
-            widget.text,
-            style: TextStyle(
-              color: settings.textColor,
-              fontSize: settings.fontSize,
-              fontFamily: settings.fontFamily,
-              fontWeight: settings.fontWeight,
-              decoration: TextDecoration.none,
-            ),
+          child: Row(
+            children: [
+              const SizedBox(width: 16), // Add padding before the text
+              Text(
+                widget.text,
+                style: TextStyle(
+                  color: settings.textColor,
+                  fontSize: settings.fontSize,
+                  fontFamily: settings.fontFamily,
+                  fontWeight: settings.fontWeight,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+              const SizedBox(width: 16), // Add padding after the text
+            ],
           ),
         ),
       ),

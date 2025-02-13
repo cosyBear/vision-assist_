@@ -9,34 +9,32 @@ class ScrollControls extends StatefulWidget {
 }
 
 class _ScrollControlsState extends State<ScrollControls> {
-  bool _isPaused = false;
-  double _scrollSpeed = 1.0;
   String? _speedLabel;
 
   void _increaseScrollSpeed() {
-    setState(() {
-      _scrollSpeed += 1.0;
-      _speedLabel = _scrollSpeed.toStringAsFixed(1);
-    });
-
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() => _speedLabel = null);
-    });
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    settings.setScrollSpeed(settings.getScrollSpeed + 1.0);
+    _showSpeedLabel(settings.getScrollSpeed);
   }
 
   void _decreaseScrollSpeed() {
-    setState(() {
-      if (_scrollSpeed > 1.0) _scrollSpeed -= 1.0;
-      _speedLabel = _scrollSpeed.toStringAsFixed(1);
-    });
-
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() => _speedLabel = null);
-    });
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    if (settings.getScrollSpeed > 1.0) {
+      settings.setScrollSpeed(settings.getScrollSpeed - 1.0);
+      _showSpeedLabel(settings.getScrollSpeed);
+    }
   }
 
   void _togglePause() {
-    setState(() => _isPaused = !_isPaused);
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    settings.togglePause();
+  }
+
+  void _showSpeedLabel(double speed) {
+    setState(() => _speedLabel = speed.toStringAsFixed(1));
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() => _speedLabel = null);
+    });
   }
 
   @override
@@ -56,9 +54,18 @@ class _ScrollControlsState extends State<ScrollControls> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(icon: Icon(Icons.remove_circle_outline, size: 50, color: Colors.grey), onPressed: _decreaseScrollSpeed),
-              IconButton(icon: Icon(_isPaused ? Icons.play_circle : Icons.pause_circle, size: 50, color: Colors.grey), onPressed: _togglePause),
-              IconButton(icon: Icon(Icons.add_circle_outline, size: 50, color: Colors.grey), onPressed: _increaseScrollSpeed),
+              IconButton(
+                icon: Icon(Icons.remove_circle_outline, size: 50, color: Colors.grey),
+                onPressed: _decreaseScrollSpeed,
+              ),
+              IconButton(
+                icon: Icon(settings.isPaused ? Icons.play_circle : Icons.pause_circle, size: 50, color: Colors.grey),
+                onPressed: _togglePause,
+              ),
+              IconButton(
+                icon: Icon(Icons.add_circle_outline, size: 50, color: Colors.grey),
+                onPressed: _increaseScrollSpeed,
+              ),
             ],
           ),
         ],
