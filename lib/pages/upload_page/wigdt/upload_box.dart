@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
-// import '../pages/display_page.dart';
 import 'dart:developer';
-import '../../display_page/scrolling_text_page.dart';
+import '../../display_page/display_page.dart';
 
 class UploadBox extends StatelessWidget {
   final TextEditingController controller;
