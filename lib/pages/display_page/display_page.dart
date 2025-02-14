@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
+import '../../general/app_setting_provider.dart';
 import 'wigdt/draggable_button.dart';
 
 /*
@@ -32,17 +34,26 @@ class _DisplayPageState extends State<DisplayPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       double screenWidth = MediaQuery.of(context).size.width;
       double screenHeight = MediaQuery.of(context).size.height;
+      final settings = Provider.of<AppSettingProvider>(context, listen: false);
 
-      // 30 is half the size of the button (see draggable_button.dart)
       setState(() {
-        xPos = (screenWidth / 2) - 30;
-        yPos = (screenHeight / 2) - 30;
+        if (settings.xPos != 0 && settings.yPos != 0) {
+          xPos = settings.xPos;
+          yPos = settings.yPos;
+        } else {
+          // 30 is half the size of the button (see draggable_button.dart)
+          xPos = (screenWidth / 2) - 30;
+          yPos = (screenHeight / 2) - 30;
+          settings.setXPos(xPos);
+          settings.setYPos(yPos);
+        }
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(18, 18, 18, 1.0),
@@ -69,6 +80,9 @@ class _DisplayPageState extends State<DisplayPage> {
                 setState(() {
                   xPos += dx;
                   yPos += dy;
+
+                  settings.setXPos(xPos);
+                  settings.setYPos(yPos);
 
                   double screenHeight = MediaQuery.of(context).size.height;
                   double textMiddleY = screenHeight / 2;

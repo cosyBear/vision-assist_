@@ -10,6 +10,8 @@ class AppSettingProvider with ChangeNotifier {
   FontWeight _fontWeight = FontWeight.normal;
   double _scrollSpeed = 2;
   bool _isPaused = false; // Track scrolling state
+  double _xPos = 0; // Track x position of the focus point
+  double _yPos = 0; // Track y position of the focus point
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -23,6 +25,8 @@ class AppSettingProvider with ChangeNotifier {
   Color get textColor => _textColor;
   double get getScrollSpeed => _scrollSpeed;
   bool get isPaused => _isPaused; // Getter for pause state
+  double get xPos => _xPos;
+  double get yPos => _yPos;
 
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
@@ -33,6 +37,8 @@ class AppSettingProvider with ChangeNotifier {
     _fontFamily = SettingBox.getSetting('fontFamily', 'Roboto'); // Default font: Roboto
     _fontWeight = _getFontWeightFromHive('fontWeight', FontWeight.normal); // Default font weight: normal
     _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
+    _xPos = SettingBox.getSetting('xPos', 0.0); // Default x position: 0
+    _yPos = SettingBox.getSetting('yPos', 0.0); // Default y position: 0
 
     // Notify listeners that settings have been loaded
     notifyListeners();
@@ -89,6 +95,18 @@ class AppSettingProvider with ChangeNotifier {
   void setFontWeight(FontWeight weight) {
     _fontWeight = weight;
     SettingBox.saveSetting('fontWeight', weight.index); // Store as index value
+    notifyListeners();
+  }
+
+  void setXPos(double x) {
+    _xPos = x;
+    SettingBox.saveSetting('xPos', x);
+    notifyListeners();
+  }
+
+  void setYPos(double y) {
+    _yPos = y;
+    SettingBox.saveSetting('yPos', y);
     notifyListeners();
   }
 }
