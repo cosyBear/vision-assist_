@@ -16,7 +16,7 @@ class UploadBox extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ScrollingText(title: text),
+          builder: (context) => DisplayPage(title: text),
         ),
       );
     }

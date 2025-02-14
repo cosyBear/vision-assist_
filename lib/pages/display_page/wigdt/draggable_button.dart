@@ -13,7 +13,11 @@ class DraggableButton extends StatelessWidget {
       top: yPos,
       child: GestureDetector(
         onPanUpdate: (details) => onPositionChanged(details.delta.dx, details.delta.dy),
-        child: Icon(Icons.add_circle, color: Colors.white, size: 50),
+        child:  Image.asset(
+          'assets/images/logo.png',
+          width: 60,
+          height: 60,
+        ),
       ),
     );
   }

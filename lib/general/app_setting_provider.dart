@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-
 import '../database/setting_box.dart'; // Import the settings box
 
 class AppSettingProvider with ChangeNotifier {
@@ -11,6 +9,7 @@ class AppSettingProvider with ChangeNotifier {
   String _fontFamily = 'Roboto';
   FontWeight _fontWeight = FontWeight.normal;
   double _scrollSpeed = 2;
+  bool _isPaused = false; // Track scrolling state
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -23,6 +22,7 @@ class AppSettingProvider with ChangeNotifier {
   FontWeight get fontWeight => _fontWeight;
   Color get textColor => _textColor;
   double get getScrollSpeed => _scrollSpeed;
+  bool get isPaused => _isPaused; // Getter for pause state
 
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
@@ -32,7 +32,7 @@ class AppSettingProvider with ChangeNotifier {
     _fontSize = SettingBox.getSetting('fontSize', 20.0); // Default font size: 20
     _fontFamily = SettingBox.getSetting('fontFamily', 'Roboto'); // Default font: Roboto
     _fontWeight = _getFontWeightFromHive('fontWeight', FontWeight.normal); // Default font weight: normal
-    _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0);
+    _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
 
     // Notify listeners that settings have been loaded
     notifyListeners();
@@ -44,21 +44,24 @@ class AppSettingProvider with ChangeNotifier {
     return colorValue != null ? Color(colorValue) : defaultColor;
   }
 
-
   // ✅ Convert saved int value of FontWeight to FontWeight enum
   FontWeight _getFontWeightFromHive(String key, FontWeight defaultWeight) {
     int? weightIndex = SettingBox.getSetting(key, null);
     return weightIndex != null ? FontWeight.values[weightIndex] : defaultWeight;
   }
 
-
-
-  void setScrollSpeed(double speed){
+  // ✅ Save settings
+  void setScrollSpeed(double speed) {
     _scrollSpeed = speed;
     SettingBox.saveSetting("scrollSpeed", speed);
     notifyListeners();
   }
-  // ✅ Save settings
+
+  void togglePause() {
+    _isPaused = !_isPaused; // Toggle pause state
+    notifyListeners();
+  }
+
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
     SettingBox.saveSetting('backgroundColor', color.value); // Store as int value
