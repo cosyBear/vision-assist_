@@ -5,16 +5,16 @@ import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
 
 import 'wigdt/draggable_button.dart';
 
-class ScrollingText extends StatefulWidget {
+class DisplayPage extends StatefulWidget {
   final String title;
 
-  const ScrollingText({super.key, required this.title});
+  const DisplayPage({super.key, required this.title});
 
   @override
-  State<ScrollingText> createState() => _ScrollingTextState();
+  State<DisplayPage> createState() => _DisplayPageState();
 }
 
-class _ScrollingTextState extends State<ScrollingText> {
+class _DisplayPageState extends State<DisplayPage> {
   double xPos = 200;
   double yPos = 200;
   double textOffset = 0;
@@ -67,3 +67,4 @@ class _ScrollingTextState extends State<ScrollingText> {
     );
   }
 }
+
