@@ -18,27 +18,35 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     final viewInsets = MediaQuery.of(context).viewInsets; // Get keyboard's viewInsets
-    double screenWidth = MediaQuery.of(context).size.height;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: true, // Ensures proper resizing with the keyboard
       backgroundColor: settings.backgroundColor,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final availableHeight = constraints.maxHeight - viewInsets.bottom;
 
-      body: SingleChildScrollView( // Allow scrolling when the keyboard is up
-        child: Padding(
-          padding: EdgeInsets.all(30), // Adjust the padding based on the keyboard
-          child: Center(
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Keep content vertically centered
-              crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
-              children: [
-                UploadBox(controller: _controller),
-                UploadText(),
-
-              ],
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: availableHeight),
+              child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center, // Vertically center
+                    crossAxisAlignment: CrossAxisAlignment.center, // Horizontally center
+                    children: [
+                      UploadBox(controller: _controller),
+                      const SizedBox(height: 20), // Add spacing
+                      UploadText(),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
