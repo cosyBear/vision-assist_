@@ -32,13 +32,15 @@ class TextPreview extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-            decoration: TextDecoration.none,
-            color: textColor,
+        child: FittedBox(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.none,
+              color: textColor,
+            ),
           ),
         ),
       ),
