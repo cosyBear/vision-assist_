@@ -39,8 +39,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
       final settings = Provider.of<AppSettingProvider>(context, listen: false);
 
       if (settings.isPaused || _hasScrolledToEnd) {
-        // If paused, stop the scroll
-        return;
+        return; // Stop scrolling if paused
       }
 
       if (_scrollController.hasClients) {
@@ -63,6 +62,24 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
     double screenWidth = MediaQuery.of(context).size.width;
     double containerWidth = screenWidth < 600 ? 400 : screenWidth * 0.8;
 
+    // Measure text width dynamically to determine if it should be centered or scroll
+    TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: widget.text,
+        style: TextStyle(
+          color: settings.textColor,
+          fontSize: settings.fontSize,
+          fontFamily: settings.fontFamily,
+          fontWeight: settings.fontWeight,
+        ),
+      ),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout();
+
+    // Center text if it fits in the container
+    bool shouldCenter = textPainter.width < containerWidth;
+
     return Positioned(
       top: MediaQuery.of(context).size.height / 2 - 100 + widget.textOffset,
       left: 0,
@@ -70,7 +87,19 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
       child: SizedBox(
         width: containerWidth,
         height: settings.fontSize * 1.2,
-        child: SingleChildScrollView(
+        child: shouldCenter ? Center(
+          child: Text(
+            widget.text,
+            style: TextStyle(
+              color: settings.textColor,
+              fontSize: settings.fontSize,
+              fontFamily: settings.fontFamily,
+              fontWeight: settings.fontWeight,
+              decoration: TextDecoration.none,
+            ),
+          ),
+        )
+            : SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
           child: Row(

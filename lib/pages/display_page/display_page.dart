@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
-
 import 'wigdt/draggable_button.dart';
 
+/*
+  This is the main page of the display. It will display the text that was passed to it.
+  It will also contain the focus point that the user can drag around the screen.
+ */
 class DisplayPage extends StatefulWidget {
   final String title;
 
