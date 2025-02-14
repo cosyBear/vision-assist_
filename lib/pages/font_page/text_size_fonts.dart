@@ -49,52 +49,54 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
         color: settings.backgroundColor,
         padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FontButton(settings: settings, label: "Arial", fontFamily: "Arial", fontSize: fontSize, index: 0),
-                  FontButton(settings: settings, label: "Verdana", fontFamily: "Verdana", fontSize: fontSize, index: 1),
-                  FontButton(settings: settings, label: "Calibri", fontFamily: "Calibri", fontSize: fontSize, index: 2),
-                  FontButton(settings: settings, label: "Times", fontFamily: "Times", fontSize: fontSize, index: 3),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Text(
-                "I love Reading!",
-                style: TextStyle(
-                  fontSize: fontSize,
-                  color: settings.textColor,
-                  fontFamily: settings.fontFamily,
-                  decoration: TextDecoration.none,
+          child: FittedBox(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FontButton(settings: settings, label: "Arial", fontFamily: "Arial", fontSize: fontSize, index: 0),
+                    FontButton(settings: settings, label: "Verdana", fontFamily: "Verdana", fontSize: fontSize, index: 1),
+                    FontButton(settings: settings, label: "Calibri", fontFamily: "Calibri", fontSize: fontSize, index: 2),
+                    FontButton(settings: settings, label: "Times", fontFamily: "Times", fontSize: fontSize, index: 3),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AdjustButton(icon: Icons.remove_circle_outline, onPressed: () {
-                    if (fontSize > 10) {
-                      setState(() {
-                        fontSize -= 1;
-                        settings.setFontSize(fontSize);
-                      });
-                    }
-                  }),
-                  FontSizeDisplay(fontSize: fontSize),
-                  AdjustButton(icon: Icons.add_circle_outline_sharp, onPressed: () {
-                    if (fontSize < 60) {
-                      setState(() {
-                        fontSize += 1;
-                        settings.setFontSize(fontSize);
-                      });
-                    }
-                  }),
-                ],
-              ),
-            ],
+                const SizedBox(height: 20),
+                Text(
+                  "I love Reading!",
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    color: settings.textColor,
+                    fontFamily: settings.fontFamily,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AdjustButton(icon: Icons.remove_circle_outline, onPressed: () {
+                      if (fontSize > 10) {
+                        setState(() {
+                          fontSize -= 1;
+                          settings.setFontSize(fontSize);
+                        });
+                      }
+                    }),
+                    FontSizeDisplay(fontSize: fontSize),
+                    AdjustButton(icon: Icons.add_circle_outline_sharp, onPressed: () {
+                      if (fontSize < 60) {
+                        setState(() {
+                          fontSize += 1;
+                          settings.setFontSize(fontSize);
+                        });
+                      }
+                    }),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
