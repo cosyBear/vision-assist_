@@ -71,13 +71,15 @@ class ColorGrid extends StatelessWidget {
                 .toList(),
           ),
           Center(
-            child: Text(
-              displayLabel, // Use the local variable instead of modifying the instance variable
-              style: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: textColor,
-                decoration: TextDecoration.none,
+            child: FittedBox(
+              child: Text(
+                displayLabel, // Use the local variable instead of modifying the instance variable
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                  decoration: TextDecoration.none,
+                ),
               ),
             ),
           ),
