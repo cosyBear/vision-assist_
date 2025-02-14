@@ -17,17 +17,36 @@ class _UploadPageState extends State<UploadPage> {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
+    final viewInsets = MediaQuery.of(context).viewInsets; // Get keyboard's viewInsets
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true, // Ensures proper resizing with the keyboard
       backgroundColor: settings.backgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            UploadBox(controller: _controller), // Text input + icons
-            const UploadText(), // Instruction text
-          ],
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final availableHeight = constraints.maxHeight - viewInsets.bottom;
+
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: availableHeight),
+              child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center, // Vertically center
+                    crossAxisAlignment: CrossAxisAlignment.center, // Horizontally center
+                    children: [
+                      UploadBox(controller: _controller),
+                      const SizedBox(height: 20), // Add spacing
+                      UploadText(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
