@@ -15,9 +15,28 @@ class DisplayPage extends StatefulWidget {
 }
 
 class _DisplayPageState extends State<DisplayPage> {
-  double xPos = 200;
-  double yPos = 200;
+  late double xPos;
+  late double yPos;
   double textOffset = 0;
+
+  /*
+  This will be called after the first frame is rendered.
+  This is where we will set the initial position of the button.
+   */
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      double screenWidth = MediaQuery.of(context).size.width;
+      double screenHeight = MediaQuery.of(context).size.height;
+
+      // 30 is half the size of the button (see draggable_button.dart)
+      setState(() {
+        xPos = (screenWidth / 2) - 30;
+        yPos = (screenHeight / 2) - 30;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
