@@ -17,21 +17,26 @@ class _UploadPageState extends State<UploadPage> {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
+    final viewInsets = MediaQuery.of(context).viewInsets; // Get keyboard's viewInsets
+    double screenWidth = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: true, // Ensures proper resizing with the keyboard
       backgroundColor: settings.backgroundColor,
-      body: Center(
+
+      body: SingleChildScrollView( // Allow scrolling when the keyboard is up
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0), // Optional: Adds padding on the sides
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Centers the content vertically
-            crossAxisAlignment: CrossAxisAlignment.center, // Ensures content is centered horizontally
-            children: [
-              // Text box should be centered vertically with the text below
-              UploadBox(controller: _controller),
-              const UploadText(),
-            ],
+          padding: EdgeInsets.all(30), // Adjust the padding based on the keyboard
+          child: Center(
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Keep content vertically centered
+              crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
+              children: [
+                UploadBox(controller: _controller),
+                UploadText(),
+
+              ],
+            ),
           ),
         ),
       ),

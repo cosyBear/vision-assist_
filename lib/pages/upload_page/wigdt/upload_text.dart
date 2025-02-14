@@ -20,7 +20,7 @@ class UploadText extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+      padding:  EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: Text(
         "Upload, insert or take a picture",
         style: TextStyle(

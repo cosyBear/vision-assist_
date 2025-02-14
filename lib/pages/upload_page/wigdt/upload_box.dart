@@ -37,11 +37,11 @@ class UploadBox extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0.0),
+      padding:  EdgeInsets.symmetric(horizontal: 4.0),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.7,
         height: MediaQuery.of(context).size.width * 0.2,
-        padding: const EdgeInsets.all(10),
+        padding:  EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(12),
@@ -61,14 +61,14 @@ class UploadBox extends StatelessWidget {
                       keyboardType: TextInputType.multiline,
                       // Multi-line input
                       style: TextStyle(fontFamily: settings.fontFamily, fontSize: fontSize, color: settings.textColor),
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         hintText: "Enter text...",
                         border: InputBorder.none, // Remove default border
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 50), // Space for icons
+                 SizedBox(height: 50), // Space for icons
               ],
             ),
             Positioned(
