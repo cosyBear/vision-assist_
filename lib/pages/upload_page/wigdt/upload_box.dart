@@ -26,6 +26,16 @@ class UploadBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
 
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Set the font size based on the screen width and settings
+    double fontSize = settings.fontSize;
+
+    // If screen width is less than 1000, adjust the font size
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.0),
       child: Container(
@@ -42,6 +52,7 @@ class UploadBox extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,  // Dismiss keyboard when user scrolls
                     controller: _scrollController,
                     child: TextField(
                       controller: controller,
@@ -49,7 +60,7 @@ class UploadBox extends StatelessWidget {
                       // Allows unlimited input
                       keyboardType: TextInputType.multiline,
                       // Multi-line input
-                      style: TextStyle(fontFamily: settings.fontFamily,fontSize: settings.fontSize, color: settings.textColor),
+                      style: TextStyle(fontFamily: settings.fontFamily, fontSize: fontSize, color: settings.textColor),
                       decoration: const InputDecoration(
                         hintText: "Enter text...",
                         border: InputBorder.none, // Remove default border
@@ -66,13 +77,11 @@ class UploadBox extends StatelessWidget {
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.attach_file,
-                        color: Colors.grey[600], size: 45),
+                    icon: Icon(Icons.attach_file, color: Colors.grey[600], size: 45),
                     onPressed: () => log("File uploaded"),
                   ),
                   IconButton(
-                    icon: Icon(Icons.camera_alt,
-                        color: Colors.grey[600], size: 45),
+                    icon: Icon(Icons.camera_alt, color: Colors.grey[600], size: 45),
                     onPressed: () => log("Picture taken"),
                   ),
                 ],
@@ -83,8 +92,7 @@ class UploadBox extends StatelessWidget {
               right: -5,
               child: IconButton(
                 icon: Icon(Icons.send, color: Color.fromRGBO(203, 105, 156, 1), size: 45),
-                onPressed: () =>
-                    _sendMessage(context), // ✅ Context is passed here!
+                onPressed: () => _sendMessage(context), // ✅ Context is passed here!
               ),
             ),
           ],

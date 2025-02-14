@@ -19,14 +19,20 @@ class _UploadPageState extends State<UploadPage> {
     final settings = Provider.of<AppSettingProvider>(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true, // Ensures proper resizing with the keyboard
       backgroundColor: settings.backgroundColor,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            UploadBox(controller: _controller), // Text input + icons
-            const UploadText(), // Instruction text
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0), // Optional: Adds padding on the sides
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Centers the content vertically
+            crossAxisAlignment: CrossAxisAlignment.center, // Ensures content is centered horizontally
+            children: [
+              // Text box should be centered vertically with the text below
+              UploadBox(controller: _controller),
+              const UploadText(),
+            ],
+          ),
         ),
       ),
     );
