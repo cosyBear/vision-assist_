@@ -13,7 +13,6 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
-
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),

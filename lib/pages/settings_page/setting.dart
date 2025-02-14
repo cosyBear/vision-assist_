@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
 import 'package:steady_eye_2/pages/settings_page/widgt/settings_button.dart';
-import '../font_page/text_size_fonts.dart';
+import '../font_page/font_page.dart';
 import '../color_page/colors.dart';
 
 /*

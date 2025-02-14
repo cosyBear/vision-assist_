@@ -9,15 +9,24 @@ class UploadText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Set the font size based on the screen width and settings
+    double fontSize = settings.fontSize;
+
+    // If screen width is less than 1000, adjust the font size
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+    }
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+      padding:  EdgeInsets.fromLTRB(0, 40, 0, 0),
       child: Text(
         "Upload, insert or take a picture",
-        style:  TextStyle(
-          fontSize: settings.fontSize,
+        style: TextStyle(
+          fontSize: fontSize, // Use the calculated font size
           fontWeight: FontWeight.bold,
-          color:settings.textColor,
+          color: settings.textColor,
         ),
       ),
     );
