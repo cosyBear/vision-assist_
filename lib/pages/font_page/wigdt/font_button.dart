@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
 
-
+/*
 class FontButton extends StatefulWidget {
   const FontButton({super.key});
 
@@ -48,4 +48,4 @@ Widget _buildFontButton(AppSettingProvider settings, String label,
       ),
     ),
   );
-}
+}*/

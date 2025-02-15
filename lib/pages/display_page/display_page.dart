@@ -25,7 +25,7 @@ class _DisplayPageState extends State<DisplayPage> {
   double textOffset = 0;
 
   /*
-  This will be called after the first frame is rendered.
+  This method will be called after the first frame is rendered.
   This is where we will set the initial position of the button.
    */
   @override
@@ -34,16 +34,18 @@ class _DisplayPageState extends State<DisplayPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       double screenWidth = MediaQuery.of(context).size.width;
       double screenHeight = MediaQuery.of(context).size.height;
+
       final settings = Provider.of<AppSettingProvider>(context, listen: false);
+      double buttonSize = settings.fontSize * 2; // Button size is twice the font size
 
       setState(() {
         if (settings.xPos != 0 && settings.yPos != 0) {
           xPos = settings.xPos;
           yPos = settings.yPos;
         } else {
-          // 30 is half the size of the button (see draggable_button.dart)
-          xPos = (screenWidth / 2) - 30;
-          yPos = (screenHeight / 2) - 30;
+          // Center the button if the user has not set a position
+          xPos = (screenWidth / 2) - (buttonSize / 2);
+          yPos = (screenHeight / 2) - (buttonSize / 2);
           settings.setXPos(xPos);
           settings.setYPos(yPos);
         }
