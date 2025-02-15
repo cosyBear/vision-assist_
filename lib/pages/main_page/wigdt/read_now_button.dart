@@ -5,7 +5,13 @@ class ReadNowButton extends StatelessWidget {
   final void Function(int) goToPage;
   final AppSettingProvider settings;
   final double screenWidth;
-  const ReadNowButton({super.key, required this.goToPage, required this.settings, required this.screenWidth});
+
+  const ReadNowButton({
+    super.key,
+    required this.goToPage,
+    required this.settings,
+    required this.screenWidth
+  });
 
   @override
   Widget build(BuildContext context) {

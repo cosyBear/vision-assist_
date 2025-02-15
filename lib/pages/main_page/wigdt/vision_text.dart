@@ -4,7 +4,12 @@ import '../../../general/app_setting_provider.dart';
 class VisionText extends StatelessWidget {
   final AppSettingProvider settings;
   final double screenWidth;
-  const VisionText({super.key, required this.settings, required this.screenWidth});
+
+  const VisionText({
+    super.key,
+    required this.settings,
+    required this.screenWidth
+  });
 
   @override
   Widget build(BuildContext context) {

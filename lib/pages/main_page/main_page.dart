@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 class MainPage extends StatelessWidget {
   final void Function(int) goToPage;
+
   const MainPage({super.key, required this.goToPage});
 
   @override
