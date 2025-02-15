@@ -8,27 +8,29 @@ class VisionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Vision",
-          style: TextStyle(
-            fontSize: screenWidth * 0.06,
-            color: settings.textColor,
-            fontFamily: settings.fontFamily,
+    return FittedBox(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Vision",
+            style: TextStyle(
+              fontSize: settings.fontSize * 1.5,
+              color: settings.textColor,
+              fontFamily: settings.fontFamily,
+            ),
           ),
-        ),
-        Text(
-          "See Beyond\nThe Blind Spot",
-          style: TextStyle(
-            fontSize: screenWidth * 0.020,
-            color: settings.textColor,
-            fontFamily: settings.fontFamily,
-            fontStyle: FontStyle.italic,
+          Text(
+            "See Beyond\nThe Blind Spot",
+            style: TextStyle(
+              fontSize: settings.fontSize,
+              color: settings.textColor,
+              fontFamily: settings.fontFamily,
+              fontStyle: FontStyle.italic,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
