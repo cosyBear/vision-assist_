@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import '../general/app_setting_provider.dart';
+import 'package:provider/provider.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(int) onIconPressed;
@@ -9,6 +11,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final setting = Provider.of<AppSettingProvider>(context);
     return Scaffold(
         appBar: AppBar(
       backgroundColor: const Color.fromRGBO(18, 18, 18, 1.0),
