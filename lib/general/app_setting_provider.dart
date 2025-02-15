@@ -12,6 +12,7 @@ class AppSettingProvider with ChangeNotifier {
   bool _isPaused = false; // Track scrolling state
   double _xPos = 0; // Track x position of the focus point
   double _yPos = 0; // Track y position of the focus point
+  double _buttonIconsSize = 40; // Default size for button icons
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -27,6 +28,7 @@ class AppSettingProvider with ChangeNotifier {
   bool get isPaused => _isPaused; // Getter for pause state
   double get xPos => _xPos;
   double get yPos => _yPos;
+  double get buttonIconsSize => _buttonIconsSize; // Getter for button icons size
 
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
@@ -39,11 +41,17 @@ class AppSettingProvider with ChangeNotifier {
     _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
     _xPos = SettingBox.getSetting('xPos', 0.0); // Default x position: 0
     _yPos = SettingBox.getSetting('yPos', 0.0); // Default y position: 0
-
+    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 40.0).toDouble(); // ✅ Fix type error
     // Notify listeners that settings have been loaded
     notifyListeners();
   }
 
+
+  void setButtonIconsSize(double size) {
+    _buttonIconsSize = size;
+    SettingBox.saveSetting('buttonIconsSize', size); // Save to storage
+    notifyListeners();
+  }
   // ✅ Convert color from Hive (Hive saves Colors as int values)
   Color _getColorFromHive(String key, Color defaultColor) {
     int? colorValue = SettingBox.getSetting(key, null);
