@@ -56,6 +56,10 @@ class _DisplayPageState extends State<DisplayPage> {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    double appBarHeight = AppBar().preferredSize.height;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double buttonSize = settings.fontSize; // Button size is twice the font size
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(18, 18, 18, 1.0),
@@ -75,6 +79,8 @@ class _DisplayPageState extends State<DisplayPage> {
       ),
       body: Stack(
         children: [
+          ScrollingTextView(text: widget.title, textOffset: textOffset),
+          ScrollControls(),
           DraggableButton(
               xPos: xPos,
               yPos: yPos,
@@ -83,10 +89,17 @@ class _DisplayPageState extends State<DisplayPage> {
                   xPos += dx;
                   yPos += dy;
 
+                  if(yPos < appBarHeight) {
+                    yPos = appBarHeight;
+                  }
+
+                  if(yPos > screenHeight - buttonSize) {
+                    yPos = screenHeight - buttonSize;
+                  }
                   settings.setXPos(xPos);
                   settings.setYPos(yPos);
 
-                  double screenHeight = MediaQuery.of(context).size.height;
+                  //double screenHeight = MediaQuery.of(context).size.height;
                   double textMiddleY = screenHeight / 2;
 
                   if (yPos > textMiddleY + 20) {
@@ -98,8 +111,6 @@ class _DisplayPageState extends State<DisplayPage> {
                   }
                 });
               }),
-          ScrollingTextView(text: widget.title, textOffset: textOffset),
-          ScrollControls(),
         ],
       ),
     );
