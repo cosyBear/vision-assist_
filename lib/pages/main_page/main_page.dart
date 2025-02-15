@@ -29,14 +29,16 @@ class MainPage extends StatelessWidget {
             ),
             Expanded(
               flex: 4,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  VisionText(settings: settings, screenWidth: screenWidth),
-                  SizedBox(height: screenWidth * 0.02),
-                  ReadNowButton(goToPage: goToPage, settings: settings, screenWidth: screenWidth),
-                ],
+              child: FittedBox(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    VisionText(settings: settings, screenWidth: screenWidth),
+                    SizedBox(height: screenWidth * 0.02),
+                    ReadNowButton(goToPage: goToPage, settings: settings, screenWidth: screenWidth),
+                  ],
+                ),
               ),
             ),
           ],
