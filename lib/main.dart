@@ -11,6 +11,10 @@ Future<void> main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
   ]);
+
+  // This code hides the system UI (status bar, navigation bar) and makes it sticky.
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
   await Hive.initFlutter(); // Initialize Hive storage
   await SettingBox.init(); // Open settings box before app starts
 

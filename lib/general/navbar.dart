@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../general/app_setting_provider.dart';
@@ -17,15 +16,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = setting.fontSize;
     double buttonIconsSize = setting.buttonIconsSize;
-    bool showLogo= true;
 
     // Adjust font size and button icon size for smaller screens
     if (screenWidth < 1000) {
       fontSize = setting.fontSize > 40 ? 40 : setting.fontSize;
       buttonIconsSize = setting.buttonIconsSize > 60 ? 60 : setting.buttonIconsSize;
 
-      // Only show the logo when the icon size is small enough
-      showLogo = buttonIconsSize <= 50;
     }
 
     return Container(
@@ -52,6 +48,11 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
+                    icon: Icon(Icons.local_library_rounded,
+                        color: Colors.grey, size: buttonIconsSize),
+                    onPressed: () => onIconPressed(3),
+                  ),
+                  IconButton(
                     icon: Icon(Icons.cloud_upload_outlined,
                         color: Colors.grey, size: buttonIconsSize),
                     onPressed: () => onIconPressed(1),
@@ -66,7 +67,6 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             ),
 
             // Centered Title (GradientText) - show only if space allows
-            if (showLogo)
               Center(
                 child: GradientText(
                   "SteadyEye",
