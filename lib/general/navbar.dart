@@ -17,10 +17,15 @@ class Navbar extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = setting.fontSize;
     double buttonIconsSize = setting.buttonIconsSize;
+    bool showLogo= true;
 
+    // Adjust font size and button icon size for smaller screens
     if (screenWidth < 1000) {
       fontSize = setting.fontSize > 40 ? 40 : setting.fontSize;
       buttonIconsSize = setting.buttonIconsSize > 60 ? 60 : setting.buttonIconsSize;
+
+      // Only show the logo when the icon size is small enough
+      showLogo = buttonIconsSize <= 50;
     }
 
     return Container(
@@ -64,17 +69,18 @@ class Navbar extends StatelessWidget {
               ),
             ),
 
-            // Centered Title (GradientText)
-            Center(
-              child: GradientText(
-                "SteadyEye",
-                style: TextStyle(fontSize: fontSize),
-                colors: const [
-                  Color.fromRGBO(203, 105, 156, 1.0),
-                  Color.fromRGBO(22, 173, 201, 1.0),
-                ],
+            // Centered Title (GradientText) - show only if space allows
+            if (showLogo)
+              Center(
+                child: GradientText(
+                  "SteadyEye",
+                  style: TextStyle(fontSize: fontSize),
+                  colors: const [
+                    Color.fromRGBO(203, 105, 156, 1.0),
+                    Color.fromRGBO(22, 173, 201, 1.0),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),
