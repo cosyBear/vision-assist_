@@ -60,7 +60,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
-    double containerWidth = screenWidth < 600 ? 400 : screenWidth * 0.8;
+    double containerWidth = screenWidth < 600 ? 400 : screenWidth;
 
     // Measure text width dynamically to determine if it should be centered or scroll
     TextPainter textPainter = TextPainter(

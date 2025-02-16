@@ -37,6 +37,9 @@ class SettingBox {
     if (!settingsBox.containsKey('scrollSpeed')) {
       settingsBox.put('scrollSpeed', 2.0);
     }
+    if(!settingsBox.containsKey('buttonIconsSize')){
+      settingsBox.put('buttonIconsSize', 40);
+    }
   }
 
 
