@@ -12,7 +12,8 @@ class NavbarWithReturnButton extends StatelessWidget implements PreferredSizeWid
       {super.key, required this.fontSize, required this.buttonIconsSize});
 
   @override
-  Size get preferredSize => Size.fromHeight(max(buttonIconsSize, fontSize) + 16);
+  //24 is the padding (horizontal +vertical) of the navbar
+  Size get preferredSize => Size.fromHeight(max(buttonIconsSize, fontSize) + 24);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class NavbarWithReturnButton extends StatelessWidget implements PreferredSizeWid
     return Container(
       color: Color.fromRGBO(18, 18, 18, 1.0),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8.0),
         child: Stack(
           children: [
             // Left side - Back button, fixed position

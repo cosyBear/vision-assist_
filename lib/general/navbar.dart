@@ -29,10 +29,11 @@ class Navbar extends StatelessWidget {
     }
 
     return Container(
-      height: max(buttonIconsSize, fontSize) + 16, // Set custom height
+      //24 is the padding (horizontal +vertical) of the navbar
+      height: max(buttonIconsSize, fontSize) + 24, // Set custom height
       color: const Color.fromRGBO(18, 18, 18, 1.0), // Navbar background color
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Stack(
           children: [
             // Left side - Home icon, fixed position

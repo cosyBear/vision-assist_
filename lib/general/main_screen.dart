@@ -51,7 +51,8 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(max(buttonIconsSize, fontSize) + 16),
+        //24 is the padding (horizontal +vertical) of the navbar
+        preferredSize: Size.fromHeight(max(buttonIconsSize, fontSize) + 24),
         child: Navbar(onIconPressed: _goToPage), // Custom Navbar
       ),
       backgroundColor: settings.backgroundColor,
