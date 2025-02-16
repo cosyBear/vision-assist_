@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../general/app_setting_provider.dart';
 import 'widgt/adjust_button.dart';
 import 'widgt/font_button.dart';
@@ -38,11 +39,19 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: settings.backgroundColor,
-        elevation: 0,
+        backgroundColor: Color.fromRGBO(18, 18, 18, 1.0),
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.grey),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back, color: Colors.grey),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: GradientText(
+          "SteadyEye",
+          style: const TextStyle(fontSize: 40),
+          colors: const [
+            Color.fromRGBO(203, 105, 156, 1.0),
+            Color.fromRGBO(22, 173, 201, 1.0),
+          ],
         ),
       ),
       body: Container(
