@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import '../pages/upload_page/upload_page.dart';
 import 'navbar.dart';
@@ -36,8 +38,22 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = settings.fontSize;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+      buttonIconsSize =
+          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
     return Scaffold(
-      appBar: Navbar(onIconPressed: _goToPage),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(max(buttonIconsSize, fontSize) + 16),
+        child: Navbar(onIconPressed: _goToPage), // Custom Navbar
+      ),
       backgroundColor: settings.backgroundColor,
       body: SafeArea(
         child: PageView(
@@ -52,17 +68,18 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 0), // Ensures it's at the very bottom
+        padding: const EdgeInsets.only(bottom: 0),
+        // Ensures it's at the very bottom
         child: FloatingActionButton(
           onPressed: () => _goToPage(0),
           backgroundColor: Colors.transparent,
           elevation: 0,
           splashColor: Colors.transparent,
-          child: const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
+          child:
+              const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
     );
   }
 }

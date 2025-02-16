@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/color_grid.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/text_preview.dart';
 
+import '../../general/navbar_with_return_button.dart';
+
 /*
   This class is the main page for the BackGroundTextColor page.
   It contains two ColorGrids that will allow the user to select the text and background color.
@@ -25,23 +27,16 @@ class BackGroundTextColor extends StatelessWidget {
     double crossAxisSpacing = screenWidth < 600 ? 20.0 : screenWidth * 0.05;
     double mainAxisSpacing = screenWidth < 600 ? 50.0 : screenWidth * 0.1;
 
+    double fontSize = settings.fontSize;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(18, 18, 18, 1.0),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: GradientText(
-          "SteadyEye",
-          style: const TextStyle(fontSize: 40),
-          colors: const [
-            Color.fromRGBO(203, 105, 156, 1.0),
-            Color.fromRGBO(22, 173, 201, 1.0),
-          ],
-        ),
-      ),
+      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: Container(
         color: settings.backgroundColor,
         padding: const EdgeInsets.all(16.0),
