@@ -79,7 +79,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
             children: [
               const SizedBox(width: 16), // Add padding before the text
               Text(
-                widget.text,
+                widget.text.replaceAll('\n', ' '), // Ensure text stays on one line
                 style: TextStyle(
                   color: settings.textColor,
                   fontSize: settings.fontSize,
