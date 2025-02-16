@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../general/app_setting_provider.dart';
 
 /*
   This class is a button that adjusts the font size.
@@ -16,10 +18,13 @@ class AdjustButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
+    double buttonSize = settings.buttonIconsSize; // Get the button size from settings
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: buttonSize * 0.2), // Adjust padding dynamically
       child: IconButton(
-        icon: Icon(icon, size: 45, color: Colors.grey),
+        icon: Icon(icon, size: buttonSize, color: Colors.grey), // Dynamic icon size
         onPressed: onPressed,
       ),
     );

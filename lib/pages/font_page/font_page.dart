@@ -85,7 +85,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AdjustButton(icon: Icons.remove_circle_outline, onPressed: () {
+                    AdjustButton(icon: Icons.remove_circle_outline  ,  onPressed: () {
                       if (fontSize > 10) {
                         setState(() {
                           fontSize -= 1;
