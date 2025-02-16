@@ -27,6 +27,7 @@ class UploadText extends StatelessWidget {
           fontSize: fontSize, // Use the calculated font size
           fontWeight: FontWeight.bold,
           color: settings.textColor,
+          fontFamily: settings.fontFamily,
         ),
       ),
     );
