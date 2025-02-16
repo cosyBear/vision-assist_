@@ -4,6 +4,7 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
 import '../../general/app_setting_provider.dart';
+import '../../general/navbar_with_return_button.dart';
 import 'wigdt/draggable_button.dart';
 
 class DisplayPage extends StatefulWidget {
@@ -50,23 +51,17 @@ class _DisplayPageState extends State<DisplayPage> {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
     final buttonSize = settings.fontSize * 2;
 
+    double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = settings.fontSize;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(18, 18, 18, 1.0),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: GradientText(
-          "SteadyEye",
-          style: const TextStyle(fontSize: 40),
-          colors: const [
-            Color.fromRGBO(203, 105, 156, 1.0),
-            Color.fromRGBO(22, 173, 201, 1.0),
-          ],
-        ),
-      ),
+      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: SafeArea(
         // Use LayoutBuilder to get the actual available size
         child: LayoutBuilder(

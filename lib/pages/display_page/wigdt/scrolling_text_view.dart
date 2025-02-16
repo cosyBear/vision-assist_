@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../general/app_setting_provider.dart';
 
 class ScrollingTextView extends StatefulWidget {
   final String text;
   final double textOffset;
 
-  const ScrollingTextView({super.key, required this.text, required this.textOffset});
+  const ScrollingTextView({
+    super.key,
+    required this.text,
+    required this.textOffset
+  });
 
   @override
   _ScrollingTextViewState createState() => _ScrollingTextViewState();
@@ -62,24 +65,6 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
     double screenWidth = MediaQuery.of(context).size.width;
     double containerWidth = screenWidth < 600 ? 400 : screenWidth;
 
-    // Measure text width dynamically to determine if it should be centered or scroll
-    TextPainter textPainter = TextPainter(
-      text: TextSpan(
-        text: widget.text,
-        style: TextStyle(
-          color: settings.textColor,
-          fontSize: settings.fontSize,
-          fontFamily: settings.fontFamily,
-          fontWeight: settings.fontWeight,
-        ),
-      ),
-      maxLines: 1,
-      textDirection: TextDirection.ltr,
-    )..layout();
-
-    // Center text if it fits in the container
-    bool shouldCenter = textPainter.width < containerWidth;
-
     return Positioned(
       top: MediaQuery.of(context).size.height / 2 - 100 + widget.textOffset,
       left: 0,
@@ -87,19 +72,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
       child: SizedBox(
         width: containerWidth,
         height: settings.fontSize * 1.2,
-        child: shouldCenter ? Center(
-          child: Text(
-            widget.text,
-            style: TextStyle(
-              color: settings.textColor,
-              fontSize: settings.fontSize,
-              fontFamily: settings.fontFamily,
-              fontWeight: settings.fontWeight,
-              decoration: TextDecoration.none,
-            ),
-          ),
-        )
-            : SingleChildScrollView(
+        child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
           child: Row(

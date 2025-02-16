@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../../general/app_setting_provider.dart';
+import '../../general/navbar_with_return_button.dart';
 import 'widgt/adjust_button.dart';
 import 'widgt/font_button.dart';
 import 'widgt/font_size_display.dart';
@@ -37,23 +40,18 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
 
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double fontSize = settings.fontSize;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(18, 18, 18, 1.0),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.grey),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: GradientText(
-          "SteadyEye",
-          style: const TextStyle(fontSize: 40),
-          colors: const [
-            Color.fromRGBO(203, 105, 156, 1.0),
-            Color.fromRGBO(22, 173, 201, 1.0),
-          ],
-        ),
-      ),
+      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: Container(
         color: settings.backgroundColor,
         padding: const EdgeInsets.all(16.0),
@@ -110,5 +108,6 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
         ),
       ),
     );
+
   }
 }
