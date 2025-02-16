@@ -14,6 +14,8 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
@@ -29,16 +31,19 @@ class MainPage extends StatelessWidget {
             ),
             Expanded(
               flex: 4,
-              child: FittedBox(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    VisionText(settings: settings, screenWidth: screenWidth),
-                    SizedBox(height: screenWidth * 0.02),
-                    ReadNowButton(goToPage: goToPage, settings: settings, screenWidth: screenWidth),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // Keeps everything centered
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: VisionText(settings: settings, screenWidth: screenWidth),
+                  ),
+                  SizedBox(height: screenHeight * 0.02), // Dynamic spacing
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: ReadNowButton(goToPage: goToPage),
+                  ),
+                ],
               ),
             ),
           ],

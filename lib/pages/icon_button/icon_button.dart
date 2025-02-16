@@ -26,7 +26,7 @@ class IconButtonSize extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center, // Centers items vertically
                 children: [
                   // First Icon (Centered)
-                  Icon(Icons.add_circle, color: Colors.white, size: buttonIconsSize),
+                  Icon(Icons.add_circle, color: Colors.grey, size: buttonIconsSize),
 
                   SizedBox(width: spacing),
 
@@ -38,7 +38,7 @@ class IconButtonSize extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(buttonIconsSize * 0.5), // ✅ Dynamic Radius
                         side: BorderSide(
-                          color: const Color.fromRGBO(203, 105, 156, 1),
+                          color:  Colors.grey,
                           width: 1.0,
                         ),
                       ),
@@ -51,7 +51,6 @@ class IconButtonSize extends StatelessWidget {
                         fontSize: buttonIconsSize * 0.4, // Adjust text size dynamically
                         fontFamily: settings.fontFamily,
                         color: settings.textColor,
-
                       ),
                     ),
                   ),
@@ -68,7 +67,7 @@ class IconButtonSize extends StatelessWidget {
               children: [
                 // Decrease Button Icons Size
                 IconButton(
-                  icon: Icon(Icons.remove_circle, color: Colors.white, size: buttonIconsSize),
+                  icon: Icon(Icons.remove_circle, color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize > 20) { // Prevent size from going too small
                       settings.setButtonIconsSize(settings.buttonIconsSize - 5);
@@ -78,9 +77,21 @@ class IconButtonSize extends StatelessWidget {
 
                 SizedBox(width: spacing),
 
+                // **Number Showing Current Size (Added Here)**
+                Text(
+                  buttonIconsSize.toStringAsFixed(1), // Show button size with one decimal
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: settings.textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                SizedBox(width: spacing),
+
                 // Increase Button Icons Size
                 IconButton(
-                  icon: Icon(Icons.add_circle, color: Colors.white, size: buttonIconsSize),
+                  icon: Icon(Icons.add_circle, color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize < 100) { // Prevent excessive size
                       settings.setButtonIconsSize(settings.buttonIconsSize + 5);
