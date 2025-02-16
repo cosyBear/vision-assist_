@@ -16,7 +16,6 @@ class GlobalSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Center(
@@ -24,13 +23,13 @@ class GlobalSetting extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SettingsButton(
-              text: "TEXT SIZE\n &\n FONTS",
+              text: "TEXT SIZE\n &\n TEXT FONTS",
               page: TextSizeFonts(),
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
             SettingsButton(
-              text: "Icons & Button Size",
+              text: "ICONS\n &\n BUTTON SIZE",
               page: IconButtonSize(),
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
@@ -41,7 +40,6 @@ class GlobalSetting extends StatelessWidget {
               settings: settings,
               borderColor: const Color.fromRGBO(22, 173, 201, 1),
             ),
-
           ],
         ),
       ),
