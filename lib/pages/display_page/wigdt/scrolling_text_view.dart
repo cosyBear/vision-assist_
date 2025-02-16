@@ -87,26 +87,14 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
       child: SizedBox(
         width: containerWidth,
         height: settings.fontSize * 1.2,
-        child: shouldCenter ? Center(
-          child: Text(
-            widget.text,
-            style: TextStyle(
-              color: settings.textColor,
-              fontSize: settings.fontSize,
-              fontFamily: settings.fontFamily,
-              fontWeight: settings.fontWeight,
-              decoration: TextDecoration.none,
-            ),
-          ),
-        )
-            : SingleChildScrollView(
+        child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
           child: Row(
             children: [
               const SizedBox(width: 16), // Add padding before the text
               Text(
-                widget.text,
+                widget.text.replaceAll('\n', ' '), // Ensure text stays on one line
                 style: TextStyle(
                   color: settings.textColor,
                   fontSize: settings.fontSize,
