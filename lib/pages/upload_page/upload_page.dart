@@ -38,7 +38,6 @@ class _UploadPageState extends State<UploadPage> {
                     crossAxisAlignment: CrossAxisAlignment.center, // Horizontally center
                     children: [
                       UploadBox(controller: _controller),
-                      const SizedBox(height: 20), // Add spacing
                       UploadText(),
                     ],
                   ),

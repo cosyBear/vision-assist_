@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -8,26 +10,35 @@ class SettingBox {
   static Future<void> init() async {
     settingsBox = await Hive.openBox('settings');
 
+    // Get screen width
+
+    //for tablet and desktop, we need a bigger default font size
+    // Get screen width correctly using PlatformDispatcher
+    double screenWidth = PlatformDispatcher.instance.views.first.physicalSize.width /
+        PlatformDispatcher.instance.views.first.devicePixelRatio;
+    double defaultFontSize = screenWidth > 1000 ? 50 : 30;
+
     // Check if keys exist, if not, set default values only on the first launch
     if (!settingsBox.containsKey('backgroundColor')) {
-      settingsBox.put('backgroundColor', Colors.black.value); // Store as int (ARGB value)
+      settingsBox.put('backgroundColor', Colors.black.value);
     }
     if (!settingsBox.containsKey('textColor')) {
-      settingsBox.put('textColor', Colors.white.value); // Store as int (ARGB value)
+      settingsBox.put('textColor', Colors.white.value);
     }
     if (!settingsBox.containsKey('fontSize')) {
-      settingsBox.put('fontSize', 20.0); // Default font size
+      settingsBox.put('fontSize', defaultFontSize); // Use adjusted default
     }
     if (!settingsBox.containsKey('fontFamily')) {
-      settingsBox.put('fontFamily', 'Inria Serif'); // Default font family
+      settingsBox.put('fontFamily', 'Inria Serif');
     }
     if (!settingsBox.containsKey('fontWeight')) {
-      settingsBox.put('fontWeight', FontWeight.normal.index); // Store as index
+      settingsBox.put('fontWeight', FontWeight.normal.index);
     }
-    if(!settingsBox.containsKey('scrollSpeed')){
+    if (!settingsBox.containsKey('scrollSpeed')) {
       settingsBox.put('scrollSpeed', 2.0);
     }
   }
+
 
   // Save and retrieve settings
   static void saveSetting(String key, dynamic value) {

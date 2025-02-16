@@ -5,7 +5,7 @@ class AppSettingProvider with ChangeNotifier {
   // Default settings
   Color _backgroundColor = Colors.red;
   Color _textColor = Colors.white;
-  double _fontSize = 20;
+  double _fontSize = 30;
   String _fontFamily = 'Roboto';
   FontWeight _fontWeight = FontWeight.normal;
   double _scrollSpeed = 2;
@@ -27,9 +27,9 @@ class AppSettingProvider with ChangeNotifier {
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
     // Retrieve saved settings from Hive, if any; otherwise, use defaults
-    _backgroundColor = SettingBox.getColorFromHive('backgroundColor', Colors.red); // Default color: red
+    _backgroundColor = SettingBox.getColorFromHive('backgroundColor', Colors.black); // Default color: red
     _textColor = SettingBox.getColorFromHive('textColor', Colors.white); // Default text color: white
-    _fontSize = SettingBox.getSetting('fontSize', 20.0); // Default font size: 20
+    _fontSize = SettingBox.getSetting('fontSize', 30.0); // Default font size: 30
     _fontFamily = SettingBox.getSetting('fontFamily', 'Roboto'); // Default font: Roboto
     _fontWeight = _getFontWeightFromHive('fontWeight', FontWeight.normal); // Default font weight: normal
     _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2

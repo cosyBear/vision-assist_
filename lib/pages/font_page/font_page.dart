@@ -20,7 +20,7 @@ class TextSizeFonts extends StatefulWidget {
 }
 
 class _TextSizeFontsState extends State<TextSizeFonts> {
-  double fontSize = 20.0;
+  late double fontSize;
 
   @override
   void initState() {
