@@ -64,9 +64,9 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FontButton(settings: settings, label: "Arial", fontFamily: "Arial", fontSize: fontSize, index: 0),
-                    FontButton(settings: settings, label: "Verdana", fontFamily: "Verdana", fontSize: fontSize, index: 1),
-                    FontButton(settings: settings, label: "Calibri", fontFamily: "Calibri", fontSize: fontSize, index: 2),
-                    FontButton(settings: settings, label: "Times", fontFamily: "Times", fontSize: fontSize, index: 3),
+                    FontButton(settings: settings, label: "Verdana", fontFamily: "Verdana", fontSize: fontSize, index: 0),
+                    FontButton(settings: settings, label: "Calibri", fontFamily: "Calibri", fontSize: fontSize, index: 1),
+                    FontButton(settings: settings, label: "Times", fontFamily: "Times", fontSize: fontSize, index: 1),
                   ],
                 ),
                 const SizedBox(height: 20),

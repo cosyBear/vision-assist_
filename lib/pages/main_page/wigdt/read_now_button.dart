@@ -13,31 +13,36 @@ class ReadNowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
-    double buttonSize = settings.buttonIconsSize.clamp(30, 100); // Ensure reasonable size limits
 
-    return SizedBox(
-      width: buttonSize * 3, // Scales width proportionally
-      child: TextButton(
-        onPressed: () => goToPage(1),
-        style: TextButton.styleFrom(
-          backgroundColor: settings.backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50.0),
-            side: const BorderSide(
-              color: Color.fromRGBO(203, 105, 156, 1),
-              width: 1.0,
-            ),
+    double screenWidth = MediaQuery.of(context).size.width;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      buttonIconsSize =
+          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
+    return TextButton(
+      onPressed: () => goToPage(1),
+      style: TextButton.styleFrom(
+        backgroundColor: settings.backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(buttonIconsSize * 0.4),
+          // ✅ Dynamic Radius
+          side: BorderSide(
+            color: const Color.fromRGBO(203, 105, 156, 1),
+            width: buttonIconsSize / 20,
           ),
-          minimumSize: Size(buttonSize * 2, buttonSize), // Keeps button size responsive
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), // Normalized padding
         ),
-        child: Text(
-          "Read now",
-          style: TextStyle(
-            fontSize: settings.fontSize.clamp(12, 24), // Ensures text remains readable
-            fontFamily: settings.fontFamily,
-            color: settings.textColor,
-          ),
+        minimumSize: Size(screenWidth * 0.25, buttonIconsSize * 1.2),
+      ),
+      child: Text(
+        "Read Now",
+        style: TextStyle(
+          fontSize: buttonIconsSize * 0.4, // Adjust text size dynamically
+          fontFamily: settings.fontFamily,
+          fontWeight: FontWeight.bold,
+          color: settings.textColor,
         ),
       ),
     );
