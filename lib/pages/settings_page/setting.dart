@@ -23,19 +23,19 @@ class GlobalSetting extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             SettingsButton(
-              text: "TEXT SIZE\n &\n TEXT FONTS",
+              text: "TEXT",
               page: TextSizeFonts(),
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
             SettingsButton(
-              text: "ICONS\n &\n BUTTON SIZE",
+              text: "BUTTON",
               page: IconButtonSize(),
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
             SettingsButton(
-              text: "BACKGROUND\n&\n TEXT COLOR",
+              text: "COLOR",
               page: BackGroundTextColor(),
               settings: settings,
               borderColor: const Color.fromRGBO(22, 173, 201, 1),
