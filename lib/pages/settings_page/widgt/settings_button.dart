@@ -43,14 +43,16 @@ class SettingsButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: screenWidth * 0.020,
-            fontFamily: settings.fontFamily,
-            color: settings.textColor,
-            fontWeight: FontWeight.bold,
+        child: FittedBox(
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: settings.fontSize,
+              fontFamily: settings.fontFamily,
+              color: settings.textColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
