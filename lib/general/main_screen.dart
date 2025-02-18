@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:steady_eye_2/pages/library_page/library_page.dart';
 import '../pages/upload_page/upload_page.dart';
 import 'navbar.dart';
 import '../pages/main_page/main_page.dart';
@@ -64,7 +65,8 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             MainPage(goToPage: _goToPage),
             UploadPage(),
-            GlobalSetting()
+            GlobalSetting(),
+            Library()
           ],
         ),
       ),
