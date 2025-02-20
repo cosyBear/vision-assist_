@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import '../../import_documents/DocumentHandler.dart';
 import 'send_button.dart'; // Import the SendButton widget
 
-class UploadBox extends StatelessWidget {
+class UploadBox extends StatefulWidget {
   final TextEditingController controller;
-  final ScrollController _scrollController = ScrollController();
 
   UploadBox({super.key, required this.controller});
+
+  @override
+  _UploadBoxState createState() => _UploadBoxState();
+}
+
+class _UploadBoxState extends State<UploadBox> {
+  final ScrollController _scrollController = ScrollController();
+  final DocumentHandler documentHandler = DocumentHandler(); // Use Singleton Instance
+
+  /// Function to pick a document and extract text
+  Future<void> _pickAndExtractDocument() async {
+    String? text = await documentHandler.pickAndExtractText();
+    if (text != null) {
+      setState(() {
+        widget.controller.text = text; // Update the text field with extracted text
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +58,7 @@ class UploadBox extends StatelessWidget {
                     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     controller: _scrollController,
                     child: TextField(
-                      controller: controller,
+                      controller: widget.controller,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       style: TextStyle(
@@ -63,10 +81,11 @@ class UploadBox extends StatelessWidget {
               bottom: 0,
               child: Row(
                 children: [
+                  // **Attach File Icon (Calls _pickAndExtractDocument)**
                   IconButton(
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     icon: Icon(Icons.attach_file, color: Colors.grey[600], size: buttonIconsSize),
-                    onPressed: () => print("File uploaded"),
+                    onPressed: _pickAndExtractDocument, // Call function to pick & extract text
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
@@ -83,7 +102,7 @@ class UploadBox extends StatelessWidget {
                 settings: settings,
                 buttonSize: buttonIconsSize,
                 screenWidth: screenWidth,
-                controller: controller,
+                controller: widget.controller,
               ),
             ),
           ],

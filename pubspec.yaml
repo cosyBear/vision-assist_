@@ -43,6 +43,8 @@ dependencies:
   path_provider: ^2.1.5
   text_scroll: ^0.2.0
   hugeicons: ^0.0.7
+  file_picker: ^9.0.0
+  syncfusion_flutter_pdf: ^28.2.6
 
 dev_dependencies:
   flutter_test:
