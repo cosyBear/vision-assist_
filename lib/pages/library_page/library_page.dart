@@ -40,7 +40,8 @@ class _LibraryState extends State<Library> {
   void filterBooks(String query) {
     setState(() {
       filteredBooks = books
-          .where((book) => book.toLowerCase().contains(query.toLowerCase()))
+          .where((book) => book.toLowerCase()
+          .contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -58,17 +59,26 @@ class _LibraryState extends State<Library> {
   Widget build(BuildContext context) {
     Map<String, List<String>> categorizedBooks = groupBooksByCategory(filteredBooks);
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          SearchBarWidget(
-            searchController: searchController,
-            onSearch: filterBooks,
+    return Scaffold(
+      resizeToAvoidBottomInset: true, // Prevents keyboard overflow
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SearchBarWidget(
+                searchController: searchController,
+                onSearch: filterBooks,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: BookList(categorizedBooks: categorizedBooks),
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
-          BookList(categorizedBooks: categorizedBooks),
-        ],
+        ),
       ),
     );
   }
