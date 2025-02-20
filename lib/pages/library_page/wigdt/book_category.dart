@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../general/app_setting_provider.dart';
 
 /*
   This widget displays a category of books with their titles.
@@ -16,6 +18,9 @@ class BookCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
+    Color textColor = settings.textColor;
+    double fontSize = settings.fontSize;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,9 +28,9 @@ class BookCategory extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Text(
             category,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+            style: TextStyle(
+              color: textColor,
+              fontSize: fontSize,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -33,10 +38,9 @@ class BookCategory extends StatelessWidget {
         ...books.map(
               (title) => ListTile(
             leading: CircleAvatar(
-              backgroundColor: Colors.grey[800],
-              child: Text((books.indexOf(title) + 1).toString()),
+              backgroundColor: textColor,
             ),
-            title: Text(title, style: const TextStyle(color: Colors.white)),
+            title: Text(title, style: TextStyle(color: textColor, fontSize: fontSize)),
           ),
         ),
       ],

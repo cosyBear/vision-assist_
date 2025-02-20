@@ -18,7 +18,16 @@ class _LibraryState extends State<Library> {
   List<String> books = [
     'A Clockwork Orange',
     'A Wrinkle in Time',
-    'Brave New World'
+    'Brave New World',
+    'Crime and Punishment',
+    'Don Quixote',
+    'Dracula',
+    'Fahrenheit 451',
+    'Frankenstein',
+    'Great Expectations',
+    'Gulliver\'s Travels',
+    'Heart of Darkness',
+    'Jane Eyre'
   ];
   List<String> filteredBooks = [];
 
