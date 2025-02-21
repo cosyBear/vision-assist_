@@ -24,8 +24,6 @@ class DocumentHandler {
     }
     return null; // No file selected
   }
-
-  /// Extracts text from a PDF file using Syncfusion PDF
   Future<String?> extractTextFromPdf(String filePath) async {
     try {
       // Read the PDF file as bytes
@@ -35,27 +33,77 @@ class DocumentHandler {
       // Load the PDF document
       final PdfDocument document = PdfDocument(inputBytes: bytes);
 
-      // Get total number of pages
-      int pageCount = document.pages.count;
+      // Check if the PDF is encrypted and skip it
+      if (document.security.userPassword.isNotEmpty) {
+        print("This PDF is encrypted and cannot be read.");
+        document.dispose();
+        return null;
+      }
 
       // Store extracted text from all pages
-      String extractedText = '';
+      StringBuffer extractedText = StringBuffer();
 
-      // Loop through each page and extract text
-      for (int i = 0; i < pageCount; i++) {
-        extractedText += '\n--- Page ${i + 1} ---\n';
-        extractedText += PdfTextExtractor(document).extractText(startPageIndex: i, endPageIndex: i);
+      // Loop through each page and extract text while ignoring images
+      for (int i = 0; i < document.pages.count; i++) {
+        String pageText = PdfTextExtractor(document).extractText(startPageIndex: i, endPageIndex: i);
+
+        // Skip pages that contain only images or empty pages
+        if (pageText.trim().isEmpty || !RegExp(r'[a-zA-Z0-9]').hasMatch(pageText)) {
+          continue; // Ignore image-only pages
+        }
+
+        // Basic text cleaning
+        pageText = pageText.replaceAll(RegExp(r'\s{3,}'), '\n\n'); // Reduce large spacing
+        pageText = pageText.replaceAll(RegExp(r'\t+'), ' '); // Convert tabs to spaces
+
+        // Append cleaned text
+        extractedText.write("\n--- Page ${i + 1} ---\n");
+        extractedText.write(pageText);
       }
 
       // Dispose of the document to free memory
       document.dispose();
 
-      return extractedText;
+      return extractedText.isNotEmpty ? extractedText.toString().trim() : null;
     } catch (e) {
       print("Error extracting PDF text: $e");
       return null;
     }
   }
+
+
+
+  /// Extracts text from a PDF file using Syncfusion PDF
+  // Future<String?> extractTextFromPdf(String filePath) async {
+  //   try {
+  //     // Read the PDF file as bytes
+  //     File file = File(filePath);
+  //     List<int> bytes = await file.readAsBytes();
+  //
+  //     // Load the PDF document
+  //     final PdfDocument document = PdfDocument(inputBytes: bytes);
+  //
+  //     // Get total number of pages
+  //     int pageCount = document.pages.count;
+  //
+  //     // Store extracted text from all pages
+  //     String extractedText = '';
+  //
+  //     // Loop through each page and extract text
+  //     for (int i = 0; i < pageCount; i++) {
+  //       extractedText += '\n--- Page ${i + 1} ---\n';
+  //       extractedText += PdfTextExtractor(document).extractText(startPageIndex: i, endPageIndex: i);
+  //     }
+  //
+  //     // Dispose of the document to free memory
+  //     document.dispose();
+  //
+  //     return extractedText;
+  //   } catch (e) {
+  //     print("Error extracting PDF text: $e");
+  //     return null;
+  //   }
+  // }
 
 
 
