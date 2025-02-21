@@ -96,23 +96,32 @@ class _UploadBoxState extends State<UploadBox> {
       );
 
       // Step 4: Extract text directly using filePath (No need to pick again)
-      String? text = filePath.endsWith('.pdf')
-          ? await documentHandler.extractTextFromPdf(filePath)
-          : await documentHandler.extractTextFromTxt(filePath);
+      String? text;
+      if (filePath.endsWith('.pdf')) {
+        text = await documentHandler.extractTextFromPdf(filePath);
+      } else if (filePath.endsWith('.txt')) {
+        text = await documentHandler.extractTextFromTxt(filePath);
+      } else if (filePath.endsWith('.docx')) {
+        text = await documentHandler.extractTextFromDocx(filePath);
+      }
+
 
       // Close extraction dialog
       if (context.mounted) Navigator.pop(context);
 
+      // If 'text' is null, provide an empty string to avoid type errors
+      String finalText = text ?? '';
+
       if (text != null && text.isNotEmpty) {
         setState(() {
-          widget.controller.text = text;
+          widget.controller.text = finalText;
         });
 
         if (context.mounted) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DisplayPage(title: text),
+              builder: (context) => DisplayPage(title: finalText),
             ),
           );
         }

@@ -1,10 +1,10 @@
-import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:archive/archive.dart'; // For extracting .docx (which is a zip file)
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:xml/xml.dart'; // For parsing XML inside .docx files
+import 'package:file_picker/file_picker.dart';
 
 class DocumentHandler {
-
-
   static final DocumentHandler _instance = DocumentHandler._internal();
 
   DocumentHandler._internal();
@@ -16,7 +16,7 @@ class DocumentHandler {
   Future<String?> pickDocument() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'txt'], // Allowed file types
+      allowedExtensions: ['pdf', 'txt', 'docx'], // Include docx extension
     );
 
     if (result != null && result.files.single.path != null) {
@@ -24,6 +24,43 @@ class DocumentHandler {
     }
     return null; // No file selected
   }
+
+  /// Extracts text from a DOCX file
+  Future<String?> extractTextFromDocx(String filePath) async {
+    try {
+      // Read the DOCX file as bytes
+      File file = File(filePath);
+      List<int> bytes = await file.readAsBytes();
+
+      // Unzip the docx file (which is a ZIP archive)
+      Archive archive = ZipDecoder().decodeBytes(bytes);
+
+      // Look for the document.xml file inside the DOCX
+      for (var file in archive) {
+        if (file.name == 'word/document.xml') {
+          // Parse the XML content of the document
+          String xmlContent = String.fromCharCodes(file.content);
+          final document = XmlDocument.parse(xmlContent);
+
+          // Extract the text content from the XML
+          String extractedText = '';
+          var body = document.findAllElements('w:t'); // w:t holds text nodes in DOCX
+          for (var element in body) {
+            extractedText += element.text;
+          }
+
+          return extractedText;
+        }
+      }
+
+      return null; // document.xml not found
+    } catch (e) {
+      print("Error extracting DOCX text: $e");
+      return null;
+    }
+  }
+
+  /// Extracts text from a PDF file using Syncfusion PDF
   Future<String?> extractTextFromPdf(String filePath) async {
     try {
       // Read the PDF file as bytes
@@ -33,80 +70,27 @@ class DocumentHandler {
       // Load the PDF document
       final PdfDocument document = PdfDocument(inputBytes: bytes);
 
-      // Check if the PDF is encrypted and skip it
-      if (document.security.userPassword.isNotEmpty) {
-        print("This PDF is encrypted and cannot be read.");
-        document.dispose();
-        return null;
-      }
+      // Get total number of pages
+      int pageCount = document.pages.count;
 
       // Store extracted text from all pages
-      StringBuffer extractedText = StringBuffer();
+      String extractedText = '';
 
-      // Loop through each page and extract text while ignoring images
-      for (int i = 0; i < document.pages.count; i++) {
-        String pageText = PdfTextExtractor(document).extractText(startPageIndex: i, endPageIndex: i);
-
-        // Skip pages that contain only images or empty pages
-        if (pageText.trim().isEmpty || !RegExp(r'[a-zA-Z0-9]').hasMatch(pageText)) {
-          continue; // Ignore image-only pages
-        }
-
-        // Basic text cleaning
-        pageText = pageText.replaceAll(RegExp(r'\s{3,}'), '\n\n'); // Reduce large spacing
-        pageText = pageText.replaceAll(RegExp(r'\t+'), ' '); // Convert tabs to spaces
-
-        // Append cleaned text
-        extractedText.write("\n--- Page ${i + 1} ---\n");
-        extractedText.write(pageText);
+      // Loop through each page and extract text
+      for (int i = 0; i < pageCount; i++) {
+        extractedText += '\n--- Page ${i + 1} ---\n';
+        extractedText += PdfTextExtractor(document).extractText(startPageIndex: i, endPageIndex: i);
       }
 
       // Dispose of the document to free memory
       document.dispose();
 
-      return extractedText.isNotEmpty ? extractedText.toString().trim() : null;
+      return extractedText;
     } catch (e) {
       print("Error extracting PDF text: $e");
       return null;
     }
   }
-
-
-
-  /// Extracts text from a PDF file using Syncfusion PDF
-  // Future<String?> extractTextFromPdf(String filePath) async {
-  //   try {
-  //     // Read the PDF file as bytes
-  //     File file = File(filePath);
-  //     List<int> bytes = await file.readAsBytes();
-  //
-  //     // Load the PDF document
-  //     final PdfDocument document = PdfDocument(inputBytes: bytes);
-  //
-  //     // Get total number of pages
-  //     int pageCount = document.pages.count;
-  //
-  //     // Store extracted text from all pages
-  //     String extractedText = '';
-  //
-  //     // Loop through each page and extract text
-  //     for (int i = 0; i < pageCount; i++) {
-  //       extractedText += '\n--- Page ${i + 1} ---\n';
-  //       extractedText += PdfTextExtractor(document).extractText(startPageIndex: i, endPageIndex: i);
-  //     }
-  //
-  //     // Dispose of the document to free memory
-  //     document.dispose();
-  //
-  //     return extractedText;
-  //   } catch (e) {
-  //     print("Error extracting PDF text: $e");
-  //     return null;
-  //   }
-  // }
-
-
-
 
   /// Extracts text from a TXT file
   Future<String?> extractTextFromTxt(String filePath) async {
@@ -132,6 +116,8 @@ class DocumentHandler {
         extractedText = await extractTextFromPdf(filePath);
       } else if (filePath.endsWith('.txt')) {
         extractedText = await extractTextFromTxt(filePath);
+      } else if (filePath.endsWith('.docx')) {
+        extractedText = await extractTextFromDocx(filePath);
       } else {
         print("Unsupported file format!");
         return null;
@@ -148,5 +134,4 @@ class DocumentHandler {
       return null;
     }
   }
-
 }
