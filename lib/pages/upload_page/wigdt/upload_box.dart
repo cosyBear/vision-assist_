@@ -21,27 +21,93 @@ class _UploadBoxState extends State<UploadBox> {
   /// Function to pick a document and extract text
   Future<void> _pickAndExtractDocument() async {
     try {
-      // Show loading indicator
+      // Step 1: Show "Select a file..." message
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Select a file...",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       );
 
-      // Wait for text extraction to complete
-      String? text = await documentHandler.pickAndExtractText();
+      // Step 2: Wait for user to select a file
+      String? filePath = await documentHandler.pickDocument();
 
-      // Close loading dialog after extraction completes
+      // Close the "Select a file..." dialog
+      if (context.mounted) Navigator.pop(context);
+
+      if (filePath == null) {
+        // No file selected, show an error message
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No file selected.")),
+          );
+        }
+        return;
+      }
+
+      // Step 3: Show "Extracting text, please wait..." message
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Extracting text, please wait...",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      // Step 4: Extract text directly using filePath (No need to pick again)
+      String? text = filePath.endsWith('.pdf')
+          ? await documentHandler.extractTextFromPdf(filePath)
+          : await documentHandler.extractTextFromTxt(filePath);
+
+      // Close extraction dialog
       if (context.mounted) Navigator.pop(context);
 
       if (text != null && text.isNotEmpty) {
         setState(() {
-          widget.controller.text = text; // Update text field
+          widget.controller.text = text;
         });
 
-        // Ensure navigation happens only if the widget is still in the tree
         if (context.mounted) {
           Navigator.push(
             context,
@@ -51,7 +117,6 @@ class _UploadBoxState extends State<UploadBox> {
           );
         }
       } else {
-        // Show a message if no text is extracted
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("No text extracted from the document.")),
@@ -59,10 +124,7 @@ class _UploadBoxState extends State<UploadBox> {
         }
       }
     } catch (e) {
-      // Close loading dialog in case of an error
       if (context.mounted) Navigator.pop(context);
-
-      // Handle errors gracefully
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error extracting text: $e")),
@@ -70,6 +132,8 @@ class _UploadBoxState extends State<UploadBox> {
       }
     }
   }
+
+
 
 
 
