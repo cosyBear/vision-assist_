@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
 import 'send_button.dart'; // Import the SendButton widget
 
@@ -19,13 +20,58 @@ class _UploadBoxState extends State<UploadBox> {
 
   /// Function to pick a document and extract text
   Future<void> _pickAndExtractDocument() async {
-    String? text = await documentHandler.pickAndExtractText();
-    if (text != null) {
-      setState(() {
-        widget.controller.text = text; // Update the text field with extracted text
-      });
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+
+      // Wait for text extraction to complete
+      String? text = await documentHandler.pickAndExtractText();
+
+      // Close loading dialog after extraction completes
+      if (context.mounted) Navigator.pop(context);
+
+      if (text != null && text.isNotEmpty) {
+        setState(() {
+          widget.controller.text = text; // Update text field
+        });
+
+        // Ensure navigation happens only if the widget is still in the tree
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DisplayPage(title: text),
+            ),
+          );
+        }
+      } else {
+        // Show a message if no text is extracted
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No text extracted from the document.")),
+          );
+        }
+      }
+    } catch (e) {
+      // Close loading dialog in case of an error
+      if (context.mounted) Navigator.pop(context);
+
+      // Handle errors gracefully
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error extracting text: $e")),
+        );
+      }
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

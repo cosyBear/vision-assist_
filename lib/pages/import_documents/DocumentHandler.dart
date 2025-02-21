@@ -72,20 +72,33 @@ class DocumentHandler {
 
   /// Picks a document and automatically extracts its text
   Future<String?> pickAndExtractText() async {
-    String? filePath = await pickDocument();
+    try {
+      String? filePath = await pickDocument();
+      if (filePath == null) {
+        print("No file selected.");
+        return null;
+      }
 
-    if (filePath != null) {
+      String? extractedText;
       if (filePath.endsWith('.pdf')) {
-        return await extractTextFromPdf(filePath);
-      }  else if (filePath.endsWith('.txt')) {
-        return await extractTextFromTxt(filePath);
+        extractedText = await extractTextFromPdf(filePath);
+      } else if (filePath.endsWith('.txt')) {
+        extractedText = await extractTextFromTxt(filePath);
       } else {
         print("Unsupported file format!");
         return null;
       }
-    } else {
-      print("No file selected.");
+
+      if (extractedText != null && extractedText.isNotEmpty) {
+        return extractedText;
+      } else {
+        print("No text extracted.");
+        return null;
+      }
+    } catch (e) {
+      print("Error picking and extracting text: $e");
       return null;
     }
   }
+
 }
