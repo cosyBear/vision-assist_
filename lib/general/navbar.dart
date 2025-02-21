@@ -43,7 +43,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.local_library_rounded, color: getIconColor(3), size: buttonIconsSize),
+                    icon: Icon(Icons.library_books_outlined,
+                        color: Colors.grey, size: buttonIconsSize),
                     onPressed: () => onIconPressed(3),
                   ),
                   IconButton(

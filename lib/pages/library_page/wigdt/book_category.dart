@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../general/app_setting_provider.dart';
+
+/*
+  This widget displays a category of books with their titles.
+  The category is displayed as the first letter of the book title.
+ */
+class BookCategory extends StatelessWidget {
+  final String category;
+  final List<String> books;
+
+  const BookCategory({
+    super.key,
+    required this.category,
+    required this.books,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
+    Color textColor = settings.textColor;
+    double fontSize = settings.fontSize;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            category,
+            style: TextStyle(
+              color: textColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        ...books.map(
+              (title) => ListTile(
+            leading: CircleAvatar(
+              backgroundColor: textColor,
+            ),
+            title: Text(title, style: TextStyle(color: textColor, fontSize: fontSize)),
+          ),
+        ),
+      ],
+    );
+  }
+}
