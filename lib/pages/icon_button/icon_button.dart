@@ -2,20 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
 
+import '../../general/navbar_with_return_button.dart';
+
 class IconButtonSize extends StatelessWidget {
   const IconButtonSize({super.key});
 
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
-    final buttonIconsSize = settings.buttonIconsSize;
+    double buttonIconsSize = settings.buttonIconsSize;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final spacing = screenWidth * 0.05;
 
+    double fontSize = settings.fontSize;
+
+    if (screenWidth < 1000) {
+      fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
+      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
     return Scaffold(
       backgroundColor: settings.backgroundColor, // Dynamic background color
-
+      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: Column(
         children: [
           // Centering the Icon and Button
@@ -67,7 +76,7 @@ class IconButtonSize extends StatelessWidget {
               children: [
                 // Decrease Button Icons Size
                 IconButton(
-                  icon: Icon(Icons.remove_circle, color: Colors.grey, size: buttonIconsSize),
+                  icon: Icon(Icons.remove_circle_outline, color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize > 20) { // Prevent size from going too small
                       settings.setButtonIconsSize(settings.buttonIconsSize - 5);
@@ -91,7 +100,7 @@ class IconButtonSize extends StatelessWidget {
 
                 // Increase Button Icons Size
                 IconButton(
-                  icon: Icon(Icons.add_circle, color: Colors.grey, size: buttonIconsSize),
+                  icon: Icon(Icons.add_circle_outline_sharp, color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize < 100) { // Prevent excessive size
                       settings.setButtonIconsSize(settings.buttonIconsSize + 5);

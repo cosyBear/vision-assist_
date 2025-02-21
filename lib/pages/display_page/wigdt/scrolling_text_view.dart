@@ -10,7 +10,7 @@ class ScrollingTextView extends StatefulWidget {
   const ScrollingTextView({
     super.key,
     required this.text,
-    required this.textOffset
+    required this.textOffset,
   });
 
   @override
@@ -18,40 +18,39 @@ class ScrollingTextView extends StatefulWidget {
 }
 
 class _ScrollingTextViewState extends State<ScrollingTextView> {
-  bool _shouldScroll = true;
-  bool _hasScrolledToEnd = false;
   late ScrollController _scrollController;
-  late double _scrollSpeed;
   Timer? _scrollTimer;
+  bool _hasScrolledToEnd = false;
+  bool _isShortText = false;
 
   @override
   void initState() {
     super.initState();
-    final settings = Provider.of<AppSettingProvider>(context, listen: false);
-    _scrollSpeed = settings.getScrollSpeed;
     _scrollController = ScrollController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _determineTextType();
       _startScrollingAnimation();
     });
+  }
+
+  void _determineTextType() {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    double textWidth = (widget.text.length * settings.fontSize) * 0.6;
+    double screenWidth = MediaQuery.of(context).size.width;
+    _isShortText = textWidth < screenWidth;
   }
 
   void _startScrollingAnimation() {
     _scrollTimer?.cancel();
     _scrollTimer = Timer.periodic(Duration(milliseconds: 50), (timer) {
       final settings = Provider.of<AppSettingProvider>(context, listen: false);
-
-      if (settings.isPaused || _hasScrolledToEnd) {
-        return; // Stop scrolling if paused
-      }
+      if (settings.isPaused || _hasScrolledToEnd) return;
 
       if (_scrollController.hasClients) {
         double maxScroll = _scrollController.position.maxScrollExtent;
         if (_scrollController.offset >= maxScroll) {
-          _scrollController.jumpTo(maxScroll);
-          _shouldScroll = false;
           _hasScrolledToEnd = true;
-          timer.cancel();
+          timer.cancel(); // Stop scrolling when reaching the end
         } else {
           _scrollController.jumpTo(_scrollController.offset + settings.getScrollSpeed);
         }
@@ -64,6 +63,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
     final settings = Provider.of<AppSettingProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double containerWidth = screenWidth < 600 ? 400 : screenWidth;
+    double startPadding = containerWidth;
 
     return Positioned(
       top: MediaQuery.of(context).size.height / 2 - 100 + widget.textOffset,
@@ -77,9 +77,9 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
           controller: _scrollController,
           child: Row(
             children: [
-              const SizedBox(width: 16), // Add padding before the text
+              SizedBox(width: startPadding), // Start text off-screen
               Text(
-                widget.text.replaceAll('\n', ' '), // Ensure text stays on one line
+                widget.text.replaceAll('\n', ' '),
                 style: TextStyle(
                   color: settings.textColor,
                   fontSize: settings.fontSize,
@@ -88,7 +88,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
                   decoration: TextDecoration.none,
                 ),
               ),
-              const SizedBox(width: 16), // Add padding after the text
+              SizedBox(width: _isShortText ? screenWidth : containerWidth), // Ensure text fully exits screen
             ],
           ),
         ),

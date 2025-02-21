@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:steady_eye_2/pages/library_page/library_page.dart';
 import '../pages/upload_page/upload_page.dart';
@@ -20,9 +19,13 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
+  int _currentIndex = 0; // Track the active page index
 
   // This function animates to the given page index.
   void _goToPage(int index) {
+    setState(() {
+      _currentIndex = index; // Update the active index
+    });
     _pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 400),
@@ -47,19 +50,26 @@ class _MainScreenState extends State<MainScreen> {
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
       buttonIconsSize =
-          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     return Scaffold(
       appBar: PreferredSize(
-        //24 is the padding (horizontal +vertical) of the navbar
         preferredSize: Size.fromHeight(max(buttonIconsSize, fontSize) + 24),
-        child: Navbar(onIconPressed: _goToPage), // Custom Navbar
+        child: Navbar(
+          onIconPressed: _goToPage,
+          currentIndex: _currentIndex, // Pass the active index to Navbar
+        ),
       ),
       backgroundColor: settings.backgroundColor,
       body: SafeArea(
         child: PageView(
           controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index; // Update index on swipe
+            });
+          },
           scrollDirection: Axis.vertical,
           physics: const PageScrollPhysics(),
           children: [
@@ -72,14 +82,12 @@ class _MainScreenState extends State<MainScreen> {
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 0),
-        // Ensures it's at the very bottom
         child: FloatingActionButton(
           onPressed: () => _goToPage(0),
           backgroundColor: Colors.transparent,
           elevation: 0,
           splashColor: Colors.transparent,
-          child:
-              const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
+          child: const Icon(Icons.keyboard_arrow_up, color: Colors.grey, size: 30),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

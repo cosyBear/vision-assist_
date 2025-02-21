@@ -6,42 +6,37 @@ import 'package:provider/provider.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(int) onIconPressed;
+  final int currentIndex; // Track the active page
 
-  const Navbar({super.key, required this.onIconPressed});
+  const Navbar({super.key, required this.onIconPressed, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     final setting = Provider.of<AppSettingProvider>(context);
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    double fontSize = setting.fontSize;
     double buttonIconsSize = setting.buttonIconsSize;
 
-    // Adjust font size and button icon size for smaller screens
-    if (screenWidth < 1000) {
-      fontSize = setting.fontSize > 40 ? 40 : setting.fontSize;
-      buttonIconsSize = setting.buttonIconsSize > 60 ? 60 : setting.buttonIconsSize;
-
+    // Function to determine icon color based on active page
+    Color getIconColor(int index) {
+      return currentIndex == index ? Color.fromRGBO(203, 105, 156, 1) : Colors.grey;
     }
 
     return Container(
-      //24 is the padding (horizontal +vertical) of the navbar
-      height: max(buttonIconsSize, fontSize) + 24, // Set custom height
-      color: const Color.fromRGBO(18, 18, 18, 1.0), // Navbar background color
+      height: max(buttonIconsSize, setting.fontSize) + 24,
+      color: const Color.fromRGBO(18, 18, 18, 1.0), // Navbar background
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Stack(
           children: [
-            // Left side - Home icon, fixed position
+            // Left side - Home icon
             Positioned(
               left: 0,
               child: IconButton(
-                icon: Icon(Icons.home, color: Colors.grey, size: buttonIconsSize),
+                icon: Icon(Icons.home, color: getIconColor(0), size: buttonIconsSize),
                 onPressed: () => onIconPressed(0),
               ),
             ),
 
-            // Right side - Icons, fixed position
+            // Right side - Other icons
             Positioned(
               right: 0,
               child: Row(
@@ -53,30 +48,28 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     onPressed: () => onIconPressed(3),
                   ),
                   IconButton(
-                    icon: Icon(Icons.cloud_upload_outlined,
-                        color: Colors.grey, size: buttonIconsSize),
+                    icon: Icon(Icons.cloud_upload_outlined, color: getIconColor(1), size: buttonIconsSize),
                     onPressed: () => onIconPressed(1),
                   ),
                   IconButton(
+                    icon: Icon(Icons.settings, color: getIconColor(2), size: buttonIconsSize),
                     onPressed: () => onIconPressed(2),
-                    icon: Icon(Icons.settings,
-                        color: Colors.grey, size: buttonIconsSize),
                   ),
                 ],
               ),
             ),
 
-            // Centered Title (GradientText) - show only if space allows
-              Center(
-                child: GradientText(
-                  "SteadyEye",
-                  style: TextStyle(fontSize: fontSize),
-                  colors: const [
-                    Color.fromRGBO(203, 105, 156, 1.0),
-                    Color.fromRGBO(22, 173, 201, 1.0),
-                  ],
-                ),
+            // Centered Title (GradientText)
+            Center(
+              child: GradientText(
+                "SteadyEye",
+                style: TextStyle(fontSize: setting.fontSize, fontFamily: setting.fontFamily),
+                colors: const [
+                  Color.fromRGBO(203, 105, 156, 1.0),
+                  Color.fromRGBO(22, 173, 201, 1.0),
+                ],
               ),
+            ),
           ],
         ),
       ),
