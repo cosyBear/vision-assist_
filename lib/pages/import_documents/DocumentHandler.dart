@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:archive/archive.dart'; // For extracting .docx (which is a zip file)
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:xml/xml.dart'; // For parsing XML inside .docx files
 import 'package:file_picker/file_picker.dart';
+import 'package:markdown/markdown.dart' as md;
 
 class DocumentHandler {
   static final DocumentHandler _instance = DocumentHandler._internal();
@@ -16,7 +18,7 @@ class DocumentHandler {
   Future<String?> pickDocument() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'txt', 'docx'], // Include docx extension
+      allowedExtensions: ['pdf', 'txt', 'docx', 'md'], // Include docx extension
     );
 
     if (result != null && result.files.single.path != null) {
@@ -102,6 +104,19 @@ class DocumentHandler {
     }
   }
 
+  /// Extracts text from a Markdown (MD) file
+  Future<String?> extractTextFromMd(String filePath) async {
+    try {
+      String markdownContent = await File(filePath).readAsString();
+      String document = md.markdownToHtml(markdownContent);
+
+      return document.replaceAll(RegExp(r'<[^>]*>'), ''); // Remove HTML tags
+    } catch (e) {
+      log("Error extracting Markdown text: $e");
+      return null;
+    }
+  }
+
   /// Picks a document and automatically extracts its text
   Future<String?> pickAndExtractText() async {
     try {
@@ -118,6 +133,8 @@ class DocumentHandler {
         extractedText = await extractTextFromTxt(filePath);
       } else if (filePath.endsWith('.docx')) {
         extractedText = await extractTextFromDocx(filePath);
+      } else if (filePath.endsWith('.md')) {
+        extractedText = await extractTextFromMd(filePath);
       } else {
         print("Unsupported file format!");
         return null;

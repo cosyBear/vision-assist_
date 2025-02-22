@@ -103,6 +103,8 @@ class _UploadBoxState extends State<UploadBox> {
         text = await documentHandler.extractTextFromTxt(filePath);
       } else if (filePath.endsWith('.docx')) {
         text = await documentHandler.extractTextFromDocx(filePath);
+      } else if (filePath.endsWith('.md')) {
+        text = await documentHandler.extractTextFromMd(filePath);
       }
 
 
