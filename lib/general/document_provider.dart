@@ -18,9 +18,27 @@ class Document {
 }
 
 class DocumentProvider extends ChangeNotifier {
+
   List<Document> _documents = [];
 
   List<Document> get documents => _documents;
+
+  // Method to get the document path by its name
+  String? getDocumentPath(String name) {
+    // Search for a document with the matching name
+    final document = _documents.firstWhere(
+          (doc) => doc.name == name,
+      orElse: () => Document(name: "", path: ""), // Return a dummy Document instead of null
+    );
+
+    // If the document's path is empty, return null
+    if (document.name.isEmpty) {
+      return null;
+    }
+
+    return document.path;
+  }
+
 
   DocumentProvider() {
     _loadDocuments(); // Load saved documents on startup
