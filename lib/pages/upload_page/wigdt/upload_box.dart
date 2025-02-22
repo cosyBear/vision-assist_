@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
 import 'send_button.dart'; // Import the SendButton widget
@@ -35,7 +36,7 @@ class _UploadBoxState extends State<UploadBox> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                    valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -66,6 +67,9 @@ class _UploadBoxState extends State<UploadBox> {
         return;
       }
 
+      // Extract file name
+      String fileName = filePath.split('/').last;
+
       // Step 3: Show "Extracting text, please wait..." message
       showDialog(
         context: context,
@@ -80,7 +84,7 @@ class _UploadBoxState extends State<UploadBox> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                    valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
                   ),
                   const SizedBox(height: 20),
                   const Text(
@@ -112,6 +116,12 @@ class _UploadBoxState extends State<UploadBox> {
 
       // Close extraction dialog
       if (context.mounted) Navigator.pop(context);
+
+      // Save document in DocumentProvider
+      final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+      documentProvider.addDocument(fileName, filePath);
+
+
 
       // If 'text' is null, provide an empty string to avoid type errors
       String finalText = text ?? '';

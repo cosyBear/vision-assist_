@@ -12,12 +12,12 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        children: categorizedBooks.entries
-            .map((entry) => BookCategory(category: entry.key, books: entry.value))
-            .toList(),
-      ),
+    return ListView(
+      shrinkWrap: true, // ✅ Ensures ListView takes only necessary space
+      children: categorizedBooks.entries
+          .map((entry) => BookCategory(category: entry.key, books: entry.value))
+          .toList(),
     );
   }
 }
+
