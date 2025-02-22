@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:archive/archive.dart'; // For extracting .docx (which is a zip file)
+import 'package:epubx/epubx.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:xml/xml.dart'; // For parsing XML inside .docx files
 import 'package:file_picker/file_picker.dart';
@@ -18,7 +19,7 @@ class DocumentHandler {
   Future<String?> pickDocument() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'txt', 'docx', 'md'], // Include docx extension
+      allowedExtensions: ['pdf', 'txt', 'docx', 'md', 'epub'], // Include docx extension
     );
 
     if (result != null && result.files.single.path != null) {
@@ -117,6 +118,55 @@ class DocumentHandler {
     }
   }
 
+  /// Removes HTML tags from a given string
+  String _removeHtmlTags(String html) {
+    final regex = RegExp(r'<[^>]*>'); // Regular expression to match HTML tags
+    return html.replaceAll(regex, ''); // Replace HTML tags with an empty string
+  }
+
+  /// Normalizes spaces and removes excessive whitespace
+  String _removeExcessWhitespace(String text) {
+    // Replace multiple spaces with a single space and trim leading/trailing spaces
+    String cleanedText = text.replaceAll(RegExp(r'\s+'), ' ').trim();
+    // Remove any remaining non-breaking spaces (&nbsp;)
+    return cleanedText.replaceAll(RegExp(r'&nbsp;'), ' ');
+  }
+
+  /// Extracts text from an EPUB file
+  Future<String?> extractTextFromEpub(String filePath) async {
+    try {
+      // Load the EPUB file
+      File file = File(filePath);
+      List<int> bytes = await file.readAsBytes();
+
+      // Open the EPUB file using the epubx package
+      var epubBook = await EpubReader.readBook(bytes);
+
+      // Extract the text from the book
+      String extractedText = '';
+
+      if (epubBook.Chapters != null) {
+        for (var chapter in epubBook.Chapters!) {
+          // Extract the chapter content and remove HTML tags
+          String chapterContent = chapter.HtmlContent ?? '';
+
+          // Remove HTML tags using a regular expression
+          String plainText = _removeHtmlTags(chapterContent);
+
+          // Append the extracted text without HTML tags
+          extractedText += plainText;
+        }
+
+        // Remove excessive whitespace and normalize spaces
+        extractedText = _removeExcessWhitespace(extractedText);
+      }
+      return extractedText.isNotEmpty ? extractedText : null;
+    } catch (e) {
+      log("Error extracting EPUB text: $e");
+      return null;
+    }
+  }
+
   /// Picks a document and automatically extracts its text
   Future<String?> pickAndExtractText() async {
     try {
@@ -135,8 +185,10 @@ class DocumentHandler {
         extractedText = await extractTextFromDocx(filePath);
       } else if (filePath.endsWith('.md')) {
         extractedText = await extractTextFromMd(filePath);
+      } else if (filePath.endsWith('.epub')) {
+        extractedText = await extractTextFromEpub(filePath);
       } else {
-        print("Unsupported file format!");
+        log("Unsupported file format!");
         return null;
       }
 

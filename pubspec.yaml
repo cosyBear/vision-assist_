@@ -48,6 +48,7 @@ dependencies:
   xml: ^6.5.0
   syncfusion_flutter_pdf: ^28.2.6
   markdown: ^7.3.0
+  epubx: ^4.0.0
 
 dev_dependencies:
   flutter_test:

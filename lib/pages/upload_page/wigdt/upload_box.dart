@@ -105,6 +105,8 @@ class _UploadBoxState extends State<UploadBox> {
         text = await documentHandler.extractTextFromDocx(filePath);
       } else if (filePath.endsWith('.md')) {
         text = await documentHandler.extractTextFromMd(filePath);
+      } else if (filePath.endsWith('.epub')) {
+        text = await documentHandler.extractTextFromEpub(filePath);
       }
 
 
