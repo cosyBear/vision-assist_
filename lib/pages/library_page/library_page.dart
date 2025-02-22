@@ -39,6 +39,10 @@ class _LibraryState extends State<Library> {
     // If there's a filter applied, use filteredBooks. Otherwise, use all books.
     List<String> booksToDisplay = filteredBooks.isEmpty ? books : filteredBooks;
 
+    // Sort books alphabetically
+    booksToDisplay.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+
+    // Group the sorted books by category
     Map<String, List<String>> categorizedBooks = groupBooksByCategory(booksToDisplay);
 
     return Scaffold(
