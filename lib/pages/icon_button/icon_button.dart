@@ -14,12 +14,14 @@ class IconButtonSize extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final spacing = screenWidth * 0.05;
+    double maxButtonSize = 100.0; // Maximum button size
 
     double fontSize = settings.fontSize;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
       buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      maxButtonSize = 60.0;
     }
 
     return Scaffold(
@@ -102,7 +104,7 @@ class IconButtonSize extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.add_circle_outline_sharp, color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
-                    if (settings.buttonIconsSize < 100) { // Prevent excessive size
+                    if (settings.buttonIconsSize < maxButtonSize) { // Prevent excessive size
                       settings.setButtonIconsSize(settings.buttonIconsSize + 5);
                     }
                   },
