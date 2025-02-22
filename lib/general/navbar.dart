@@ -43,10 +43,6 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.local_library_rounded, color: getIconColor(3), size: buttonIconsSize),
-                    onPressed: () => onIconPressed(3),
-                  ),
-                  IconButton(
                     icon: Icon(Icons.cloud_upload_outlined, color: getIconColor(1), size: buttonIconsSize),
                     onPressed: () => onIconPressed(1),
                   ),
@@ -54,6 +50,12 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     icon: Icon(Icons.settings, color: getIconColor(2), size: buttonIconsSize),
                     onPressed: () => onIconPressed(2),
                   ),
+                  IconButton(
+                    icon: Icon(Icons.library_books_outlined,
+                        color: getIconColor(3), size: buttonIconsSize),
+                    onPressed: () => onIconPressed(3),
+                  ),
+
                 ],
               ),
             ),
