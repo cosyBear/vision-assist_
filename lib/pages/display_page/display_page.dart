@@ -12,8 +12,7 @@ class DisplayPage extends StatefulWidget {
   final String title;
   final String? documentName;
 
-  const DisplayPage(
-      {super.key, required this.title, this.documentName});
+  const DisplayPage({super.key, required this.title, this.documentName});
 
   @override
   State<DisplayPage> createState() => _DisplayPageState();
@@ -25,23 +24,20 @@ class _DisplayPageState extends State<DisplayPage> {
   double textOffset = 0;
 
   late ScrollController _scrollController;
-  double _scrollPosition = 0.0;
+  double _bookmarkedPosition = 0.0;
   bool _isRestored = false; // Prevent multiple restores
+
+
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController(); // ✅ Initialize ScrollController
 
-    // ✅ Restore scroll position only if a documentName exists
+    _scrollController = ScrollController();
+
     if (widget.documentName != null) {
-      _restoreScrollPosition();
+      _restoreBookmarkPosition();
     }
-
-    // Listen to scrolling and save the position
-    _scrollController.addListener(() {
-      _saveScrollPosition();
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
@@ -65,37 +61,38 @@ class _DisplayPageState extends State<DisplayPage> {
     });
   }
 
-  Future<void> _restoreScrollPosition() async {
-    // Only proceed if documentName is non-null
+  /// Restores only the last **bookmarked** position
+  Future<void> _restoreBookmarkPosition() async {
+    if (widget.documentName == null || _isRestored) return;
+
+    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+    double savedPosition = await documentProvider.getBookmarkedPosition(widget.documentName!);
+
+    setState(() {
+      _bookmarkedPosition = savedPosition;
+    });
+
+    // Ensure jumpTo() runs after the first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_bookmarkedPosition);
+        _isRestored = true; // Prevent multiple restores
+      }
+    });
+  }
+
+  /// Saves scroll position **only when the bookmark button is pressed**
+  void _bookmarkScrollPosition() {
     if (widget.documentName == null) return;
 
     final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+    documentProvider.saveBookmarkedPosition(widget.documentName!, _scrollController.offset);
 
-    // Ensure `widget.documentName` is treated as non-nullable
-    double savedPosition = await documentProvider.getScrollPosition(widget.documentName!);
-
-    if (!_isRestored) {
-      setState(() {
-        _scrollPosition = savedPosition;
-      });
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _scrollController.jumpTo(_scrollPosition);
-      });
-
-      _isRestored = true; // Prevent multiple restores
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Bookmark saved at ${_scrollController.offset}"))
+    );
   }
 
-  void _saveScrollPosition() {
-    // Only proceed if documentName is non-null
-    if (widget.documentName == null) return;
-
-    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
-
-    // Ensure `widget.documentName` is treated as non-nullable
-    documentProvider.saveScrollPosition(widget.documentName!, _scrollController.offset);
-  }
 
 
   @override
@@ -131,6 +128,7 @@ class _DisplayPageState extends State<DisplayPage> {
                   child: ScrollingTextView(
                     text: widget.title,
                     textOffset: textOffset,
+                    scrollController: _scrollController, // Pass the controller
                   ),
                 ),
 
@@ -175,6 +173,24 @@ class _DisplayPageState extends State<DisplayPage> {
                         }
                       });
                     },
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    // Add padding for better spacing
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      // Align to the right
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.bookmark,
+                              size: buttonIconsSize, color: Colors.grey),
+                          onPressed:  _bookmarkScrollPosition,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
