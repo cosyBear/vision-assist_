@@ -4,13 +4,15 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
 import '../../general/app_setting_provider.dart';
+import '../../general/document_provider.dart';
 import '../../general/navbar_with_return_button.dart';
 import 'wigdt/draggable_button.dart';
 
 class DisplayPage extends StatefulWidget {
   final String title;
+  final String? documentName;
 
-  const DisplayPage({super.key, required this.title});
+  const DisplayPage({super.key, required this.title, this.documentName});
 
   @override
   State<DisplayPage> createState() => _DisplayPageState();
@@ -21,9 +23,22 @@ class _DisplayPageState extends State<DisplayPage> {
   late double yPos;
   double textOffset = 0;
 
+  late ScrollController _scrollController;
+  double _bookmarkedPosition = 0.0;
+  bool _isRestored = false; // Prevent multiple restores
+
+
+
   @override
   void initState() {
     super.initState();
+
+    _scrollController = ScrollController();
+
+    if (widget.documentName != null) {
+      _restoreBookmarkPosition();
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;
@@ -46,6 +61,40 @@ class _DisplayPageState extends State<DisplayPage> {
     });
   }
 
+  /// Restores only the last **bookmarked** position
+  Future<void> _restoreBookmarkPosition() async {
+    if (widget.documentName == null || _isRestored) return;
+
+    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+    double savedPosition = await documentProvider.getBookmarkedPosition(widget.documentName!);
+
+    setState(() {
+      _bookmarkedPosition = savedPosition;
+    });
+
+    // Ensure jumpTo() runs after the first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_bookmarkedPosition);
+        _isRestored = true; // Prevent multiple restores
+      }
+    });
+  }
+
+  /// Saves scroll position **only when the bookmark button is pressed**
+  void _bookmarkScrollPosition() {
+    if (widget.documentName == null) return;
+
+    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+    documentProvider.saveBookmarkedPosition(widget.documentName!, _scrollController.offset);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Bookmark saved at ${_scrollController.offset}"))
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
@@ -57,11 +106,13 @@ class _DisplayPageState extends State<DisplayPage> {
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize =
+          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     return Scaffold(
-      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
+      appBar: NavbarWithReturnButton(
+          fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: SafeArea(
         // Use LayoutBuilder to get the actual available size
         child: LayoutBuilder(
@@ -77,6 +128,7 @@ class _DisplayPageState extends State<DisplayPage> {
                   child: ScrollingTextView(
                     text: widget.title,
                     textOffset: textOffset,
+                    scrollController: _scrollController, // Pass the controller
                   ),
                 ),
 
@@ -123,11 +175,35 @@ class _DisplayPageState extends State<DisplayPage> {
                     },
                   ),
                 ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    // Add padding for better spacing
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      // Align to the right
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.bookmark,
+                              size: buttonIconsSize, color: Colors.grey),
+                          onPressed:  _bookmarkScrollPosition,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             );
           },
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
