@@ -4,6 +4,7 @@ import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
 import '../../../general/app_setting_provider.dart';
+import '../../upload_page/wigdt/dialogue.dart';
 
 class FileProcessorWidget extends StatefulWidget {
   final String documentName;
