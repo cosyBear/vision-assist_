@@ -76,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
             MainPage(goToPage: _goToPage),
             UploadPage(),
             GlobalSetting(),
-            Library()
+            Library(goToPage: _goToPage),
           ],
         ),
       ),
