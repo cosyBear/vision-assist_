@@ -44,10 +44,12 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = settings.fontSize;
     double buttonIconsSize = settings.buttonIconsSize;
+    double maxFontSize = 60;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
       buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      maxFontSize = 40;
     }
 
     return Scaffold(
@@ -93,7 +95,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                     }),
                     FontSizeDisplay(fontSize: fontSize),
                     AdjustButton(icon: Icons.add_circle_outline_sharp, onPressed: () {
-                      if (fontSize < 60) {
+                      if (fontSize < maxFontSize) {
                         setState(() {
                           fontSize += 1;
                           settings.setFontSize(fontSize);
