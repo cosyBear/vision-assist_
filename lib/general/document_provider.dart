@@ -44,12 +44,22 @@ class DocumentProvider extends ChangeNotifier {
     _loadDocuments(); // Load saved documents on startup
   }
 
-  // Add a new document and save it
+  // Add or replace a document and save it
   void addDocument(String name, String path) async {
-    _documents.add(Document(name: name, path: path));
+    int existingIndex = _documents.indexWhere((doc) => doc.name == name);
+
+    if (existingIndex != -1) {
+      // Replace existing document
+      _documents[existingIndex] = Document(name: name, path: path);
+    } else {
+      // Add new document
+      _documents.add(Document(name: name, path: path));
+    }
+
     notifyListeners();
     _saveDocuments(); // Save updated list to SharedPreferences
   }
+
 
   // Save document list to SharedPreferences
   Future<void> _saveDocuments() async {
