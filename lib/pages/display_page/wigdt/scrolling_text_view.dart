@@ -6,11 +6,13 @@ import '../../../general/app_setting_provider.dart';
 class ScrollingTextView extends StatefulWidget {
   final String text;
   final double textOffset;
+  final ScrollController scrollController; // Add this line
 
   const ScrollingTextView({
     super.key,
     required this.text,
     required this.textOffset,
+    required this.scrollController, // Add this line
   });
 
   @override
@@ -26,7 +28,7 @@ class _ScrollingTextViewState extends State<ScrollingTextView> {
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    _scrollController = widget.scrollController;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _determineTextType();
       _startScrollingAnimation();
