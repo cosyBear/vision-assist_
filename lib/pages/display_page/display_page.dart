@@ -4,13 +4,16 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
 import '../../general/app_setting_provider.dart';
+import '../../general/document_provider.dart';
 import '../../general/navbar_with_return_button.dart';
 import 'wigdt/draggable_button.dart';
 
 class DisplayPage extends StatefulWidget {
   final String title;
+  final String? documentName;
 
-  const DisplayPage({super.key, required this.title});
+  const DisplayPage(
+      {super.key, required this.title, this.documentName});
 
   @override
   State<DisplayPage> createState() => _DisplayPageState();
@@ -21,9 +24,25 @@ class _DisplayPageState extends State<DisplayPage> {
   late double yPos;
   double textOffset = 0;
 
+  late ScrollController _scrollController;
+  double _scrollPosition = 0.0;
+  bool _isRestored = false; // Prevent multiple restores
+
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController(); // ✅ Initialize ScrollController
+
+    // ✅ Restore scroll position only if a documentName exists
+    if (widget.documentName != null) {
+      _restoreScrollPosition();
+    }
+
+    // Listen to scrolling and save the position
+    _scrollController.addListener(() {
+      _saveScrollPosition();
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;
@@ -46,6 +65,39 @@ class _DisplayPageState extends State<DisplayPage> {
     });
   }
 
+  Future<void> _restoreScrollPosition() async {
+    // Only proceed if documentName is non-null
+    if (widget.documentName == null) return;
+
+    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+
+    // Ensure `widget.documentName` is treated as non-nullable
+    double savedPosition = await documentProvider.getScrollPosition(widget.documentName!);
+
+    if (!_isRestored) {
+      setState(() {
+        _scrollPosition = savedPosition;
+      });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollController.jumpTo(_scrollPosition);
+      });
+
+      _isRestored = true; // Prevent multiple restores
+    }
+  }
+
+  void _saveScrollPosition() {
+    // Only proceed if documentName is non-null
+    if (widget.documentName == null) return;
+
+    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+
+    // Ensure `widget.documentName` is treated as non-nullable
+    documentProvider.saveScrollPosition(widget.documentName!, _scrollController.offset);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
@@ -57,11 +109,13 @@ class _DisplayPageState extends State<DisplayPage> {
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize =
+          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     return Scaffold(
-      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
+      appBar: NavbarWithReturnButton(
+          fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: SafeArea(
         // Use LayoutBuilder to get the actual available size
         child: LayoutBuilder(
@@ -129,5 +183,11 @@ class _DisplayPageState extends State<DisplayPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

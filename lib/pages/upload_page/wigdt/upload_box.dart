@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
+import 'dialogue.dart';
 import 'send_button.dart'; // Import the SendButton widget
 
 class UploadBox extends StatefulWidget {
   final TextEditingController controller;
-
   UploadBox({super.key, required this.controller});
 
   @override
@@ -19,132 +19,55 @@ class _UploadBoxState extends State<UploadBox> {
   final ScrollController _scrollController = ScrollController();
   final DocumentHandler documentHandler = DocumentHandler(); // Use Singleton Instance
 
-  /// Function to pick a document and extract text
+  /// Function to pick a document and extract text using DocumentHandler.
   Future<void> _pickAndExtractDocument() async {
     try {
-      // Step 1: Show "Select a file..." message
+      // Show "Select a file..." dialog.
       showDialog(
         context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Select a file...",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          );
+        barrierDismissible: false, // Prevents dismissing the dialog by tapping outside.
+        builder: (BuildContext context) {
+          return const Dialogue(message: "select a file and wait...");
         },
       );
 
-      // Step 2: Wait for user to select a file
-      String? filePath = await documentHandler.pickDocument();
-
-      // Close the "Select a file..." dialog
-      if (context.mounted) Navigator.pop(context);
-
-      if (filePath == null) {
-        // No file selected, show an error message
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("No file selected.")),
-          );
-        }
-        return;
-      }
-
-      // Extract file name
-      String fileName = filePath.split('/').last;
-
-      // Step 3: Show "Extracting text, please wait..." message
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Extracting text, please wait...",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-
-      // Step 4: Extract text directly using filePath (No need to pick again)
-      String? text;
-      if (filePath.endsWith('.pdf')) {
-        text = await documentHandler.extractTextFromPdf(filePath);
-      } else if (filePath.endsWith('.txt')) {
-        text = await documentHandler.extractTextFromTxt(filePath);
-      } else if (filePath.endsWith('.docx')) {
-        text = await documentHandler.extractTextFromDocx(filePath);
-      } else if (filePath.endsWith('.md')) {
-        text = await documentHandler.extractTextFromMd(filePath);
-      } else if (filePath.endsWith('.epub')) {
-        text = await documentHandler.extractTextFromEpub(filePath);
-      }
-
-
-      // Close extraction dialog
-      if (context.mounted) Navigator.pop(context);
-
-      // Save document in DocumentProvider
-      final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
-      documentProvider.addDocument(fileName, filePath);
-
-
-
-      // If 'text' is null, provide an empty string to avoid type errors
-      String finalText = text ?? '';
-
-      if (text != null && text.isNotEmpty) {
-        setState(() {
-          widget.controller.text = finalText;
-        });
-
-        if (context.mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DisplayPage(title: finalText),
-            ),
-          );
-        }
-      } else {
+      // Use the document handler to pick the file and extract its text.
+      String? extractedText = await documentHandler.pickAndExtractText();
+      if (extractedText == null || extractedText.isEmpty) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("No text extracted from the document.")),
           );
         }
+        return;
+      }
+
+      // Close the "Select a file..." dialog.
+      if (context.mounted) Navigator.pop(context);
+
+
+      // Retrieve the file name from the document handler.
+      String fileName = documentHandler.lastSelectedFileName ?? "Untitled Document";
+
+      // Save the document details in DocumentProvider.
+      final documentProvider =
+      Provider.of<DocumentProvider>(context, listen: false);
+      documentProvider.addDocument(fileName, documentHandler.lastSelectedFilePath ?? "");
+
+      // Update the text field and navigate to the DisplayPage.
+      setState(() {
+        widget.controller.text = extractedText;
+      });
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DisplayPage(
+              title: extractedText,
+              documentName: fileName.isNotEmpty ? fileName : null,
+            ),
+          ),
+        );
       }
     } catch (e) {
       if (context.mounted) Navigator.pop(context);
@@ -155,10 +78,6 @@ class _UploadBoxState extends State<UploadBox> {
       }
     }
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +107,8 @@ class _UploadBoxState extends State<UploadBox> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                     controller: _scrollController,
                     child: TextField(
                       controller: widget.controller,
@@ -206,7 +126,7 @@ class _UploadBoxState extends State<UploadBox> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50), // Space for buttons
+                const SizedBox(height: 50), // Space for buttons.
               ],
             ),
             Positioned(
@@ -214,15 +134,17 @@ class _UploadBoxState extends State<UploadBox> {
               bottom: 0,
               child: Row(
                 children: [
-                  // **Attach File Icon (Calls _pickAndExtractDocument)**
+                  // Attach File Icon.
                   IconButton(
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    icon: Icon(Icons.attach_file, color: Colors.grey[600], size: buttonIconsSize),
-                    onPressed: _pickAndExtractDocument, // Call function to pick & extract text
+                    icon: Icon(Icons.attach_file,
+                        color: Colors.grey[600], size: buttonIconsSize),
+                    onPressed: _pickAndExtractDocument,
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
-                    icon: Icon(Icons.camera_alt, color: Colors.grey[600], size: buttonIconsSize),
+                    icon: Icon(Icons.camera_alt,
+                        color: Colors.grey[600], size: buttonIconsSize),
                     onPressed: () => print("Picture taken"),
                   ),
                 ],

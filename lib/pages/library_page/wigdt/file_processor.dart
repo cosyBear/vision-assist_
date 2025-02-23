@@ -20,30 +20,11 @@ class _FileProcessorWidgetState extends State<FileProcessorWidget> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Extracting text, please wait...",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (BuildContext context) => const Dialogue(message: "Loading..."),
     );
+
+    // Allow the dialog to render before starting extraction.
+    await Future.delayed(const Duration(milliseconds: 100));
 
     final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
     final documentHandler = DocumentHandler();
@@ -58,18 +39,8 @@ class _FileProcessorWidgetState extends State<FileProcessorWidget> {
       return;
     }
 
-    String? extractedText;
-    if (documentPath.endsWith('.pdf')) {
-      extractedText = await documentHandler.extractTextFromPdf(documentPath);
-    } else if (documentPath.endsWith('.txt')) {
-      extractedText = await documentHandler.extractTextFromTxt(documentPath);
-    } else if (documentPath.endsWith('.docx')) {
-      extractedText = await documentHandler.extractTextFromDocx(documentPath);
-    } else if (documentPath.endsWith('.md')) {
-      extractedText = await documentHandler.extractTextFromMd(documentPath);
-    } else if (documentPath.endsWith('.epub')) {
-      extractedText = await documentHandler.extractTextFromEpub(documentPath);
-    }
+    // Use the centralized extraction method.
+    String? extractedText = await documentHandler.extractText(documentPath);
 
     Navigator.pop(context); // Close dialog
 
@@ -79,7 +50,10 @@ class _FileProcessorWidgetState extends State<FileProcessorWidget> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DisplayPage(title: finalText),
+          builder: (context) => DisplayPage(
+            title: finalText,
+            documentName: widget.documentName,
+          ),
         ),
       );
     } else {
@@ -88,6 +62,7 @@ class _FileProcessorWidgetState extends State<FileProcessorWidget> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

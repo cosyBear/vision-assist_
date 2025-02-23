@@ -23,6 +23,20 @@ class DocumentProvider extends ChangeNotifier {
 
   List<Document> get documents => _documents;
 
+  Map<String, double> _scrollPositions = {}; // Store document scroll positions
+
+
+  Future<void> saveScrollPosition(String documentName, double position) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('scroll_$documentName', position);
+    _scrollPositions[documentName] = position;
+  }
+
+  Future<double> getScrollPosition(String documentName) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble('scroll_$documentName') ?? 0.0; // Default to top of document
+  }
+
   // Method to get the document path by its name
   String? getDocumentPath(String name) {
     // Search for a document with the matching name
