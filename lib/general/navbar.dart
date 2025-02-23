@@ -55,6 +55,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                         color: getIconColor(3), size: buttonIconsSize),
                     onPressed: () => onIconPressed(3),
                   ),
+
                 ],
               ),
             ),

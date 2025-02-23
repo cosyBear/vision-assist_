@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'general/document_provider.dart';
 import 'general/main_screen.dart';
 import 'general/app_setting_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,11 +20,15 @@ Future<void> main() async {
   await SettingBox.init(); // Open settings box before app starts
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AppSettingProvider(), // Provides settings globally
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppSettingProvider()), //Storing the settings in memory
+        ChangeNotifierProvider(create: (context) => DocumentProvider()), // Storing the documents in memory
+      ],
       child: MyApp(),
     ),
   );
+
 }
 
 class MyApp extends StatelessWidget {

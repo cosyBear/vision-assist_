@@ -1,13 +1,164 @@
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import '../../../general/document_provider.dart';
+import '../../display_page/display_page.dart';
+import '../../import_documents/DocumentHandler.dart';
 import 'send_button.dart'; // Import the SendButton widget
 
-class UploadBox extends StatelessWidget {
+class UploadBox extends StatefulWidget {
   final TextEditingController controller;
-  final ScrollController _scrollController = ScrollController();
 
   UploadBox({super.key, required this.controller});
+
+  @override
+  _UploadBoxState createState() => _UploadBoxState();
+}
+
+class _UploadBoxState extends State<UploadBox> {
+  final ScrollController _scrollController = ScrollController();
+  final DocumentHandler documentHandler = DocumentHandler(); // Use Singleton Instance
+
+  /// Function to pick a document and extract text
+  Future<void> _pickAndExtractDocument() async {
+    try {
+      // Step 1: Show "Select a file..." message
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Select a file...",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      // Step 2: Wait for user to select a file
+      String? filePath = await documentHandler.pickDocument();
+
+      // Close the "Select a file..." dialog
+      if (context.mounted) Navigator.pop(context);
+
+      if (filePath == null) {
+        // No file selected, show an error message
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No file selected.")),
+          );
+        }
+        return;
+      }
+
+      // Extract file name
+      String fileName = filePath.split('/').last;
+
+      // Step 3: Show "Extracting text, please wait..." message
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(203, 105, 156, 1)),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Extracting text, please wait...",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      // Step 4: Extract text directly using filePath (No need to pick again)
+      String? text;
+      if (filePath.endsWith('.pdf')) {
+        text = await documentHandler.extractTextFromPdf(filePath);
+      } else if (filePath.endsWith('.txt')) {
+        text = await documentHandler.extractTextFromTxt(filePath);
+      } else if (filePath.endsWith('.docx')) {
+        text = await documentHandler.extractTextFromDocx(filePath);
+      } else if (filePath.endsWith('.md')) {
+        text = await documentHandler.extractTextFromMd(filePath);
+      } else if (filePath.endsWith('.epub')) {
+        text = await documentHandler.extractTextFromEpub(filePath);
+      }
+
+
+      // Close extraction dialog
+      if (context.mounted) Navigator.pop(context);
+
+      // Save document in DocumentProvider
+      final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+      documentProvider.addDocument(fileName, filePath);
+
+
+
+      // If 'text' is null, provide an empty string to avoid type errors
+      String finalText = text ?? '';
+
+      if (text != null && text.isNotEmpty) {
+        setState(() {
+          widget.controller.text = finalText;
+        });
+
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DisplayPage(title: finalText),
+            ),
+          );
+        }
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("No text extracted from the document.")),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) Navigator.pop(context);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error extracting text: $e")),
+        );
+      }
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +191,7 @@ class UploadBox extends StatelessWidget {
                     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     controller: _scrollController,
                     child: TextField(
-                      controller: controller,
+                      controller: widget.controller,
                       maxLines: null,
                       keyboardType: TextInputType.multiline,
                       style: TextStyle(
@@ -63,10 +214,11 @@ class UploadBox extends StatelessWidget {
               bottom: 0,
               child: Row(
                 children: [
+                  // **Attach File Icon (Calls _pickAndExtractDocument)**
                   IconButton(
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     icon: Icon(Icons.attach_file, color: Colors.grey[600], size: buttonIconsSize),
-                    onPressed: () => print("File uploaded"),
+                    onPressed: _pickAndExtractDocument, // Call function to pick & extract text
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
@@ -83,7 +235,7 @@ class UploadBox extends StatelessWidget {
                 settings: settings,
                 buttonSize: buttonIconsSize,
                 screenWidth: screenWidth,
-                controller: controller,
+                controller: widget.controller,
               ),
             ),
           ],
