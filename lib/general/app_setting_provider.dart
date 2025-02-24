@@ -5,16 +5,16 @@ import '../database/setting_box.dart'; // Import the settings box
 
 class AppSettingProvider with ChangeNotifier {
   // Default settings
-  Color _backgroundColor = Colors.red;
+  Color _backgroundColor = Colors.black;
   Color _textColor = Colors.white;
   late double _fontSize;
-  String _fontFamily = 'Roboto';
+  String _fontFamily = 'Times';
   FontWeight _fontWeight = FontWeight.normal;
   double _scrollSpeed = 2;
   bool _isPaused = false; // Track scrolling state
   double _xPos = 0; // Track x position of the focus point
   double _yPos = 0; // Track y position of the focus point
-  double _buttonIconsSize = 40; // Default size for button icons
+  double _buttonIconsSize = 50; // Default size for button icons
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -50,12 +50,12 @@ class AppSettingProvider with ChangeNotifier {
     _backgroundColor = SettingBox.getColorFromHive('backgroundColor', Colors.black); // Default color: red
     _textColor = SettingBox.getColorFromHive('textColor', Colors.white); // Default text color: white
     _fontSize = SettingBox.getSetting('fontSize', _fontSize); // Default font size: 20
-    _fontFamily = SettingBox.getSetting('fontFamily', 'Roboto'); // Default font: Roboto
+    _fontFamily = SettingBox.getSetting('fontFamily', 'Times'); // Default font: Roboto
     _fontWeight = _getFontWeightFromHive('fontWeight', FontWeight.normal); // Default font weight: normal
     _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
     _xPos = SettingBox.getSetting('xPos', 0.0); // Default x position: 0
     _yPos = SettingBox.getSetting('yPos', 0.0); // Default y position: 0
-    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 40.0).toDouble(); // ✅ Fix type error
+    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 50.0).toDouble(); // ✅ Fix type error
     // Notify listeners that settings have been loaded
     notifyListeners();
   }

@@ -29,7 +29,7 @@ class SettingBox {
       settingsBox.put('fontSize', defaultFontSize); // Use adjusted default
     }
     if (!settingsBox.containsKey('fontFamily')) {
-      settingsBox.put('fontFamily', 'Inria Serif');
+      settingsBox.put('fontFamily', 'Times');
     }
     if (!settingsBox.containsKey('fontWeight')) {
       settingsBox.put('fontWeight', FontWeight.normal.index);
@@ -38,7 +38,7 @@ class SettingBox {
       settingsBox.put('scrollSpeed', 2.0);
     }
     if(!settingsBox.containsKey('buttonIconsSize')){
-      settingsBox.put('buttonIconsSize', 40);
+      settingsBox.put('buttonIconsSize', 50);
     }
   }
 
