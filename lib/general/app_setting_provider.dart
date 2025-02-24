@@ -35,8 +35,11 @@ class AppSettingProvider with ChangeNotifier {
 
   bool get isPaused => _isPaused; // Getter for pause state
   double get xPos => _xPos;
+
   double get yPos => _yPos;
-  double get buttonIconsSize => _buttonIconsSize; // Getter for button icons size
+
+  double get buttonIconsSize =>
+      _buttonIconsSize; // Getter for button icons size
 
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
@@ -47,25 +50,32 @@ class AppSettingProvider with ChangeNotifier {
     _fontSize = screenWidth > 1000 ? 50 : 30;
 
     // Retrieve saved settings from Hive, if any; otherwise, use defaults
-    _backgroundColor = SettingBox.getColorFromHive('backgroundColor', Colors.black); // Default color: red
-    _textColor = SettingBox.getColorFromHive('textColor', Colors.white); // Default text color: white
-    _fontSize = SettingBox.getSetting('fontSize', _fontSize); // Default font size: 20
-    _fontFamily = SettingBox.getSetting('fontFamily', 'Times'); // Default font: Roboto
-    _fontWeight = _getFontWeightFromHive('fontWeight', FontWeight.normal); // Default font weight: normal
-    _scrollSpeed = SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
+    _backgroundColor = SettingBox.getColorFromHive(
+        'backgroundColor', Colors.black); // Default color: red
+    _textColor = SettingBox.getColorFromHive(
+        'textColor', Colors.white); // Default text color: white
+    _fontSize =
+        SettingBox.getSetting('fontSize', _fontSize); // Default font size: 20
+    _fontFamily =
+        SettingBox.getSetting('fontFamily', 'Times'); // Default font: Roboto
+    _fontWeight = _getFontWeightFromHive(
+        'fontWeight', FontWeight.normal); // Default font weight: normal
+    _scrollSpeed =
+        SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
     _xPos = SettingBox.getSetting('xPos', 0.0); // Default x position: 0
     _yPos = SettingBox.getSetting('yPos', 0.0); // Default y position: 0
-    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 50.0).toDouble(); // ✅ Fix type error
+    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 50.0)
+        .toDouble(); // ✅ Fix type error
     // Notify listeners that settings have been loaded
     notifyListeners();
   }
-
 
   void setButtonIconsSize(double size) {
     _buttonIconsSize = size;
     SettingBox.saveSetting('buttonIconsSize', size); // Save to storage
     notifyListeners();
   }
+
   // ✅ Convert color from Hive (Hive saves Colors as int values)
   Color _getColorFromHive(String key, Color defaultColor) {
     int? colorValue = SettingBox.getSetting(key, null);
@@ -91,16 +101,37 @@ class AppSettingProvider with ChangeNotifier {
   }
 
   void setBackgroundColor(Color color) {
-    _backgroundColor = color;
+    if (color == _textColor) {
+      Color copy=_textColor;
+      _textColor=backgroundColor;
+      _backgroundColor = copy;
+      SettingBox.saveSetting('textColor', color.value);
+    }
+    else
+      {
+        _backgroundColor = color;
+      }
     SettingBox.saveSetting('backgroundColor', color.value);
     notifyListeners();
   }
 
   void setTextColor(Color color) {
-    _textColor = color;
+
+    if (color == _backgroundColor) {
+
+      Color copy=_backgroundColor;
+     _backgroundColor= _textColor;
+      _textColor = copy;
+      SettingBox.saveSetting('backgroundColor', color.value);
+    }
+    else
+      {
+        _textColor = color;
+      }
     SettingBox.saveSetting('textColor', color.value);
     notifyListeners();
   }
+  
 
   void setFontSize(double size) {
     _fontSize = size;
