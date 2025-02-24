@@ -14,7 +14,7 @@ class AppSettingProvider with ChangeNotifier {
   bool _isPaused = false; // Track scrolling state
   double _xPos = 0; // Track x position of the focus point
   double _yPos = 0; // Track y position of the focus point
-  double _buttonIconsSize = 50; // Default size for button icons
+  late double _buttonIconsSize; // Default size for button icons
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -48,6 +48,7 @@ class AppSettingProvider with ChangeNotifier {
 
     // Set default font size based on screen width
     _fontSize = screenWidth > 1000 ? 50 : 30;
+    _buttonIconsSize = screenWidth > 1000 ? 70 : 50;
 
     // Retrieve saved settings from Hive, if any; otherwise, use defaults
     _backgroundColor = SettingBox.getColorFromHive(
@@ -64,8 +65,7 @@ class AppSettingProvider with ChangeNotifier {
         SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
     _xPos = SettingBox.getSetting('xPos', 0.0); // Default x position: 0
     _yPos = SettingBox.getSetting('yPos', 0.0); // Default y position: 0
-    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 50.0)
-        .toDouble(); // ✅ Fix type error
+    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", _buttonIconsSize) ;
     // Notify listeners that settings have been loaded
     notifyListeners();
   }

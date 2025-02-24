@@ -17,6 +17,7 @@ class SettingBox {
     double screenWidth = PlatformDispatcher.instance.views.first.physicalSize.width /
         PlatformDispatcher.instance.views.first.devicePixelRatio;
     double defaultFontSize = screenWidth > 1000 ? 50 : 30;
+    double defaultIconButton = screenWidth > 1000 ? 70 : 50;
 
     // Check if keys exist, if not, set default values only on the first launch
     if (!settingsBox.containsKey('backgroundColor')) {
@@ -38,7 +39,7 @@ class SettingBox {
       settingsBox.put('scrollSpeed', 2.0);
     }
     if(!settingsBox.containsKey('buttonIconsSize')){
-      settingsBox.put('buttonIconsSize', 50);
+      settingsBox.put('buttonIconsSize', defaultIconButton);
     }
   }
 

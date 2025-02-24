@@ -67,11 +67,13 @@ class _MainScreenState extends State<MainScreen> {
           controller: _pageController,
           onPageChanged: (index) {
             setState(() {
-              _currentIndex = index; // Update index on swipe
+              _currentIndex = index;
             });
           },
           scrollDirection: Axis.vertical,
-          physics: const PageScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(), // Ensures bounce effect while allowing scroll
+          ),
           children: [
             MainPage(goToPage: _goToPage),
             UploadPage(),
@@ -80,6 +82,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
+
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 0),
         child: FloatingActionButton(
