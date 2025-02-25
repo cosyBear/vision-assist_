@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
@@ -22,62 +23,66 @@ class _UploadBoxState extends State<UploadBox> {
   /// Function to pick a document and extract text using DocumentHandler.
   Future<void> _pickAndExtractDocument() async {
     try {
-      // Show "Select a file..." dialog.
+      // Step 1: Pick a file (runs on the UI thread)
+      String? filePath = await documentHandler.pickDocument();
+      if (filePath == null) {
+        return; // User canceled file selection.
+      }
+
+      // Step 2: Show the loading dialog.
       showDialog(
         context: context,
-        barrierDismissible: false, // Prevents dismissing the dialog by tapping outside.
+        barrierDismissible: false,
         builder: (BuildContext context) {
-          return const Dialogue(message: "select a file and wait...");
+          return const Dialogue(message: "Select a file and wait...");
         },
       );
 
-      // Use the document handler to pick the file and extract its text.
-      String? extractedText = await documentHandler.pickAndExtractText();
+      // Step 3: Offload text extraction to a background isolate.
+      // We pass the filePath to our helper function.
+      String? extractedText = await compute(extractTextInBackground, filePath);
+
+      // Step 4: Once extraction completes, close the dialog.
+      if (!mounted) return;
+      Navigator.pop(context); // Close the loading dialog.
+
       if (extractedText == null || extractedText.isEmpty) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("No text extracted from the document.")),
-          );
-        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("No text extracted from the document.")),
+        );
         return;
       }
 
-      // Close the "Select a file..." dialog.
-      if (context.mounted) Navigator.pop(context);
-
-
-      // Retrieve the file name from the document handler.
+      // Step 5: Save document details.
       String fileName = documentHandler.lastSelectedFileName ?? "Untitled Document";
+      final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+      documentProvider.addDocument(fileName, filePath);
 
-      // Save the document details in DocumentProvider.
-      final documentProvider =
-      Provider.of<DocumentProvider>(context, listen: false);
-      documentProvider.addDocument(fileName, documentHandler.lastSelectedFilePath ?? "");
-
-      // Update the text field and navigate to the DisplayPage.
+      // Step 6: Update the text field and navigate.
       setState(() {
         widget.controller.text = extractedText;
       });
-      if (context.mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DisplayPage(
-              title: extractedText,
-              documentName: fileName.isNotEmpty ? fileName : null,
-            ),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DisplayPage(
+            title: extractedText,
+            documentName: fileName.isNotEmpty ? fileName : null,
           ),
-        );
-      }
+        ),
+      );
     } catch (e) {
-      if (context.mounted) Navigator.pop(context);
-      if (context.mounted) {
+      if (mounted && Navigator.of(context).canPop()) {
+        Navigator.pop(context); // Ensure dialog is closed on error.
+      }
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error extracting text: $e")),
         );
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,4 +170,9 @@ class _UploadBoxState extends State<UploadBox> {
       ),
     );
   }
+}
+// This function runs in a background isolate to extract text.
+Future<String?> extractTextInBackground(String filePath) async {
+  final DocumentHandler documentHandler = DocumentHandler();
+  return await documentHandler.extractText(filePath);
 }
