@@ -31,7 +31,7 @@ class GlobalSetting extends StatelessWidget {
             ),
             // Gradient border for the button
             Container(
-              padding: EdgeInsets.all(1),
+              padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   begin: Alignment.centerLeft,

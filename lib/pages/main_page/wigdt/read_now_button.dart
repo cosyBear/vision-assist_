@@ -31,7 +31,7 @@ class ReadNowButton extends StatelessWidget {
           // ✅ Dynamic Radius
           side: BorderSide(
             color: const Color.fromRGBO(203, 105, 156, 1),
-            width: buttonIconsSize / 20,
+            width: buttonIconsSize / 15,
           ),
         ),
         minimumSize: Size(screenWidth * 0.25, buttonIconsSize * 1.2),

@@ -33,7 +33,7 @@ class FontButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: settings.backgroundColor,
-          side: BorderSide(color: buttonBorder, width: 1.5),
+          side: BorderSide(color: buttonBorder, width: 3),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         ),

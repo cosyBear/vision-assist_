@@ -39,7 +39,7 @@ class SettingsButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(50.0),
             side: BorderSide(
               color: borderColor,
-              width: 1.0,
+              width: 4.0,
             ),
           ),
         ),

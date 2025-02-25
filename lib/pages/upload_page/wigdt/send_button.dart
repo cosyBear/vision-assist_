@@ -41,7 +41,7 @@ class SendButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(buttonSize * 0.4), // ✅ Dynamic Radius
           side: BorderSide(
             color: const Color.fromRGBO(203, 105, 156, 1),
-            width: buttonSize / 20,
+            width: buttonSize / 15,
           ),
         ),
         minimumSize: Size(screenWidth * 0.20, buttonSize * 1.2),

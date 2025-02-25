@@ -20,24 +20,30 @@ class IconButtonSize extends StatelessWidget {
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize =
+          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
       maxButtonSize = 60.0;
     }
 
     return Scaffold(
       backgroundColor: settings.backgroundColor, // Dynamic background color
-      appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
+      appBar: NavbarWithReturnButton(
+          fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: Column(
         children: [
           // Centering the Icon and Button
           Expanded(
-            child: Center( // Ensures everything stays centered
+            child: Center(
+              // Ensures everything stays centered
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Centers items horizontally
-                crossAxisAlignment: CrossAxisAlignment.center, // Centers items vertically
+                mainAxisAlignment: MainAxisAlignment.center,
+                // Centers items horizontally
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // Centers items vertically
                 children: [
                   // First Icon (Centered)
-                  Icon(Icons.add_circle, color: Colors.grey, size: buttonIconsSize),
+                  Icon(Icons.add_circle,
+                      color: Colors.grey, size: buttonIconsSize),
 
                   SizedBox(width: spacing),
 
@@ -47,19 +53,26 @@ class IconButtonSize extends StatelessWidget {
                     style: TextButton.styleFrom(
                       backgroundColor: settings.backgroundColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(buttonIconsSize * 0.5), // ✅ Dynamic Radius
+                        borderRadius: BorderRadius.circular(
+                            buttonIconsSize * 0.5), // Rounded corners
                         side: BorderSide(
-                          color:  Colors.grey,
-                          width: 1.0,
+                          // This sets the **pink border**
+                          color: const Color.fromRGBO(203, 105, 156, 1),
+                          // Pink border
+                          width: buttonIconsSize /
+                                15, // Border thickness scales dynamically
                         ),
                       ),
-                      minimumSize: Size(screenWidth * 0.20, buttonIconsSize * 1.2), // Scales with icon size
-                      padding: const EdgeInsets.symmetric(vertical: 25 , horizontal: 15),
+                      padding: EdgeInsets.symmetric(
+                        vertical: buttonIconsSize * 0.4,
+                        horizontal: buttonIconsSize * 0.6,
+                      ),
                     ),
                     child: Text(
                       "Read Now",
                       style: TextStyle(
-                        fontSize: buttonIconsSize * 0.4, // Adjust text size dynamically
+                        fontSize: buttonIconsSize * 0.4,
+                        // Adjust text size dynamically
                         fontFamily: settings.fontFamily,
                         color: settings.textColor,
                       ),
@@ -72,15 +85,18 @@ class IconButtonSize extends StatelessWidget {
 
           // Bottom Control Buttons (Fixed at Bottom)
           Padding(
-            padding: EdgeInsets.only(bottom: screenHeight * 0.05), // Ensures spacing
+            padding: EdgeInsets.only(bottom: screenHeight * 0.05),
+            // Ensures spacing
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Decrease Button Icons Size
                 IconButton(
-                  icon: Icon(Icons.remove_circle_outline, color: Colors.grey, size: buttonIconsSize),
+                  icon: Icon(Icons.remove_circle_outline,
+                      color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
-                    if (settings.buttonIconsSize > 20) { // Prevent size from going too small
+                    if (settings.buttonIconsSize > 20) {
+                      // Prevent size from going too small
                       settings.setButtonIconsSize(settings.buttonIconsSize - 5);
                     }
                   },
@@ -90,7 +106,8 @@ class IconButtonSize extends StatelessWidget {
 
                 // **Number Showing Current Size (Added Here)**
                 Text(
-                  buttonIconsSize.toStringAsFixed(1), // Show button size with one decimal
+                  buttonIconsSize.toStringAsFixed(1),
+                  // Show button size with one decimal
                   style: TextStyle(
                     fontSize: 18,
                     color: settings.textColor,
@@ -102,9 +119,11 @@ class IconButtonSize extends StatelessWidget {
 
                 // Increase Button Icons Size
                 IconButton(
-                  icon: Icon(Icons.add_circle_outline_sharp, color: Colors.grey, size: buttonIconsSize),
+                  icon: Icon(Icons.add_circle_outline_sharp,
+                      color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
-                    if (settings.buttonIconsSize < maxButtonSize) { // Prevent excessive size
+                    if (settings.buttonIconsSize < maxButtonSize) {
+                      // Prevent excessive size
                       settings.setButtonIconsSize(settings.buttonIconsSize + 5);
                     }
                   },
