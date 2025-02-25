@@ -15,14 +15,15 @@ class DraggableButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: (details) {
-        // Instead of passing xPos/yPos, pass the delta (dx, dy)
+        // Pass the delta (dx, dy) instead of absolute positions
         onPositionChanged(details.delta.dx, details.delta.dy);
       },
-      child: Image.asset(
-        'assets/images/logo.png',
-        width: 60,
-        height: 60,
-      ),
-    );
+
+        child: const Icon(
+          Icons.add, // Big plus icon
+          color: Colors.grey, // Icon color
+          size: 100, // Bigger icon size
+        ),
+      );
   }
 }
