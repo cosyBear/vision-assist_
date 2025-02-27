@@ -18,7 +18,6 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     final viewInsets = MediaQuery.of(context).viewInsets; // Get keyboard's viewInsets
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       resizeToAvoidBottomInset: true, // Ensures proper resizing with the keyboard
@@ -28,6 +27,7 @@ class _UploadPageState extends State<UploadPage> {
           final availableHeight = constraints.maxHeight - viewInsets.bottom;
 
           return SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: availableHeight),
               child: Padding(
