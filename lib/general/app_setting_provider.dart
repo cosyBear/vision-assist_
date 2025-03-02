@@ -14,7 +14,7 @@ class AppSettingProvider with ChangeNotifier {
   bool _isPaused = false; // Track scrolling state
   double _xPos = 0; // Track x position of the focus point
   double _yPos = 0; // Track y position of the focus point
-  late double _buttonIconsSize; // Default size for button icons
+  late double _buttonIconsSize = 50 ; // Default size for button icons
 
   // ✅ Load settings when the app starts
   AppSettingProvider() {
@@ -65,7 +65,7 @@ class AppSettingProvider with ChangeNotifier {
         SettingBox.getSetting('scrollSpeed', 2.0); // Default scroll speed: 2
     _xPos = SettingBox.getSetting('xPos', 0.0); // Default x position: 0
     _yPos = SettingBox.getSetting('yPos', 0.0); // Default y position: 0
-    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", _buttonIconsSize) ;
+    _buttonIconsSize = SettingBox.getSetting("buttonIconsSize", 50.0).toDouble();
     // Notify listeners that settings have been loaded
     notifyListeners();
   }
@@ -102,36 +102,29 @@ class AppSettingProvider with ChangeNotifier {
 
   void setBackgroundColor(Color color) {
     if (color == _textColor) {
-      Color copy=_textColor;
-      _textColor=backgroundColor;
+      Color copy = _textColor;
+      _textColor = backgroundColor;
       _backgroundColor = copy;
       SettingBox.saveSetting('textColor', color.value);
+    } else {
+      _backgroundColor = color;
     }
-    else
-      {
-        _backgroundColor = color;
-      }
     SettingBox.saveSetting('backgroundColor', color.value);
     notifyListeners();
   }
 
   void setTextColor(Color color) {
-
     if (color == _backgroundColor) {
-
-      Color copy=_backgroundColor;
-     _backgroundColor= _textColor;
+      Color copy = _backgroundColor;
+      _backgroundColor = _textColor;
       _textColor = copy;
       SettingBox.saveSetting('backgroundColor', color.value);
+    } else {
+      _textColor = color;
     }
-    else
-      {
-        _textColor = color;
-      }
     SettingBox.saveSetting('textColor', color.value);
     notifyListeners();
   }
-  
 
   void setFontSize(double size) {
     _fontSize = size;
