@@ -22,7 +22,7 @@ class DocumentProvider extends ChangeNotifier {
   List<Document> get documents => _documents;
 
   Map<String, double> _scrollPositions = {}; // Stores document scroll positions
-  Map<String, double> _bookmarkedPositions = {}; // Stores bookmarked positions
+  Map<String, List<double>> _bookmarkedPositions = {}; // Store multiple bookmarks
 
   DocumentProvider() {
     _loadDocuments(); // Load saved documents on startup
@@ -41,18 +41,43 @@ class DocumentProvider extends ChangeNotifier {
     return prefs.getDouble('scroll_$documentName') ?? 0.0; // Default to top
   }
 
-  /// **Save Bookmark (Only When Pressing Bookmark Button)**
-  Future<void> saveBookmarkedPosition(String documentName, double position) async {
+  /// **Save a New Bookmark**
+  Future<void> addBookmark(String documentName, double position) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble('bookmark_$documentName', position);
-    _bookmarkedPositions[documentName] = position;
+    List<double> bookmarks = _bookmarkedPositions[documentName] ?? [];
+
+    if (!bookmarks.contains(position)) { // Avoid duplicates
+      bookmarks.add(position);
+      _bookmarkedPositions[documentName] = bookmarks;
+      await prefs.setString('bookmark_$documentName', jsonEncode(bookmarks));
+      notifyListeners();
+    }
   }
 
-  /// **Get Last Bookmarked Position**
-  Future<double> getBookmarkedPosition(String documentName) async {
+  /// **Get All Bookmarks for a Document**
+  Future<List<double>> getBookmarks(String documentName) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble('bookmark_$documentName') ?? 0.0; // Default to top
+    String? bookmarksJson = prefs.getString('bookmark_$documentName');
+
+    if (bookmarksJson != null) {
+      List<dynamic> decoded = jsonDecode(bookmarksJson);
+      return decoded.cast<double>();
+    }
+    return [];
   }
+
+  /// **Remove a Bookmark**
+  Future<void> removeBookmark(String documentName, double position) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<double> bookmarks = _bookmarkedPositions[documentName] ?? [];
+
+    bookmarks.remove(position);
+    _bookmarkedPositions[documentName] = bookmarks;
+
+    await prefs.setString('bookmark_$documentName', jsonEncode(bookmarks));
+    notifyListeners();
+  }
+
 
   /// **Get Document Path by Name**
   String? getDocumentPath(String name) {
@@ -63,12 +88,18 @@ class DocumentProvider extends ChangeNotifier {
     return document.name.isEmpty ? null : document.path;
   }
 
+
   /// **Add or Replace a Document**
   void addDocument(String name, String path) async {
     int existingIndex = _documents.indexWhere((doc) => doc.name == name);
 
     if (existingIndex != -1) {
+      // Document exists, replace it and reset bookmarks
       _documents[existingIndex] = Document(name: name, path: path);
+      // Reset bookmarks for the replaced document
+      _bookmarkedPositions[name] = [];
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('bookmark_$name'); // Remove bookmarks from SharedPreferences
     } else {
       _documents.add(Document(name: name, path: path));
     }
@@ -76,6 +107,7 @@ class DocumentProvider extends ChangeNotifier {
     notifyListeners();
     _saveDocuments();
   }
+
 
   /// **Save Document List to SharedPreferences**
   Future<void> _saveDocuments() async {

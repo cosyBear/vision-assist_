@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:steady_eye_2/pages/display_page/wigdt/bookmark_manager.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
 import '../../general/app_setting_provider.dart';
-import '../../general/document_provider.dart';
 import '../../general/navbar_with_return_button.dart';
 import 'wigdt/draggable_button.dart';
 
@@ -24,8 +23,6 @@ class _DisplayPageState extends State<DisplayPage> {
   double textOffset = 0;
 
   late ScrollController _scrollController;
-  double _bookmarkedPosition = 0.0;
-  bool _isRestored = false; // Prevent multiple restores
 
 
 
@@ -34,10 +31,6 @@ class _DisplayPageState extends State<DisplayPage> {
     super.initState();
 
     _scrollController = ScrollController();
-
-    if (widget.documentName != null) {
-      _restoreBookmarkPosition();
-    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
@@ -60,40 +53,6 @@ class _DisplayPageState extends State<DisplayPage> {
       });
     });
   }
-
-  /// Restores only the last **bookmarked** position
-  Future<void> _restoreBookmarkPosition() async {
-    if (widget.documentName == null || _isRestored) return;
-
-    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
-    double savedPosition = await documentProvider.getBookmarkedPosition(widget.documentName!);
-
-    setState(() {
-      _bookmarkedPosition = savedPosition;
-    });
-
-    // Ensure jumpTo() runs after the first frame is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(_bookmarkedPosition);
-        _isRestored = true; // Prevent multiple restores
-      }
-    });
-  }
-
-  /// Saves scroll position **only when the bookmark button is pressed**
-  void _bookmarkScrollPosition() {
-    if (widget.documentName == null) return;
-
-    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
-    documentProvider.saveBookmarkedPosition(widget.documentName!, _scrollController.offset);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Bookmark saved at ${_scrollController.offset}"))
-    );
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -179,20 +138,13 @@ class _DisplayPageState extends State<DisplayPage> {
                   alignment: Alignment.topRight,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    // Add padding for better spacing
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      // Align to the right
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.bookmark,
-                              size: buttonIconsSize, color: Colors.grey),
-                          onPressed:  _bookmarkScrollPosition,
-                        ),
-                      ],
+                    child: BookmarkManager(
+                      documentName: widget.documentName,
+                      scrollController: _scrollController,
                     ),
                   ),
                 ),
+
               ],
             );
           },
