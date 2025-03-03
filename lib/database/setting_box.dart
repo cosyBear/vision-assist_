@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +9,6 @@ class SettingBox {
   static Future<void> init() async {
     settingsBox = await Hive.openBox('settings');
 
-    // Get screen width
-
-    //for tablet and desktop, we need a bigger default font size
     // Get screen width correctly using PlatformDispatcher
     double screenWidth = PlatformDispatcher.instance.views.first.physicalSize.width /
         PlatformDispatcher.instance.views.first.devicePixelRatio;
@@ -26,6 +22,18 @@ class SettingBox {
     if (!settingsBox.containsKey('textColor')) {
       settingsBox.put('textColor', Colors.white.value);
     }
+
+    // Ensure that background and text color are not the same on first load
+    int backgroundColor = settingsBox.get('backgroundColor', defaultValue: Colors.black.value);
+    int textColor = settingsBox.get('textColor', defaultValue: Colors.white.value);
+
+    if (backgroundColor == textColor) {
+      // If both colors are the same, reset them to defaults
+      settingsBox.put('backgroundColor', Colors.black.value);
+      settingsBox.put('textColor', Colors.white.value);
+    }
+
+    // Set other settings if they don't exist
     if (!settingsBox.containsKey('fontSize')) {
       settingsBox.put('fontSize', defaultFontSize); // Use adjusted default
     }
@@ -38,11 +46,10 @@ class SettingBox {
     if (!settingsBox.containsKey('scrollSpeed')) {
       settingsBox.put('scrollSpeed', 2.0);
     }
-    if(!settingsBox.containsKey('buttonIconsSize')){
+    if (!settingsBox.containsKey('buttonIconsSize')) {
       settingsBox.put('buttonIconsSize', defaultIconButton);
     }
   }
-
 
   // Save and retrieve settings
   static void saveSetting(String key, dynamic value) {
