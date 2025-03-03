@@ -21,7 +21,6 @@ class BookCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
-    Color textColor = settings.textColor;
     double fontSize = settings.fontSize;
 
     return Column(
@@ -32,7 +31,7 @@ class BookCategory extends StatelessWidget {
           child: Text(
             category,
             style: TextStyle(
-              color: textColor,
+              color: Colors.grey,
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
             ),
