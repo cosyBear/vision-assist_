@@ -4,6 +4,7 @@ import 'package:steady_eye_2/pages/display_page/wigdt/bookmark_manager.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
 import '../../general/app_setting_provider.dart';
+import '../../general/document_provider.dart';
 import '../../general/navbar_with_return_button.dart';
 import 'wigdt/draggable_button.dart';
 
@@ -23,14 +24,22 @@ class _DisplayPageState extends State<DisplayPage> {
   double textOffset = 0;
 
   late ScrollController _scrollController;
-
-
+  double _bookmarkedPosition = 0.0;
+  bool _isRestored = false; // Prevent multiple restores
 
   @override
   void initState() {
     super.initState();
 
     _scrollController = ScrollController();
+
+    // Check if documentName is not null and only restore bookmark when it's done loading
+    if (widget.documentName != null) {
+      final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+      if (!documentProvider.loading) {
+        _restoreBookmarkPosition(); // Restore bookmark if data is already loaded
+      }
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
@@ -54,6 +63,34 @@ class _DisplayPageState extends State<DisplayPage> {
     });
   }
 
+  /// Restores only the last **bookmarked** position
+  Future<void> _restoreBookmarkPosition() async {
+    if (widget.documentName == null || _isRestored) return;
+
+    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+
+    // Wait until loading is complete
+    if (documentProvider.loading) return;  // Only proceed when the loading is finished
+
+    List<double> bookmarks = await documentProvider.getBookmarks(widget.documentName!);
+
+    if (bookmarks.isEmpty) return;  // Handle case when there are no bookmarks
+
+    double savedPosition = bookmarks.last;  // Get the last saved bookmark position
+
+    setState(() {
+      _bookmarkedPosition = savedPosition;
+    });
+
+    // Ensure jumpTo() runs after the first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_bookmarkedPosition);
+        _isRestored = true; // Prevent multiple restores
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
@@ -66,7 +103,7 @@ class _DisplayPageState extends State<DisplayPage> {
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
       buttonIconsSize =
-          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     return Scaffold(
@@ -144,7 +181,6 @@ class _DisplayPageState extends State<DisplayPage> {
                     ),
                   ),
                 ),
-
               ],
             );
           },

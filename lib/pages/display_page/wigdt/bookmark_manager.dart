@@ -19,21 +19,27 @@ class BookmarkManager extends StatelessWidget {
       return const SizedBox.shrink(); // Hide if no document name
     }
 
-    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+    final documentProvider =
+    Provider.of<DocumentProvider>(context, listen: false);
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
 
-    double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     double fontSize = settings.fontSize;
     double buttonIconsSize = settings.buttonIconsSize;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize =
+      settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     // Ensure an initial bookmark at position 0.0
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      List<double> bookmarks = await documentProvider.getBookmarks(documentName!);
+      List<double> bookmarks =
+      await documentProvider.getBookmarks(documentName!);
       if (!bookmarks.contains(0.0)) {
         documentProvider.addBookmark(documentName!, 0.0);
       }
@@ -45,14 +51,16 @@ class BookmarkManager extends StatelessWidget {
         size: buttonIconsSize,
         color: Color.fromRGBO(22, 173, 201, 1.0),
       ),
-      onPressed: () => _showBookmarkDialog(
-          context, fontSize, settings.fontFamily, buttonIconsSize),
+      onPressed: () =>
+          _showBookmarkDialog(
+              context, fontSize, settings.fontFamily, buttonIconsSize),
     );
   }
 
   void _showBookmarkDialog(BuildContext context, double fontSize,
       String fontFamily, double buttonIconSize) async {
-    final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+    final documentProvider =
+    Provider.of<DocumentProvider>(context, listen: false);
     List<double> bookmarks = await documentProvider.getBookmarks(documentName!);
     int index = 0;
 
@@ -66,7 +74,7 @@ class BookmarkManager extends StatelessWidget {
               Text(
                 "Bookmarks",
                 style: TextStyle(
-                    fontSize: fontSize * 1.3,
+                    fontSize: fontSize *1.3,
                     fontFamily: fontFamily,
                     color: Color.fromRGBO(203, 105, 156, 1.0)),
               ),
@@ -74,7 +82,7 @@ class BookmarkManager extends StatelessWidget {
                 icon: Icon(
                   Icons.close,
                   color: Colors.black,
-                  size: buttonIconSize,
+                  size: buttonIconSize
                 ),
                 onPressed: () => Navigator.pop(context), // Close the dialog
               ),
@@ -84,47 +92,48 @@ class BookmarkManager extends StatelessWidget {
             width: double.maxFinite,
             child: bookmarks.isEmpty
                 ? const Text("No bookmarks yet.")
-                : Scrollbar(  // Added Scrollbar widget
-              thumbVisibility: true, // Ensure the scrollbar is always visible
-              child: SingleChildScrollView(
-                controller: ScrollController(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: bookmarks.map((position) {
-                    index++;
-                    return ListTile(
-                      title: Text(
-                        "Bookmark $index at position $position",
-                        style: TextStyle(fontSize: fontSize, fontFamily: fontFamily),
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red, size: buttonIconSize),
-                        onPressed: () {
-                          documentProvider.removeBookmark(documentName!, position);
-                          Navigator.pop(context);
-                          _showBookmarkDialog(context, fontSize, fontFamily, buttonIconSize); // Refresh dialog
-                        },
-                      ),
-                      onTap: () {
-                        scrollController.jumpTo(position);
+                : SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: bookmarks.map((position) {
+                  index++;
+                  return ListTile(
+                    title: Text(
+                      "Bookmark $index at position $position",
+                      style: TextStyle(
+                          fontSize: fontSize, fontFamily: fontFamily),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete,
+                          color: Colors.red, size: buttonIconSize),
+                      onPressed: () {
+                        documentProvider.removeBookmark(
+                            documentName!, position);
                         Navigator.pop(context);
+                        _showBookmarkDialog(context, fontSize, fontFamily,
+                            buttonIconSize); // Refresh dialog
                       },
-                    );
-                  }).toList(),
-                ),
+                    ),
+                    onTap: () {
+                      scrollController.jumpTo(position);
+                      Navigator.pop(context);
+                    },
+                  );
+                }).toList(),
               ),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                documentProvider.addBookmark(documentName!, scrollController.offset);
+                documentProvider.addBookmark(
+                    documentName!, scrollController.offset);
                 Navigator.pop(context);
-                _showBookmarkDialog(context, fontSize, fontFamily, buttonIconSize); // Refresh dialog to show the new bookmark
+                _showBookmarkDialog(context, fontSize, fontFamily,
+                    buttonIconSize); // Refresh dialog to show the new bookmark
               },
               child: Text("Add Bookmark",
-                  style: TextStyle(
-                      color: Color.fromRGBO(22, 173, 201, 1.0),
+                  style: TextStyle(color: Color.fromRGBO(22, 173, 201, 1.0),
                       fontSize: fontSize)),
             ),
           ],
