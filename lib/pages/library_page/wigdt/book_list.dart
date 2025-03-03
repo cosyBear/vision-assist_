@@ -12,13 +12,14 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true, // ✅ Ensures ListView takes only necessary space
-      children: categorizedBooks.entries
-          .map((entry) => BookCategory(category: entry.key, books: entry.value))
-          .toList(),
+    return Scrollbar(
+      thumbVisibility: true,
+      child: ListView(
+        shrinkWrap: true, // ✅ Ensures ListView takes only necessary space
+        children: categorizedBooks.entries
+            .map((entry) => BookCategory(category: entry.key, books: entry.value))
+            .toList(),
+      ),
     );
   }
 }
-
-

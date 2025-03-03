@@ -52,7 +52,7 @@ class AppSettingProvider with ChangeNotifier {
 
     // Retrieve saved settings from Hive, if any; otherwise, use defaults
     _backgroundColor = SettingBox.getColorFromHive(
-        'backgroundColor', Colors.black); // Default color: red
+        'backgroundColor', Colors.black); // Default color: black
     _textColor = SettingBox.getColorFromHive(
         'textColor', Colors.white); // Default text color: white
     _fontSize =
@@ -76,11 +76,6 @@ class AppSettingProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // ✅ Convert color from Hive (Hive saves Colors as int values)
-  Color _getColorFromHive(String key, Color defaultColor) {
-    int? colorValue = SettingBox.getSetting(key, null);
-    return colorValue != null ? Color(colorValue) : defaultColor;
-  }
 
   // ✅ Convert saved int value of FontWeight to FontWeight enum
   FontWeight _getFontWeightFromHive(String key, FontWeight defaultWeight) {
@@ -104,8 +99,9 @@ class AppSettingProvider with ChangeNotifier {
     if (color == _textColor) {
       Color copy = _textColor;
       _textColor = backgroundColor;
+      SettingBox.saveSetting('textColor', backgroundColor.value);
+      notifyListeners();
       _backgroundColor = copy;
-      SettingBox.saveSetting('textColor', color.value);
     } else {
       _backgroundColor = color;
     }
@@ -117,8 +113,9 @@ class AppSettingProvider with ChangeNotifier {
     if (color == _backgroundColor) {
       Color copy = _backgroundColor;
       _backgroundColor = _textColor;
+      SettingBox.saveSetting('backgroundColor', _textColor.value);
+      notifyListeners();
       _textColor = copy;
-      SettingBox.saveSetting('backgroundColor', color.value);
     } else {
       _textColor = color;
     }
