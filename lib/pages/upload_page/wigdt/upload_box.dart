@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
+import 'camera_recognition.dart';
 import 'dialogue.dart';
 import 'send_button.dart'; // Import the SendButton widget
 
@@ -150,7 +151,10 @@ class _UploadBoxState extends State<UploadBox> {
                     padding: EdgeInsets.zero,
                     icon: Icon(Icons.camera_alt,
                         color: Colors.grey[600], size: buttonIconsSize),
-                    onPressed: () => print("Picture taken"),
+                    onPressed: () =>  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CameraRecognition()),
+                    ),
                   ),
                 ],
               ),

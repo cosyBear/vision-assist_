@@ -51,6 +51,9 @@ dependencies:
   epubx: ^4.0.0
   shared_preferences: ^2.2.2
   flutter_keyboard_visibility: ^6.0.0
+  image_picker: ^0.8.5 # Or any version that fits your needs
+#  google_ml_kit: ^0.9.0
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:
