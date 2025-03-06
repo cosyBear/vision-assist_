@@ -49,8 +49,9 @@ dependencies:
   syncfusion_flutter_pdf: ^28.2.6
   markdown: ^7.3.0
   epubx: ^4.0.0
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.2
   flutter_keyboard_visibility: ^6.0.0
+  tutorial_coach_mark: ^1.2.13
 
 dev_dependencies:
   flutter_test:

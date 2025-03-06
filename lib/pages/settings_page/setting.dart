@@ -1,18 +1,187 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
-import 'package:steady_eye_2/pages/settings_page/widgt/settings_button.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../font_page/font_page.dart';
 import '../color_page/colors.dart';
 import '../icon_button/icon_button.dart';
+import 'widgt/settings_button.dart';
 
-/*
-  This class is the main page for the settings.
-  It contains two buttons that will navigate to the TextSizeFonts and BackGroundTextColor pages.
-  It uses the SettingsButton class.
- */
-class GlobalSetting extends StatelessWidget {
-  const GlobalSetting({super.key});
+class GlobalSetting extends StatefulWidget {
+  const GlobalSetting({Key? key}) : super(key: key);
+
+  @override
+  State<GlobalSetting> createState() => _GlobalSettingState();
+}
+
+class _GlobalSettingState extends State<GlobalSetting> {
+  // GlobalKeys for each SettingsButton.
+  final GlobalKey _textButtonKey = GlobalKey();
+  final GlobalKey _iconButtonKey = GlobalKey();
+  final GlobalKey _colorButtonKey = GlobalKey();
+
+  TutorialCoachMark? tutorialCoachMark;
+
+  @override
+  void initState() {
+    super.initState();
+    // Wait until layout is complete, then check if tutorial needs to be shown.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _showTutorialIfNeeded();
+      });
+    });
+  }
+
+  Future<void> _showTutorialIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Use a unique key to track if the tutorial has been shown.
+    bool hasShown = prefs.getBool('globalSettingTutorialShown') ?? false;
+    if (!hasShown) {
+      _showTutorial();
+      await prefs.setBool('globalSettingTutorialShown', true);
+    }
+  }
+
+  void _showTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      alignSkip: Alignment.topRight,
+      onFinish: () {
+        debugPrint('Tutorial finished');
+        return true;
+      },
+      onSkip: () {
+        debugPrint('Tutorial skipped');
+        return true;
+      },
+    );
+    tutorialCoachMark?.show(context: context);
+  }
+
+  List<TargetFocus> _createTargets() {
+    // Get the text color from your settings.
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    final textColor = settings.textColor;
+    return [
+      // Target for the TEXT button: Show overlay content to the RIGHT.
+      TargetFocus(
+        identify: "TextButton",
+        keyTarget: _textButtonKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            // Align content to the right of the target.
+            align: ContentAlign.right,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Arrow removed.
+                  const SizedBox(height: 10),
+                  Text(
+                    "Adjust Text",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Tap here to change text size and fonts.",
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      // Target for the BUTTON (IconButtonSize) button: Show overlay content at the TOP.
+      TargetFocus(
+        identify: "IconButtonSize",
+        keyTarget: _iconButtonKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            // Align content to the top of the target.
+            align: ContentAlign.top,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Arrow removed.
+                  const SizedBox(height: 10),
+                  Text(
+                    "Adjust Button",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Tap here to adjust icon button sizes.",
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      // Target for the COLOR button: Show overlay content to the LEFT.
+      TargetFocus(
+        identify: "ColorButton",
+        keyTarget: _colorButtonKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            // Align content to the left of the target.
+            align: ContentAlign.left,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Arrow removed.
+                  const SizedBox(height: 10),
+                  Text(
+                    "Adjust Color",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Tap here to change background and text colors.",
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,40 +192,44 @@ class GlobalSetting extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            // Attach GlobalKey to the TEXT SettingsButton.
             SettingsButton(
+              key: _textButtonKey,
               text: "TEXT",
               page: TextSizeFonts(),
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
-            // Gradient border for the button
+            // Gradient border for the BUTTON (IconButtonSize).
             Container(
-              padding: EdgeInsets.all(4),
+              padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Color.fromRGBO(203, 105, 156, 1.0), // Pink on the left
-                    Color.fromRGBO(22, 173, 201, 1.0), // Blue on the right
+                    Color.fromRGBO(203, 105, 156, 1.0),
+                    Color.fromRGBO(22, 173, 201, 1.0),
                   ],
                 ),
-                borderRadius: BorderRadius.circular(50.0), // Matches button shape
+                borderRadius: BorderRadius.circular(50.0),
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  // color: Colors.white, // Background color inside the border
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: SettingsButton(
+                  key: _iconButtonKey,
                   text: "BUTTON",
                   page: IconButtonSize(),
                   settings: settings,
-                  borderColor: Colors.transparent, // Transparent since border is external
+                  borderColor: Colors.transparent,
                 ),
               ),
             ),
+            // Attach GlobalKey to the COLOR SettingsButton.
             SettingsButton(
+              key: _colorButtonKey,
               text: "COLOR",
               page: BackGroundTextColor(),
               settings: settings,

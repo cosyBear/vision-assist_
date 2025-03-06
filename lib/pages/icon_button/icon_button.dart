@@ -1,11 +1,172 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../general/navbar_with_return_button.dart';
 
-class IconButtonSize extends StatelessWidget {
-  const IconButtonSize({super.key});
+class IconButtonSize extends StatefulWidget {
+  const IconButtonSize({Key? key}) : super(key: key);
+
+  @override
+  State<IconButtonSize> createState() => _IconButtonSizeState();
+}
+
+class _IconButtonSizeState extends State<IconButtonSize> {
+  // GlobalKeys for our tutorial targets.
+  final GlobalKey _sampleTextKey = GlobalKey();
+  final GlobalKey _minusKey = GlobalKey();
+  final GlobalKey _plusKey = GlobalKey();
+
+  TutorialCoachMark? tutorialCoachMark;
+
+  @override
+  void initState() {
+    super.initState();
+    // Delay until layout is ready, then check if the tutorial should be shown.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _showTutorialIfNeeded();
+      });
+    });
+  }
+
+  Future<void> _showTutorialIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+    // Use a unique key so that the tutorial only appears the first time.
+    bool hasShown = prefs.getBool('iconButtonSizeTutorialShown') ?? false;
+    if (!hasShown) {
+      _showTutorial();
+      await prefs.setBool('iconButtonSizeTutorialShown', true);
+    }
+  }
+
+  void _showTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      alignSkip: Alignment.topRight,
+      onFinish: () {
+        debugPrint('Tutorial finished');
+        return true;
+      },
+      onSkip: () {
+        debugPrint('Tutorial skipped');
+        return true;
+      },
+    );
+    tutorialCoachMark?.show(context: context);
+  }
+
+  List<TargetFocus> _createTargets() {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    final textColor = settings.textColor;
+    return [
+      // Target 1: Sample text button ("I love reading").
+      TargetFocus(
+        identify: "SampleText",
+        keyTarget: _sampleTextKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Sample Text",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "This shows you how your text will look.",
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      // Target 2: Minus button.
+      TargetFocus(
+        identify: "DecreaseSize",
+        keyTarget: _minusKey,
+        shape: ShapeLightFocus.Circle,
+        paddingFocus: 8.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Make Text Smaller",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Tap here to decrease the text size.",
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      // Target 3: Plus button.
+      TargetFocus(
+        identify: "IncreaseSize",
+        keyTarget: _plusKey,
+        shape: ShapeLightFocus.Circle,
+        paddingFocus: 8.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Make Text Bigger",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Tap here to increase the text size.",
+                    style: TextStyle(color: textColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,50 +178,39 @@ class IconButtonSize extends StatelessWidget {
     double maxButtonSize = 100.0; // Maximum button size
 
     double fontSize = settings.fontSize;
-
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize =
-          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
       maxButtonSize = 60.0;
     }
 
     return Scaffold(
-      backgroundColor: settings.backgroundColor, // Dynamic background color
+      backgroundColor: settings.backgroundColor,
       appBar: NavbarWithReturnButton(
           fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: Column(
         children: [
-          // Centering the Icon and Button
+          // Centering the Icon and Sample Text Button.
           Expanded(
             child: Center(
-              // Ensures everything stays centered
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                // Centers items horizontally
                 crossAxisAlignment: CrossAxisAlignment.center,
-                // Centers items vertically
                 children: [
-                  // First Icon (Centered)
                   Icon(Icons.add_circle,
                       color: Colors.grey, size: buttonIconsSize),
-
                   SizedBox(width: spacing),
-
-                  // Placeholder Button (Styled like ReadNowButton with Dynamic Radius)
+                  // Sample text button, showing "I love reading".
                   TextButton(
-                    onPressed: () {}, // Placeholder function
+                    key: _sampleTextKey,
+                    onPressed: () {}, // For demonstration only.
                     style: TextButton.styleFrom(
                       backgroundColor: settings.backgroundColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            buttonIconsSize * 0.5), // Rounded corners
+                        borderRadius: BorderRadius.circular(buttonIconsSize * 0.5),
                         side: BorderSide(
-                          // This sets the **pink border**
                           color: const Color.fromRGBO(203, 105, 156, 1),
-                          // Pink border
-                          width: buttonIconsSize /
-                                15, // Border thickness scales dynamically
+                          width: buttonIconsSize / 15,
                         ),
                       ),
                       padding: EdgeInsets.symmetric(
@@ -69,10 +219,9 @@ class IconButtonSize extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Read Now",
+                      "I love reading",
                       style: TextStyle(
                         fontSize: buttonIconsSize * 0.4,
-                        // Adjust text size dynamically
                         fontFamily: settings.fontFamily,
                         color: settings.textColor,
                       ),
@@ -82,48 +231,41 @@ class IconButtonSize extends StatelessWidget {
               ),
             ),
           ),
-
-          // Bottom Control Buttons (Fixed at Bottom)
+          // Bottom Control Buttons (plus and minus).
           Padding(
             padding: EdgeInsets.only(bottom: screenHeight * 0.05),
-            // Ensures spacing
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Decrease Button Icons Size
+                // Minus button (to decrease text size)
                 IconButton(
+                  key: _minusKey,
                   icon: Icon(Icons.remove_circle_outline,
                       color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize > 20) {
-                      // Prevent size from going too small
                       settings.setButtonIconsSize(settings.buttonIconsSize - 5);
                     }
                   },
                 ),
-
                 SizedBox(width: spacing),
-
-                // **Number Showing Current Size (Added Here)**
+                // Display current button size.
                 Text(
                   buttonIconsSize.toStringAsFixed(1),
-                  // Show button size with one decimal
                   style: TextStyle(
                     fontSize: 18,
                     color: settings.textColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 SizedBox(width: spacing),
-
-                // Increase Button Icons Size
+                // Plus button (to increase text size)
                 IconButton(
+                  key: _plusKey,
                   icon: Icon(Icons.add_circle_outline_sharp,
                       color: Colors.grey, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize < maxButtonSize) {
-                      // Prevent excessive size
                       settings.setButtonIconsSize(settings.buttonIconsSize + 5);
                     }
                   },
