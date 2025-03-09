@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/color_grid.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/text_preview.dart';
-
 import '../../general/navbar_with_return_button.dart';
 
 /*
@@ -54,8 +52,8 @@ class BackGroundTextColor extends StatelessWidget {
                       colors: [
                         Colors.black,
                         Colors.white,
-                        const Color.fromRGBO(242, 226, 201, 1),
-                        const Color.fromRGBO(122, 252, 206, 1),
+                        const Color.fromRGBO(255, 255, 0, 1.0),
+                        const Color.fromRGBO(0, 255, 0, 1.0)
                       ],
                       onTap: (color) => settings.setTextColor(color),
                       label: "Text Color",
@@ -87,8 +85,8 @@ class BackGroundTextColor extends StatelessWidget {
                       colors: [
                         Colors.black,
                         Colors.white,
-                        const Color.fromRGBO(242, 226, 201, 1),
-                        const Color.fromRGBO(122, 252, 206, 1),
+                        const Color.fromRGBO(255, 255, 0, 1.0),
+                        const Color.fromRGBO(0, 255, 0, 1.0)
                       ],
                       onTap: (color) => settings.setBackgroundColor(color),
                       label: "Background Color",

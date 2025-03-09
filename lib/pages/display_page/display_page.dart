@@ -150,6 +150,10 @@ class _DisplayPageState extends State<DisplayPage> {
                         final minY = 0.0;
                         final maxY = availableHeight - buttonSize;
 
+                        // Variable for storing the current y position
+                        // of the button before it's clamped
+                        double currentYPos = yPos;
+
                         // Clamp to keep the button in view
                         xPos = xPos.clamp(minX, maxX);
                         yPos = yPos.clamp(minY, maxY);
@@ -160,11 +164,11 @@ class _DisplayPageState extends State<DisplayPage> {
 
                         // Adjust text offset based on button position
                         final textMiddleY = availableHeight / 2;
-                        if (yPos > textMiddleY + 20) {
-                          textOffset = -20;
-                        } else if (yPos < textMiddleY - 20) {
-                          textOffset = 20;
-                        } else {
+                        if (currentYPos > textMiddleY) {
+                          textOffset = -60;
+                        } else if (currentYPos < textMiddleY - 40) {
+                          textOffset = 60;
+                        }  else {
                           textOffset = 0;
                         }
                       });
@@ -172,7 +176,7 @@ class _DisplayPageState extends State<DisplayPage> {
                   ),
                 ),
                 Align(
-                  alignment: Alignment.topRight,
+                  alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: BookmarkManager(
