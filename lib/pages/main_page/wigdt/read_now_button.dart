@@ -39,7 +39,7 @@ class ReadNowButton extends StatelessWidget {
       child: Text(
         "Read Now",
         style: TextStyle(
-          fontSize: buttonIconsSize * 0.4, // Adjust text size dynamically
+          fontSize: buttonIconsSize * 0.8, // Adjust text size dynamically
           fontFamily: settings.fontFamily,
           fontWeight: FontWeight.bold,
           color: settings.textColor,
