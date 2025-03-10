@@ -7,11 +7,6 @@ import '../../../general/app_setting_provider.dart';
 import '../../../general/navbar_with_return_button.dart';
 import '../../display_page/display_page.dart';
 
-/* CameraRecognition is a StatefulWidget that handles image picking and text recognition.
-   It uses the ImagePicker plugin to pick images from the camera or gallery.
-   Then it uses Google ML Kit's Text Recognition API to extract text from the image.
-   The extracted text is then passed to the DisplayPage for reading.
- */
 class CameraRecognition extends StatefulWidget {
   const CameraRecognition({super.key});
 
@@ -20,56 +15,83 @@ class CameraRecognition extends StatefulWidget {
 }
 
 class _CameraRecognitionState extends State<CameraRecognition> {
-  final ImagePicker _picker = ImagePicker(); // Instance to pick images
+  final ImagePicker _picker = ImagePicker();
   String extractedText = "";
+  bool isDialogVisible = false;
 
-  // Function to pick an image either from the camera or gallery.
   Future<void> _pickImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source); // Pick image based on the source
+    final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
-      // If an image is picked, extract text from it
-      await _extractTextFromImage(File(image.path)); // Pass the image to the extraction function
+      _showLoadingDialog();
+      await _extractTextFromImage(File(image.path));
     }
   }
 
-  // Function to extract text from the image using Google ML Kit's Text Recognition API.
   Future<void> _extractTextFromImage(File imageFile) async {
-    final inputImage = InputImage.fromFile(imageFile); // Convert image to InputImage format for ML Kit
-    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin); // Set up the text recognizer for Latin script
+    final inputImage = InputImage.fromFile(imageFile);
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
     try {
-      // Process the image and extract text
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
-      String extracted = recognizedText.text; // Get the recognized text
+      String extracted = recognizedText.text;
+
+      _dismissLoadingDialog();
+
       if (extracted.isNotEmpty) {
-        // If text is found, update the state and navigate to DisplayPage
         setState(() {
           extractedText = extracted;
         });
-        Navigator.push(
+
+        // Navigate to DisplayPage and wait for the user to return
+        await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DisplayPage(title: extractedText), // Pass the extracted text to DisplayPage
+            builder: (context) => DisplayPage(title: extractedText),
           ),
         );
+
+        // After DisplayPage is closed, navigate back to Upload Page
+        if (mounted) Navigator.pop(context);
       } else {
-        // If no text is found in the image, show a SnackBar message
         _showSnackBar("No text found in the image.");
       }
     } catch (e) {
-      // Handle errors during text recognition
       _showSnackBar("Error extracting text: $e");
     } finally {
-      // Always close the text recognizer after usage
       textRecognizer.close();
     }
   }
 
-  // Function to show a SnackBar with a given message.
+  void _showLoadingDialog() {
+    if (!isDialogVisible) {
+      isDialogVisible = true;
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
+    }
+  }
+
+  void _dismissLoadingDialog() {
+    if (isDialogVisible) {
+      isDialogVisible = false;
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _dismissLoadingDialog();
   }
 
   @override
@@ -82,20 +104,46 @@ class _CameraRecognitionState extends State<CameraRecognition> {
     return Scaffold(
       appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Vertically center widgets
-          children: [
-            IconButton(
-              icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
-              onPressed: () => _pickImage(ImageSource.camera), // Call _pickImage with camera as source
-            ),
-            IconButton(
-              icon: Icon(Icons.image, color: textColor, size: buttonIconsSize),
-              onPressed: () => _pickImage(ImageSource.gallery), // Call _pickImage with gallery as source
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0), // Add padding for spacing
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Vertically center widgets
+            crossAxisAlignment: CrossAxisAlignment.center, // Align widgets horizontally
+            children: [
+              // Camera Icon with text description
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
+                    onPressed: () => _pickImage(ImageSource.camera), // Call _pickImage with camera as source
+                    tooltip: "Capture image with camera", // Accessibility description
+                  ),
+                  Text(
+                    "Take a Photo",
+                    style: TextStyle(fontSize: fontSize, color: textColor),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20), // Add space between buttons
+              // Gallery Icon with text description
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.image, color: textColor, size: buttonIconsSize),
+                    onPressed: () => _pickImage(ImageSource.gallery), // Call _pickImage with gallery as source
+                    tooltip: "Select image from gallery", // Accessibility description
+                  ),
+                  Text(
+                    "Choose from Gallery",
+                    style: TextStyle(fontSize: fontSize, color: textColor),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
