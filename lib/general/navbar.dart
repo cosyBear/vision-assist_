@@ -1,23 +1,26 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
-import '../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
+import '../general/app_setting_provider.dart';
+import 'language_provider.dart';
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(int) onIconPressed;
-  final int currentIndex; // Track the active page
+  final int currentIndex;
 
   const Navbar({super.key, required this.onIconPressed, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     final setting = Provider.of<AppSettingProvider>(context);
+    final languageProvider = Provider.of<LanguageProvider>(context);
     double buttonIconsSize = setting.buttonIconsSize;
 
     // Function to determine icon color based on active page
     Color getIconColor(int index) {
-      return currentIndex == index ? Color.fromRGBO(203, 105, 156, 1) : Colors.grey;
+      return currentIndex == index ? const Color.fromRGBO(203, 105, 156, 1) : Colors.grey;
     }
 
     return Container(
@@ -51,19 +54,29 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     onPressed: () => onIconPressed(2),
                   ),
                   IconButton(
-                    icon: Icon(Icons.library_books_outlined,
-                        color: getIconColor(3), size: buttonIconsSize),
+                    icon: Icon(Icons.library_books_outlined, color: getIconColor(3), size: buttonIconsSize),
                     onPressed: () => onIconPressed(3),
                   ),
 
+                  // 🌍 Language Toggle Button
+                  IconButton(
+                    icon: const Icon(Icons.language, color: Colors.white),
+                    onPressed: () {
+                      languageProvider.changeLanguage(
+                        languageProvider.locale.languageCode == 'en'
+                            ? const Locale('nl', 'NL')
+                            : const Locale('en', 'US'),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
 
-            // Centered Title (GradientText)
+            // Centered Title (GradientText) - Uses Localization
             Center(
               child: GradientText(
-                "SteadyEye",
+                context.tr("app_title"), // ✅ Uses translation key
                 style: TextStyle(fontSize: setting.fontSize, fontFamily: setting.fontFamily),
                 colors: const [
                   Color.fromRGBO(203, 105, 156, 1.0),
