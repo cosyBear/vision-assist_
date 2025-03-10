@@ -22,6 +22,7 @@ class BookCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     double fontSize = settings.fontSize;
+    Color textColor = settings.textColor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +32,7 @@ class BookCategory extends StatelessWidget {
           child: Text(
             category,
             style: TextStyle(
-              color: Colors.grey,
+              color: textColor,
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
             ),

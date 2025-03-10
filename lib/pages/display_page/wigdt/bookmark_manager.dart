@@ -22,6 +22,7 @@ class BookmarkManager extends StatelessWidget {
     final documentProvider =
     Provider.of<DocumentProvider>(context, listen: false);
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    Color textColor = settings.textColor;
 
     double screenWidth = MediaQuery
         .of(context)
@@ -49,7 +50,7 @@ class BookmarkManager extends StatelessWidget {
       icon: Icon(
         Icons.bookmarks,
         size: buttonIconsSize,
-        color: Color.fromRGBO(22, 173, 201, 1.0),
+        color: textColor,
       ),
       onPressed: () =>
           _showBookmarkDialog(

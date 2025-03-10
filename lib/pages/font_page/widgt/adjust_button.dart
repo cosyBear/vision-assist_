@@ -20,11 +20,12 @@ class AdjustButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     double buttonSize = settings.buttonIconsSize; // Get the button size from settings
+    Color textColor = settings.textColor;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: buttonSize * 0.2), // Adjust padding dynamically
       child: IconButton(
-        icon: Icon(icon, size: buttonSize, color: Colors.grey), // Dynamic icon size
+        icon: Icon(icon, size: buttonSize, color: textColor), // Dynamic icon size
         onPressed: onPressed,
       ),
     );

@@ -49,7 +49,7 @@ class SendButton extends StatelessWidget {
       child: Text(
         "Start",
         style: TextStyle(
-          fontSize: buttonSize * 0.4, // Adjust text size dynamically
+          fontSize: buttonSize * 0.8, // Adjust text size dynamically
           fontFamily: settings.fontFamily,
           fontWeight: FontWeight.bold,
           color: settings.textColor,

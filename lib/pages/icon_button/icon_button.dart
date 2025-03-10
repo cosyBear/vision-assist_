@@ -172,6 +172,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
     double buttonIconsSize = settings.buttonIconsSize;
+    Color textColor = settings.textColor;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final spacing = screenWidth * 0.05;
@@ -198,7 +199,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(Icons.add_circle,
-                      color: Colors.grey, size: buttonIconsSize),
+                      color: textColor, size: buttonIconsSize),
                   SizedBox(width: spacing),
                   // Sample text button, showing "I love reading".
                   TextButton(
@@ -241,7 +242,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 IconButton(
                   key: _minusKey,
                   icon: Icon(Icons.remove_circle_outline,
-                      color: Colors.grey, size: buttonIconsSize),
+                      color: textColor, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize > 20) {
                       settings.setButtonIconsSize(settings.buttonIconsSize - 5);
@@ -263,7 +264,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 IconButton(
                   key: _plusKey,
                   icon: Icon(Icons.add_circle_outline_sharp,
-                      color: Colors.grey, size: buttonIconsSize),
+                      color: textColor, size: buttonIconsSize),
                   onPressed: () {
                     if (settings.buttonIconsSize < maxButtonSize) {
                       settings.setButtonIconsSize(settings.buttonIconsSize + 5);
