@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 import '../../../general/app_setting_provider.dart';
 
 class ReadNowButton extends StatelessWidget {
@@ -37,7 +38,7 @@ class ReadNowButton extends StatelessWidget {
         minimumSize: Size(screenWidth * 0.25, buttonIconsSize * 1.2),
       ),
       child: Text(
-        "Read Now",
+        context.tr('readButton'),
         style: TextStyle(
           fontSize: buttonIconsSize * 0.8, // Adjust text size dynamically
           fontFamily: settings.fontFamily,

@@ -60,7 +60,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 
                   // 🌍 Language Toggle Button
                   IconButton(
-                    icon: const Icon(Icons.language, color: Colors.white),
+                    icon:  Icon(Icons.translate_outlined, color: getIconColor(3), size: buttonIconsSize),
                     onPressed: () {
                       languageProvider.changeLanguage(
                         languageProvider.locale.languageCode == 'en'
@@ -76,7 +76,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             // Centered Title (GradientText) - Uses Localization
             Center(
               child: GradientText(
-                context.tr("app_title"), // ✅ Uses translation key
+                context.tr("SteadyEye"), // ✅ Uses translation key
                 style: TextStyle(fontSize: setting.fontSize, fontFamily: setting.fontFamily),
                 colors: const [
                   Color.fromRGBO(203, 105, 156, 1.0),
