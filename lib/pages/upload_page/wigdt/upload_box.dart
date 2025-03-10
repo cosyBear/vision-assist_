@@ -222,6 +222,7 @@ class _UploadBoxState extends State<UploadBox> {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = settings.fontSize;
     double buttonIconsSize = settings.buttonIconsSize;
+    Color textColor = settings.textColor;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
@@ -274,13 +275,13 @@ class _UploadBoxState extends State<UploadBox> {
                     key: _clipKey,
                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     icon: Icon(Icons.attach_file,
-                        color: Colors.grey[600], size: buttonIconsSize),
+                        color: textColor, size: buttonIconsSize),
                     onPressed: _pickAndExtractDocument,
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
                     icon: Icon(Icons.camera_alt,
-                        color: Colors.grey[600], size: buttonIconsSize),
+                        color: textColor, size: buttonIconsSize),
                     onPressed: () => debugPrint("Picture taken"),
                   ),
                 ],

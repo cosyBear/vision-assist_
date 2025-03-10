@@ -40,6 +40,7 @@ class _ScrollControlsState extends State<ScrollControls> {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
+    Color textColor = settings.textColor;
 
     return Align(
       alignment: Alignment.bottomCenter,
@@ -55,15 +56,15 @@ class _ScrollControlsState extends State<ScrollControls> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.remove_circle_outline, size: 50, color: Colors.grey),
+                icon: Icon(Icons.remove_circle_outline, size: 50, color: textColor),
                 onPressed: _decreaseScrollSpeed,
               ),
               IconButton(
-                icon: Icon(settings.isPaused ? Icons.play_circle : Icons.pause_circle, size: 50, color: Colors.grey),
+                icon: Icon(settings.isPaused ? Icons.play_circle : Icons.pause_circle, size: 50, color: textColor),
                 onPressed: _togglePause,
               ),
               IconButton(
-                icon: Icon(Icons.add_circle_outline, size: 50, color: Colors.grey),
+                icon: Icon(Icons.add_circle_outline, size: 50, color: textColor),
                 onPressed: _increaseScrollSpeed,
               ),
             ],
