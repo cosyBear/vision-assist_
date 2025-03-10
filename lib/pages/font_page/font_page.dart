@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import '../../general/app_setting_provider.dart';
 import '../../general/navbar_with_return_button.dart';
@@ -251,7 +252,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                 Container(
                   key: _sampleTextKey,
                   child: Text(
-                    "I love Reading!",
+                    context.tr('placeholderText'),
                     style: TextStyle(
                       fontSize: currentFontSize,
                       color: settings.textColor,

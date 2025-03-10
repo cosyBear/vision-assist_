@@ -4,6 +4,19 @@
   "upload": "Uploaden",
   "library": "Bibliotheek",
   "change_language": "Taal wijzigen",
-  "readButton": "lees nu"
+  "readButton": "Lees nu",
 
+  "uploadText": "Upload, voeg in of maak een foto",
+  "enterText": "Voer tekst in...",
+  "selectAndWait": "Selecteer een bestand en wacht...",
+
+  "text": "TEKST",
+  "color": "KLEUR",
+  "button": "KNOP",
+  "search": "Zoeken",
+
+  "textColor": "Tekstkleur",
+  "preview": "Voorbeeld",
+  "bgColor": "Achtergrondkleur",
+  "placeholderText": "Ik hou van lezen!"
 }

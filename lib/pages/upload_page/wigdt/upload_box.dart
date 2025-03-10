@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
@@ -168,7 +169,7 @@ class _UploadBoxState extends State<UploadBox> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const Dialogue(message: "Select a file and wait...");
+          return Dialogue(message:  context.tr('selectAndWait'));
         },
       );
 
@@ -256,8 +257,8 @@ class _UploadBoxState extends State<UploadBox> {
                         fontSize: fontSize,
                         color: settings.textColor,
                       ),
-                      decoration: const InputDecoration(
-                        hintText: "Enter text...",
+                      decoration: InputDecoration(
+                        hintText:  context.tr('enterText'),
                         border: InputBorder.none,
                       ),
                     ),

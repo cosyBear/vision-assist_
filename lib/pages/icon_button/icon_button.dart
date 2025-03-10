@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import '../../general/navbar_with_return_button.dart';
 
@@ -220,7 +221,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                       ),
                     ),
                     child: Text(
-                      "I love reading",
+                      context.tr('placeholderText'),
                       style: TextStyle(
                         fontSize: buttonIconsSize * 0.4,
                         fontFamily: settings.fontFamily,

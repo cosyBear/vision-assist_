@@ -4,5 +4,20 @@
   "upload": "Upload",
   "library": "Library",
   "change_language": "Change Language",
-  "readButton": "Read now"
+  "readButton": "Read now",
+
+
+  "uploadText": " Upload, insert or take a picture",
+  "enterText": "Enter text...",
+  "selectAndWait" : "Select a file and wait...",
+
+  "text": "TEXT",
+  "color": "COLOR",
+  "button": "BUTTON",
+  "search": "Search",
+
+  "textColor": "Text color",
+  "preview": "Preview",
+  "bgColor": "Background color",
+  "placeholderText": "I love Reading!"
 }

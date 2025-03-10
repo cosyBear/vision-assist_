@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/color_grid.dart';
 import 'package:steady_eye_2/pages/color_page/wigdt/text_preview.dart';
 import '../../general/navbar_with_return_button.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 /*
   This class is the main page for the BackGroundTextColor page.
@@ -56,7 +57,7 @@ class BackGroundTextColor extends StatelessWidget {
                         const Color.fromRGBO(0, 255, 0, 1.0)
                       ],
                       onTap: (color) => settings.setTextColor(color),
-                      label: "Text Color",
+                      label: context.tr('textColor'),
                       fontSize: settings.fontSize,
                       textColor: settings.textColor,
                       gridWidth: gridWidth,
@@ -70,7 +71,7 @@ class BackGroundTextColor extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextPreview(
-                      text: "Preview",
+                      text: context.tr('preview'),
                       textColor: settings.textColor,
                       backgroundColor: settings.backgroundColor,
                       fontSize: settings.fontSize,
@@ -89,7 +90,7 @@ class BackGroundTextColor extends StatelessWidget {
                         const Color.fromRGBO(0, 255, 0, 1.0)
                       ],
                       onTap: (color) => settings.setBackgroundColor(color),
-                      label: "Background Color",
+                      label: context.tr('bgColor'),
                       fontSize: settings.fontSize,
                       textColor: settings.textColor,
                       gridWidth: gridWidth,

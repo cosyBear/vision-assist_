@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 class UploadText extends StatelessWidget {
   const UploadText({super.key});
@@ -22,7 +23,7 @@ class UploadText extends StatelessWidget {
     return Padding(
       padding:  EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Text(
-        "Upload, insert or take a picture",
+        context.tr('uploadText'),
         style: TextStyle(
           fontSize: fontSize, // Use the calculated font size
           fontWeight: FontWeight.bold,

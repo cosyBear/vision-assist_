@@ -60,7 +60,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 
                   // 🌍 Language Toggle Button
                   IconButton(
-                    icon:  Icon(Icons.translate_outlined, color: getIconColor(3), size: buttonIconsSize),
+                    icon:  Icon(Icons.language_outlined, color: Colors.grey, size: buttonIconsSize),
                     onPressed: () {
                       languageProvider.changeLanguage(
                         languageProvider.locale.languageCode == 'en'

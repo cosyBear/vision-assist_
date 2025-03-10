@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageProvider extends ChangeNotifier {
-  Locale _locale = const Locale('en', 'US'); // Default language: English
+  Locale _locale = const Locale('nl', 'NL'); // Default language: Dutch
 
   Locale get locale => _locale;
 
