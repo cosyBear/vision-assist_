@@ -37,7 +37,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
         fontSize = settings.fontSize;
       });
       // Delay a bit before showing the tutorial.
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _showTutorialIfNeeded();
       });
     });

@@ -29,7 +29,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
     super.initState();
     // Wait until layout is complete, then check if tutorial needs to be shown.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _showTutorialIfNeeded();
       });
     });

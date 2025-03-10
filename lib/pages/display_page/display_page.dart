@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
 import 'package:steady_eye_2/pages/display_page/wigdt/bookmark_manager.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scrolling_text_view.dart';
@@ -27,29 +30,35 @@ class _DisplayPageState extends State<DisplayPage> {
   double _bookmarkedPosition = 0.0;
   bool _isRestored = false; // Prevent multiple restores
 
+  // GlobalKeys for tutorial targets.
+  final GlobalKey _scrollControlsKey = GlobalKey();
+  final GlobalKey _draggableButtonKey = GlobalKey();
+  final GlobalKey _bookmarkKey = GlobalKey();
+
+  TutorialCoachMark? tutorialCoachMark;
+
   @override
   void initState() {
     super.initState();
 
     _scrollController = ScrollController();
 
-    // Check if documentName is not null and only restore bookmark when it's done loading
+    // If a documentName is provided and the document is already loaded, restore bookmark.
     if (widget.documentName != null) {
       final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
       if (!documentProvider.loading) {
-        _restoreBookmarkPosition(); // Restore bookmark if data is already loaded
+        _restoreBookmarkPosition();
       }
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;
-
       final settings = Provider.of<AppSettingProvider>(context, listen: false);
       final buttonSize = settings.fontSize * 2;
 
       setState(() {
-        // If we already have saved positions, use them. Otherwise center the button.
+        // Use saved positions if available; otherwise center the draggable button.
         if (settings.xPos != 0 && settings.yPos != 0) {
           xPos = settings.xPos;
           yPos = settings.yPos;
@@ -60,63 +69,160 @@ class _DisplayPageState extends State<DisplayPage> {
           settings.setYPos(yPos);
         }
       });
+
+      // After layout, check if we need to show the tutorial.
+      _showTutorialIfNeeded();
     });
   }
 
-  /// Restores only the last **bookmarked** position
+  /// Restores the last bookmarked scroll position.
   Future<void> _restoreBookmarkPosition() async {
     if (widget.documentName == null || _isRestored) return;
-
     final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
-
-    // Wait until loading is complete
-    if (documentProvider.loading) return;  // Only proceed when the loading is finished
+    if (documentProvider.loading) return;
 
     List<double> bookmarks = await documentProvider.getBookmarks(widget.documentName!);
-
-    if (bookmarks.isEmpty) return;  // Handle case when there are no bookmarks
-
-    double savedPosition = bookmarks.last;  // Get the last saved bookmark position
+    if (bookmarks.isEmpty) return;
+    double savedPosition = bookmarks.last;
 
     setState(() {
       _bookmarkedPosition = savedPosition;
     });
 
-    // Ensure jumpTo() runs after the first frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(_bookmarkedPosition);
-        _isRestored = true; // Prevent multiple restores
+        _isRestored = true;
       }
     });
+  }
+
+  /// Checks SharedPreferences to see if the tutorial was already shown.
+  Future<void> _showTutorialIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+    bool hasShown = prefs.getBool('displayPageTutorialShown') ?? false;
+    if (!hasShown) {
+      _showTutorial();
+      await prefs.setBool('displayPageTutorialShown', true);
+    }
+  }
+
+  /// Initializes and shows the tutorial.
+  void _showTutorial() {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      alignSkip: Alignment.topRight,
+      onFinish: () {
+        debugPrint('Tutorial finished');
+        return true;
+      },
+      onSkip: () {
+        debugPrint('Tutorial skipped');
+        return true;
+      },
+    );
+    tutorialCoachMark?.show(context: context);
+  }
+
+  /// Creates the list of tutorial targets.
+  List<TargetFocus> _createTargets() {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    return [
+      // Target 1: Scroll Controls (adjust scroll speed and pause/resume)
+      TargetFocus(
+        identify: "ScrollControls",
+        keyTarget: _scrollControlsKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: _buildTooltip("Scroll Controls",
+                "Use these buttons to adjust the scrolling speed and pause/resume the text."),
+          ),
+        ],
+      ),
+      // Target 2: Draggable Button (fixation point)
+      TargetFocus(
+        identify: "DraggableButton",
+        keyTarget: _draggableButtonKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: _buildTooltip("Fixation Point",
+                "Drag this button to adjust your reading focus position."),
+          ),
+        ],
+      ),
+      // Target 3: Bookmark Manager
+      TargetFocus(
+        identify: "BookmarkManager",
+        keyTarget: _bookmarkKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: _buildTooltip("Bookmark",
+                "Tap here to bookmark your current reading position."),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  /// Helper widget to build tutorial tooltips.
+  Widget _buildTooltip(String title, String description) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      color: Colors.black.withOpacity(0.7),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            description,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
     final buttonSize = settings.fontSize * 2;
-
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = settings.fontSize;
     double buttonIconsSize = settings.buttonIconsSize;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize =
-      settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     return Scaffold(
       appBar: NavbarWithReturnButton(
           fontSize: fontSize, buttonIconsSize: buttonIconsSize),
       body: SafeArea(
-        // Use LayoutBuilder to get the actual available size
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // These are the *real* width and height of the SafeArea (below AppBar)
             final availableWidth = constraints.maxWidth;
             final availableHeight = constraints.maxHeight;
-
             return Stack(
               children: [
                 // 1) Scrolling text
@@ -124,41 +230,39 @@ class _DisplayPageState extends State<DisplayPage> {
                   child: ScrollingTextView(
                     text: widget.title,
                     textOffset: textOffset,
-                    scrollController: _scrollController, // Pass the controller
+                    scrollController: _scrollController,
                   ),
                 ),
-
-                // 2) Scroll controls at bottom-center
-                ScrollControls(),
-
-                // 3) Draggable button
+                // 2) Scroll controls (wrapped with GlobalKey)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    key: _scrollControlsKey,
+                    child: ScrollControls(),
+                  ),
+                ),
+                // 3) Draggable button (with GlobalKey)
                 Positioned(
                   left: xPos,
                   top: yPos,
                   child: DraggableButton(
+                    key: _draggableButtonKey,
                     xPos: xPos,
                     yPos: yPos,
                     onPositionChanged: (dx, dy) {
                       setState(() {
-                        // Update positions
                         xPos += dx;
                         yPos += dy;
-
-                        // Calculate boundaries based on the actual layout size
                         final minX = 0.0;
                         final maxX = availableWidth - buttonSize;
                         final minY = 0.0;
                         final maxY = availableHeight - buttonSize;
-
-                        // Clamp to keep the button in view
                         xPos = xPos.clamp(minX, maxX);
                         yPos = yPos.clamp(minY, maxY);
-
-                        // Save new positions
                         settings.setXPos(xPos);
                         settings.setYPos(yPos);
-
-                        // Adjust text offset based on button position
                         final textMiddleY = availableHeight / 2;
                         if (yPos > textMiddleY + 20) {
                           textOffset = -20;
@@ -171,11 +275,13 @@ class _DisplayPageState extends State<DisplayPage> {
                     },
                   ),
                 ),
+                // 4) Bookmark Manager (with GlobalKey)
                 Align(
                   alignment: Alignment.topRight,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: BookmarkManager(
+                      key: _bookmarkKey,
                       documentName: widget.documentName,
                       scrollController: _scrollController,
                     ),
@@ -192,6 +298,7 @@ class _DisplayPageState extends State<DisplayPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    tutorialCoachMark = null;
     super.dispose();
   }
 }

@@ -35,7 +35,7 @@ class _UploadBoxState extends State<UploadBox> {
     super.initState();
     // Delay a bit so layout is settled before showing the tutorial
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _showTutorialIfNeeded();
       });
     });

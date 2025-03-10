@@ -26,7 +26,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
     super.initState();
     // Delay until layout is ready, then check if the tutorial should be shown.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _showTutorialIfNeeded();
       });
     });

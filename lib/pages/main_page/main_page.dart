@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     // Delay a bit so the layout is fully computed before showing the tutorial.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _showTutorialIfNeeded();
       });
     });
