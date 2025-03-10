@@ -76,14 +76,18 @@ class _DisplayPageState extends State<DisplayPage> {
   }
 
   /// Restores the last bookmarked scroll position.
+
   Future<void> _restoreBookmarkPosition() async {
     if (widget.documentName == null || _isRestored) return;
     final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
     if (documentProvider.loading) return;
 
-    List<double> bookmarks = await documentProvider.getBookmarks(widget.documentName!);
+    // Get bookmarks as a list of maps, then extract the positions
+    List<Map<String, dynamic>> bookmarks = await documentProvider.getBookmarks(widget.documentName!);
     if (bookmarks.isEmpty) return;
-    double savedPosition = bookmarks.last;
+
+    // Extract the position of the last bookmark (if any)
+    double savedPosition = bookmarks.last['position'];
 
     setState(() {
       _bookmarkedPosition = savedPosition;
@@ -96,6 +100,7 @@ class _DisplayPageState extends State<DisplayPage> {
       }
     });
   }
+
 
   /// Checks SharedPreferences to see if the tutorial was already shown.
   Future<void> _showTutorialIfNeeded() async {

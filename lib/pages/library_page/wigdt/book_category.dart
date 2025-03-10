@@ -34,6 +34,7 @@ class BookCategory extends StatelessWidget {
             style: TextStyle(
               color: textColor,
               fontSize: fontSize,
+              fontFamily: settings.fontFamily,
               fontWeight: FontWeight.bold,
             ),
           ),
