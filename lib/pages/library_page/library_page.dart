@@ -35,7 +35,7 @@ class _LibraryState extends State<Library> {
 
     // Delay tutorial start to prevent UI misalignment
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _showTutorialIfNeeded();
       });
     });
