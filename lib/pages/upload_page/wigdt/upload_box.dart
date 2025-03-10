@@ -91,6 +91,7 @@ class _UploadBoxState extends State<UploadBox> {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = settings.fontSize;
     double buttonIconsSize = settings.buttonIconsSize;
+    Color textColor = settings.textColor;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
@@ -144,17 +145,23 @@ class _UploadBoxState extends State<UploadBox> {
                   IconButton(
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     icon: Icon(Icons.attach_file,
-                        color: Colors.grey[600], size: buttonIconsSize),
+                        color: textColor, size: buttonIconsSize),
                     onPressed: _pickAndExtractDocument,
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
-                    icon: Icon(Icons.camera_alt,
-                        color: Colors.grey[600], size: buttonIconsSize),
-                    onPressed: () =>  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CameraRecognition()),
-                    ),
+                    icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
+                    onPressed: () async {
+                      final extractedText = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CameraRecognition()),
+                      );
+                      if (extractedText != null) {
+                        setState(() {
+                          widget.controller.text = extractedText;  // Set the extracted text in the text controller
+                        });
+                      }
+                    },
                   ),
                 ],
               ),
