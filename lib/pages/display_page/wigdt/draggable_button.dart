@@ -21,7 +21,7 @@ class DraggableButton extends StatelessWidget {
 
         child: const Icon(
           Icons.add, // Big plus icon
-          color: Colors.grey, // Icon color
+          color: Colors.white, // Icon color
           size: 100, // Bigger icon size
         ),
       );
