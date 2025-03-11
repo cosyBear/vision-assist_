@@ -6,12 +6,15 @@ import '../../../general/document_provider.dart';
 class BookmarkManager extends StatelessWidget {
   final String? documentName;
   final ScrollController scrollController;
+  final VoidCallback onBookmarkPressed;
+
 
   const BookmarkManager({
     required this.documentName,
     required this.scrollController,
-    Key? key,
-  }) : super(key: key);
+    required this.onBookmarkPressed,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +51,10 @@ class BookmarkManager extends StatelessWidget {
         size: buttonIconsSize,
         color: textColor,
       ),
-      onPressed: () => _showBookmarkDialog(
-          context, fontSize, settings.fontFamily, buttonIconsSize),
+      onPressed: () {
+        onBookmarkPressed();
+        _showBookmarkDialog(context, fontSize, settings.fontFamily, buttonIconsSize);
+      },
     );
   }
 

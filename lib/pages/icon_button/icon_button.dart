@@ -199,7 +199,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_circle,
+                  Icon(Icons.favorite,
                       color: textColor, size: buttonIconsSize),
                   SizedBox(width: spacing),
                   // Sample text button, showing "I love reading".

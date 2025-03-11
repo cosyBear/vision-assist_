@@ -132,7 +132,6 @@ class _DisplayPageState extends State<DisplayPage> {
 
   /// Creates the list of tutorial targets.
   List<TargetFocus> _createTargets() {
-    final settings = Provider.of<AppSettingProvider>(context, listen: false);
     return [
       // Target 1: Scroll Controls (adjust scroll speed and pause/resume)
       TargetFocus(
@@ -290,6 +289,9 @@ class _DisplayPageState extends State<DisplayPage> {
                       key: _bookmarkKey,
                       documentName: widget.documentName,
                       scrollController: _scrollController,
+                      onBookmarkPressed: () {
+                        _setToPause();
+                      },
                     ),
                   ),
                 ),
@@ -306,5 +308,13 @@ class _DisplayPageState extends State<DisplayPage> {
     _scrollController.dispose();
     tutorialCoachMark = null;
     super.dispose();
+  }
+
+  // This will pause the scrolling text when you open the bookmark.
+  void _setToPause() {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+    if(!settings.isPaused) {
+      settings.togglePause();
+    }
   }
 }

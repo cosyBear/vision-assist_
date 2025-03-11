@@ -20,7 +20,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
 
     // Function to determine icon color based on active page
     Color getIconColor(int index) {
-      return currentIndex == index ? const Color.fromRGBO(203, 105, 156, 1) : Colors.grey;
+      return currentIndex == index ? const Color.fromRGBO(203, 105, 156, 1) : Colors.white;
     }
 
     return Container(
@@ -69,7 +69,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                     ),
                     child: PopupMenuButton<Locale>(
-                      icon: Icon(Icons.language_outlined, color: Colors.grey, size: buttonIconsSize),
+                      icon: Icon(Icons.language_outlined, color: Colors.white, size: buttonIconsSize),
                       onSelected: (Locale locale) {
                         languageProvider.changeLanguage(locale);
                       },

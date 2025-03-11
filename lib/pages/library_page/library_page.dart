@@ -167,6 +167,7 @@ class _LibraryState extends State<Library> {
     final settings = Provider.of<AppSettingProvider>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double buttonIconsSize = settings.buttonIconsSize;
+    Color iconColor = settings.textColor;
 
     if (screenWidth < 1000) {
       buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
@@ -209,7 +210,7 @@ class _LibraryState extends State<Library> {
                 // Plus Button (With GlobalKey for tutorial)
                 IconButton(
                   key: _addButtonKey, // Attach key
-                  icon: Icon(Icons.add_circle_outline, size: buttonIconsSize, color: Colors.grey),
+                  icon: Icon(Icons.add_circle_outline, size: buttonIconsSize, color: iconColor),
                   onPressed: () => widget.goToPage(1), // Navigate to Upload Page
                 ),
               ],

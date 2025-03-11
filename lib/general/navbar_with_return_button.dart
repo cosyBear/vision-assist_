@@ -30,7 +30,7 @@ class NavbarWithReturnButton extends StatelessWidget implements PreferredSizeWid
               left: 0,
               child: IconButton(
                 icon: Icon(Icons.arrow_back,
-                    color: Colors.grey, size: buttonIconsSize),
+                    color: Colors.white, size: buttonIconsSize),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
