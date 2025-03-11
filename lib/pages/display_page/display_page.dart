@@ -264,16 +264,23 @@ class _DisplayPageState extends State<DisplayPage> {
                         final maxX = availableWidth - buttonSize;
                         final minY = 0.0;
                         final maxY = availableHeight - buttonSize;
+
+                        // Variable for storing the current y position
+                        // of the button before it's clamped
+                        double currentYPos = yPos;
+
                         xPos = xPos.clamp(minX, maxX);
                         yPos = yPos.clamp(minY, maxY);
+
                         settings.setXPos(xPos);
                         settings.setYPos(yPos);
+
                         final textMiddleY = availableHeight / 2;
-                        if (yPos > textMiddleY + 20) {
-                          textOffset = -20;
-                        } else if (yPos < textMiddleY - 20) {
-                          textOffset = 20;
-                        } else {
+                        if (currentYPos > textMiddleY) {
+                          textOffset = -60;
+                        } else if (currentYPos < textMiddleY - 40) {
+                          textOffset = 60;
+                        }  else {
                           textOffset = 0;
                         }
                       });
@@ -282,7 +289,7 @@ class _DisplayPageState extends State<DisplayPage> {
                 ),
                 // 4) Bookmark Manager (with GlobalKey)
                 Align(
-                  alignment: Alignment.topRight,
+                  alignment: Alignment.bottomRight,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: BookmarkManager(
