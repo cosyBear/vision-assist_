@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
+import 'camera_recognition.dart';
 import 'dialogue.dart';
-import 'send_button.dart';
+import 'send_button.dart'; // Import the SendButton widget
 
 class UploadBox extends StatefulWidget {
   final TextEditingController controller;
-  UploadBox({Key? key, required this.controller}) : super(key: key);
+  UploadBox({super.key, required this.controller});
 
   @override
   _UploadBoxState createState() => _UploadBoxState();
@@ -159,11 +159,11 @@ class _UploadBoxState extends State<UploadBox> {
   /// Function to pick a document and extract text using DocumentHandler.
   Future<void> _pickAndExtractDocument() async {
     try {
-      // Step 1: Pick a file
+      // Step 1: Pick a file (runs on the UI thread)
       String? filePath = await documentHandler.pickDocument();
       if (filePath == null) return; // User canceled file selection.
 
-      // Step 2: Show the loading dialog
+      // Step 2: Show the loading dialog.
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -172,10 +172,11 @@ class _UploadBoxState extends State<UploadBox> {
         },
       );
 
-      // Step 3: Offload text extraction to a background isolate
+      // Step 3: Offload text extraction to a background isolate.
+      // We pass the filePath to our helper function.
       String? extractedText = await compute(extractTextInBackground, filePath);
 
-      // Step 4: Once extraction completes, close the dialog
+      // Step 4: Once extraction completes, close the dialog.
       if (!mounted) return;
       Navigator.pop(context); // Close the loading dialog.
 
@@ -186,12 +187,12 @@ class _UploadBoxState extends State<UploadBox> {
         return;
       }
 
-      // Step 5: Save document details
+      // Step 5: Save document details.
       String fileName = documentHandler.lastSelectedFileName ?? "Untitled Document";
       final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
       documentProvider.addDocument(fileName, filePath);
 
-      // Step 6: Update the text field and navigate
+      // Step 6: Update the text field and navigate.
       setState(() {
         widget.controller.text = extractedText;
       });
@@ -263,7 +264,7 @@ class _UploadBoxState extends State<UploadBox> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50), // Space for buttons
+                const SizedBox(height: 50), // Space for buttons.
               ],
             ),
             Positioned(
@@ -271,18 +272,27 @@ class _UploadBoxState extends State<UploadBox> {
               bottom: 0,
               child: Row(
                 children: [
+                  // Attach File Icon.
                   IconButton(
-                    key: _clipKey,
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     icon: Icon(Icons.attach_file,
                         color: textColor, size: buttonIconsSize),
                     onPressed: _pickAndExtractDocument,
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
-                    icon: Icon(Icons.camera_alt,
-                        color: textColor, size: buttonIconsSize),
-                    onPressed: () => debugPrint("Picture taken"),
+                    icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
+                    onPressed: () async {
+                      final extractedText = await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CameraRecognition()),
+                      );
+                      if (extractedText != null) {
+                        setState(() {
+                          widget.controller.text = extractedText;  // Set the extracted text in the text controller
+                        });
+                      }
+                    },
                   ),
                 ],
               ),
