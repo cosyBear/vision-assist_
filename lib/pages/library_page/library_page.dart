@@ -181,6 +181,7 @@ class _LibraryState extends State<Library> {
     Map<String, List<String>> categorizedBooks = groupBooksByCategory(booksToDisplay);
 
     return Scaffold(
+      backgroundColor: settings.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

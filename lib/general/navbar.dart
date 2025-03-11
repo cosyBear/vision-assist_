@@ -58,16 +58,44 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                     onPressed: () => onIconPressed(3),
                   ),
 
-                  // 🌍 Language Toggle Button
-                  IconButton(
-                    icon:  Icon(Icons.language_outlined, color: Colors.grey, size: buttonIconsSize),
-                    onPressed: () {
-                      languageProvider.changeLanguage(
-                        languageProvider.locale.languageCode == 'en'
-                            ? const Locale('nl', 'NL')
-                            : const Locale('en', 'US'),
-                      );
-                    },
+                  // 🌍 Modern Language Selection Dropdown with Flags 🇺🇸 🇧🇪
+                  Theme(
+                    data: Theme.of(context).copyWith(
+                      popupMenuTheme: PopupMenuThemeData(
+                        color: Colors.black87, // Dark background for menu
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // Rounded corners
+                        ),
+                      ),
+                    ),
+                    child: PopupMenuButton<Locale>(
+                      icon: Icon(Icons.language_outlined, color: Colors.grey, size: buttonIconsSize),
+                      onSelected: (Locale locale) {
+                        languageProvider.changeLanguage(locale);
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        PopupMenuItem(
+                          value: const Locale('en', 'US'),
+                          child: Row(
+                            children: [
+                              Text('🇺🇸', style: TextStyle(fontSize: setting.fontSize + 4)), // American flag
+                              const SizedBox(width: 10),
+                              Text('English', style: TextStyle(fontSize: setting.fontSize, color: Colors.white)),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: const Locale('nl', 'BE'),
+                          child: Row(
+                            children: [
+                              Text('🇧🇪', style: TextStyle(fontSize: setting.fontSize + 4)), // Belgian flag
+                              const SizedBox(width: 10),
+                              Text('Nederlands', style: TextStyle(fontSize: setting.fontSize, color: Colors.white)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

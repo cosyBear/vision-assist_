@@ -189,6 +189,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: settings.backgroundColor,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
