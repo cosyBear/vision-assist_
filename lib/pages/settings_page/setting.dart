@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import '../font_page/font_page.dart';
 import '../color_page/colors.dart';
@@ -86,7 +87,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   // Arrow removed.
                   const SizedBox(height: 10),
                   Text(
-                    "Adjust Text",
+                    context.tr('settingsTextTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -95,7 +96,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to change text size and fonts.",
+                    context.tr('settingsTextInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -124,7 +125,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   // Arrow removed.
                   const SizedBox(height: 10),
                   Text(
-                    "Adjust Button",
+                    context.tr('settingsButtonTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -133,7 +134,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to adjust icon button sizes.",
+                    context.tr('settingsButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -162,7 +163,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   // Arrow removed.
                   const SizedBox(height: 10),
                   Text(
-                    "Adjust Color",
+                    context.tr('settingsColorTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -171,7 +172,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to change background and text colors.",
+                    context.tr('settingsColorInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -188,6 +189,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: settings.backgroundColor,
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -195,7 +197,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             // Attach GlobalKey to the TEXT SettingsButton.
             SettingsButton(
               key: _textButtonKey,
-              text: "TEXT",
+              text: context.tr('text'),
               page: TextSizeFonts(),
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
@@ -220,7 +222,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                 ),
                 child: SettingsButton(
                   key: _iconButtonKey,
-                  text: "BUTTON",
+                  text:  context.tr('button'),
                   page: IconButtonSize(),
                   settings: settings,
                   borderColor: Colors.transparent,
@@ -230,7 +232,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             // Attach GlobalKey to the COLOR SettingsButton.
             SettingsButton(
               key: _colorButtonKey,
-              text: "COLOR",
+              text: context.tr('color'),
               page: BackGroundTextColor(),
               settings: settings,
               borderColor: const Color.fromRGBO(22, 173, 201, 1),

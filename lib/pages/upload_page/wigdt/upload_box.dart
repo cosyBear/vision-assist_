@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
+
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
 import '../../import_documents/DocumentHandler.dart';
 import 'camera_recognition.dart';
 import 'dialogue.dart';
-import 'send_button.dart'; // Import the SendButton widget
+import 'send_button.dart';
 
 class UploadBox extends StatefulWidget {
   final TextEditingController controller;
@@ -98,11 +100,11 @@ class _UploadBoxState extends State<UploadBox> {
             align: ContentAlign.top,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_downward, color: Colors.white, size: 30),
                 SizedBox(height: 10),
                 Text(
-                  'Attach/Upload',
+                    context.tr('attachAndUpload'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -111,7 +113,7 @@ class _UploadBoxState extends State<UploadBox> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Tap here to upload or attach a document.',
+                  context.tr('uploadInstructions'),
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -132,7 +134,7 @@ class _UploadBoxState extends State<UploadBox> {
             align: ContentAlign.top,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_downward, color: Colors.white, size: 30),
                 SizedBox(height: 10),
                 Text(
@@ -145,7 +147,7 @@ class _UploadBoxState extends State<UploadBox> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Tap here to process the text or document!',
+                  context.tr('sendInstructions'),
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -159,7 +161,7 @@ class _UploadBoxState extends State<UploadBox> {
   /// Function to pick a document and extract text using DocumentHandler.
   Future<void> _pickAndExtractDocument() async {
     try {
-      // Step 1: Pick a file (runs on the UI thread)
+      // Step 1: Pick a file
       String? filePath = await documentHandler.pickDocument();
       if (filePath == null) return; // User canceled file selection.
 
@@ -168,7 +170,7 @@ class _UploadBoxState extends State<UploadBox> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return const Dialogue(message: "Select a file and wait...");
+          return Dialogue(message:  context.tr('selectAndWait'));
         },
       );
 
@@ -182,7 +184,7 @@ class _UploadBoxState extends State<UploadBox> {
 
       if (extractedText == null || extractedText.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No text extracted from the document.")),
+           SnackBar(content: Text(context.tr('extractionError'),)),
         );
         return;
       }
@@ -257,8 +259,8 @@ class _UploadBoxState extends State<UploadBox> {
                         fontSize: fontSize,
                         color: settings.textColor,
                       ),
-                      decoration: const InputDecoration(
-                        hintText: "Enter text...",
+                      decoration: InputDecoration(
+                        hintText:  context.tr('enterText'),
                         border: InputBorder.none,
                       ),
                     ),
@@ -272,9 +274,9 @@ class _UploadBoxState extends State<UploadBox> {
               bottom: 0,
               child: Row(
                 children: [
-                  // Attach File Icon.
                   IconButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    key: _clipKey,
+                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     icon: Icon(Icons.attach_file,
                         color: textColor, size: buttonIconsSize),
                     onPressed: _pickAndExtractDocument,

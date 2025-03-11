@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:steady_eye_2/general/app_setting_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import '../../general/navbar_with_return_button.dart';
 
@@ -79,7 +80,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Sample Text",
+                    context.tr('sampleText'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -88,7 +89,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "This shows you how your text will look.",
+                    context.tr('sampleTextInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -113,7 +114,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Make Text Smaller",
+                    context.tr('decreaseButton'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -122,7 +123,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to decrease the text size.",
+                    context.tr('decreaseButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -147,7 +148,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Make Text Bigger",
+                    context.tr('increaseButton'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -156,7 +157,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to increase the text size.",
+                    context.tr('increaseButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -220,7 +221,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                       ),
                     ),
                     child: Text(
-                      "I love reading",
+                      context.tr('placeholderText'),
                       style: TextStyle(
                         fontSize: buttonIconsSize * 0.4,
                         fontFamily: settings.fontFamily,
