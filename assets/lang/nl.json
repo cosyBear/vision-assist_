@@ -18,5 +18,49 @@
   "textColor": "Tekstkleur",
   "preview": "Voorbeeld",
   "bgColor": "Achtergrondkleur",
-  "placeholderText": "Ik hou van lezen!"
+  "placeholderText": "Ik hou van lezen!",
+
+  "readNowButton": "Lees Nu Knop",
+  "readNowButtonInstructions": "Tik hier om direct te beginnen met lezen!",
+
+  "attachAndUpload": "Bijvoegen/Uploaden",
+  "uploadInstructions": "Tik hier om een document te uploaden of bij te voegen.",
+  "sendInstructions": "Tik hier om de tekst of het document te verwerken!",
+  "extractionError": "Geen tekst uit het document geëxtraheerd.",
+
+  "scrollControlsTitle": "Scrollbediening",
+  "scrollControlsInstructions": "Gebruik deze knoppen om de scrollsnelheid aan te passen en de tekst te pauzeren/hervatten.",
+  "fixationPointTitle": "Fixatiepunt",
+  "fixationPointInstructions": "Sleep deze knop om je leesfocuspositie aan te passen.",
+  "bookmarkTitle": "Bladwijzer",
+  "bookmarkInstructions": "Tik hier om je huidige leespositie op te slaan.",
+
+  "searchTitle": "Zoek naar Boeken",
+  "searchInstructions": "Gebruik de zoekbalk om snel boeken op naam te vinden.",
+  "libraryTitle": "Jouw Bibliotheek",
+  "libraryInstructions": "Alle boeken worden hier alfabetisch gegroepeerd weergegeven.",
+  "addButtonTitle": "Voeg een Nieuw Boek Toe",
+  "addButtonInstructions": "Tik op de '+' knop om een nieuw document te uploaden.",
+
+  "settingsTextTitle": "Tekst Aanpassen",
+  "settingsTextInstructions": "Tik hier om de tekstgrootte en lettertypen te wijzigen.",
+  "settingsColorTitle": "Kleur Aanpassen",
+  "settingsColorInstructions": "Tik hier om de achtergrond- en tekstkleuren te wijzigen.",
+  "settingsButtonTitle": "Knop Aanpassen",
+  "settingsButtonInstructions": "Tik hier om de grootte van de pictogramknoppen aan te passen.",
+
+  "sampleText": "Voorbeeldtekst",
+  "sampleTextInstructions": "Dit laat zien hoe je tekst eruit zal zien.",
+  "decreaseButton": "Tekst Verkleinen",
+  "decreaseButtonInstructions": "Tik hier om de tekstgrootte te verkleinen.",
+  "increaseButton": "Tekst Vergroten",
+  "increaseButtonInstructions": "Tik hier om de tekstgrootte te vergroten.",
+
+  "chooseFont": "Kies een Lettertype",
+  "chooseFontInstructions": "Tik op een van de 4 lettertype-opties om de stijl te wijzigen.",
+  "previewText": "Bekijk je Tekst",
+  "previewTextInstructions": "Zo zal je tekst eruitzien met het geselecteerde lettertype.",
+  "adjustButtonTitle": "Tekstgrootte Aanpassen",
+  "adjustButtonInstructions": "Gebruik de min- en plusknoppen hieronder om de tekstgrootte te wijzigen."
+
 }

@@ -87,7 +87,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   // Arrow removed.
                   const SizedBox(height: 10),
                   Text(
-                    "Adjust Text",
+                    context.tr('settingsTextTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -96,7 +96,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to change text size and fonts.",
+                    context.tr('settingsTextInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -125,7 +125,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   // Arrow removed.
                   const SizedBox(height: 10),
                   Text(
-                    "Adjust Button",
+                    context.tr('settingsButtonTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -134,7 +134,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to adjust icon button sizes.",
+                    context.tr('settingsButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -163,7 +163,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   // Arrow removed.
                   const SizedBox(height: 10),
                   Text(
-                    "Adjust Color",
+                    context.tr('settingsColorTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -172,7 +172,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to change background and text colors.",
+                    context.tr('settingsColorInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],

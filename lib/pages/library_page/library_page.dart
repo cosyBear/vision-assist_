@@ -7,6 +7,7 @@ import 'package:steady_eye_2/pages/library_page/wigdt/book_list.dart';
 import 'package:steady_eye_2/pages/library_page/wigdt/search_bar.dart';
 import '../../general/document_provider.dart';
 import '../../../general/app_setting_provider.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 class Library extends StatefulWidget {
   final void Function(int) goToPage; // Function to change pages
@@ -82,8 +83,8 @@ class _LibraryState extends State<Library> {
           TargetContent(
             align: ContentAlign.bottom,
             child: _buildTooltip(
-              "Search for Books",
-              "Use the search bar to quickly find books by name.",
+              context.tr('searchTitle'),
+              context.tr('searchInstructions'),
             ),
           ),
         ],
@@ -99,8 +100,8 @@ class _LibraryState extends State<Library> {
           TargetContent(
             align: ContentAlign.top,
             child: _buildTooltip(
-              "Your Library",
-              "All books are listed here, grouped alphabetically.",
+              context.tr('libraryTitle'),
+              context.tr('libraryInstructions'),
             ),
           ),
         ],
@@ -116,8 +117,8 @@ class _LibraryState extends State<Library> {
           TargetContent(
             align: ContentAlign.bottom,
             child: _buildTooltip(
-              "Add a New Book",
-              "Tap the '+' button to upload a new document.",
+              context.tr('addButtonTitle'),
+              context.tr('addButtonInstructions'),
             ),
           ),
         ],

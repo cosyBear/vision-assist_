@@ -99,11 +99,11 @@ class _UploadBoxState extends State<UploadBox> {
             align: ContentAlign.top,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_downward, color: Colors.white, size: 30),
                 SizedBox(height: 10),
                 Text(
-                  'Attach/Upload',
+                    context.tr('attachAndUpload'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -112,7 +112,7 @@ class _UploadBoxState extends State<UploadBox> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Tap here to upload or attach a document.',
+                  context.tr('uploadInstructions'),
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -133,7 +133,7 @@ class _UploadBoxState extends State<UploadBox> {
             align: ContentAlign.top,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Icon(Icons.arrow_downward, color: Colors.white, size: 30),
                 SizedBox(height: 10),
                 Text(
@@ -146,7 +146,7 @@ class _UploadBoxState extends State<UploadBox> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Tap here to process the text or document!',
+                  context.tr('sendInstructions'),
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -182,7 +182,7 @@ class _UploadBoxState extends State<UploadBox> {
 
       if (extractedText == null || extractedText.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No text extracted from the document.")),
+           SnackBar(content: Text(context.tr('extractionError'),)),
         );
         return;
       }

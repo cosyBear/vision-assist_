@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import 'package:steady_eye_2/pages/display_page/wigdt/bookmark_manager.dart';
 import 'package:steady_eye_2/pages/display_page/wigdt/scroll_controls.dart';
@@ -138,8 +139,8 @@ class _DisplayPageState extends State<DisplayPage> {
         contents: [
           TargetContent(
             align: ContentAlign.top,
-            child: _buildTooltip("Scroll Controls",
-                "Use these buttons to adjust the scrolling speed and pause/resume the text."),
+            child: _buildTooltip(context.tr('scrollControlsTitle'),
+                context.tr('scrollControlsInstructions')),
           ),
         ],
       ),
@@ -153,8 +154,8 @@ class _DisplayPageState extends State<DisplayPage> {
         contents: [
           TargetContent(
             align: ContentAlign.top,
-            child: _buildTooltip("Fixation Point",
-                "Drag this button to adjust your reading focus position."),
+            child: _buildTooltip(context.tr('fixationPointTitle'),
+              context.tr('fixationPointInstructions'),),
           ),
         ],
       ),
@@ -168,8 +169,8 @@ class _DisplayPageState extends State<DisplayPage> {
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
-            child: _buildTooltip("Bookmark",
-                "Tap here to bookmark your current reading position."),
+            child: _buildTooltip(context.tr('bookmarkTitle'),
+              context.tr('bookmarkInstructions'),),
           ),
         ],
       ),

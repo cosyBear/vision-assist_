@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 import 'wigdt/logo.dart';
 import 'wigdt/read_now_button.dart';
@@ -87,7 +88,7 @@ class _MainPageState extends State<MainPage> {
             align: ContentAlign.top,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 // Example arrow icon
                 Icon(
                   Icons.arrow_downward,
@@ -96,7 +97,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Read Now Button',
+                  context.tr('readNowButton'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -105,7 +106,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Tap here to start reading right away!',
+                  context.tr('readNowButtonInstructions'),
                   style: TextStyle(color: Colors.white),
                 ),
               ],

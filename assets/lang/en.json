@@ -19,5 +19,48 @@
   "textColor": "Text color",
   "preview": "Preview",
   "bgColor": "Background color",
-  "placeholderText": "I love Reading!"
+  "placeholderText": "I love Reading!",
+
+  "readNowButton": "Read Now Button",
+  "readNowButtonInstructions": "Tap here to start reading right away!",
+
+  "attachAndUpload": "Attach/Upload",
+  "uploadInstructions": "Tap here to upload or attach a document.",
+  "sendInstructions": "Tap here to process the text or document!",
+  "extractionError": "No text extracted from the document.",
+
+  "scrollControlsTitle": "Scroll Controls",
+  "scrollControlsInstructions": "Use these buttons to adjust the scrolling speed and pause/resume the text.",
+  "fixationPointTitle": "Fixation Point",
+  "fixationPointInstructions": "Drag this button to adjust your reading focus position.",
+  "bookmarkTitle": "Bookmark",
+    "bookmarkInstructions": "Tap here to bookmark your current reading position.",
+
+  "searchTitle": "Search for Books",
+    "searchInstructions": "Use the search bar to quickly find books by name.",
+  "libraryTitle": "Your Library",
+    "libraryInstructions": "All books are listed here, grouped alphabetically.",
+  "addButtonTitle": "Add a New Book",
+  "addButtonInstructions": "Tap the '+' button to upload a new document.",
+
+    "settingsTextTitle": "Adjust Text",
+    "settingsTextInstructions": "Tap here to change text size and fonts.",
+  "settingsColorTitle": "Adjust Color",
+    "settingsColorInstructions": "Tap here to change background and text colors.",
+    "settingsButtonTitle": "Adjust Button",
+    "settingsButtonInstructions": "Tap here to adjust icon button sizes.",
+
+  "sampleText": "Sample Text",
+    "sampleTextInstructions": "This shows you how your text will look.",
+  "decreaseButton": "Make Text Smaller",
+  "decreaseButtonInstructions": "Tap here to decrease the text size.",
+    "increaseButton": "Make Text Bigger",
+    "increaseButtonInstructions": "Tap here to increase the text size.",
+
+  "chooseFont": "Choose a Font",
+    "chooseFontInstructions": "Tap any of the 4 font options to change the style.",
+  "previewText": "Preview Your Text",
+    "previewTextInstructions": "This is how your text will look with the selected font.",
+  "adjustButtonTitle": "Adjust Text Size",
+    "adjustButtonInstructions": "Use the minus and plus buttons below to change the text size."
 }

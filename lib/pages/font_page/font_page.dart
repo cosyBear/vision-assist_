@@ -92,7 +92,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Choose a Font",
+                    context.tr('chooseFont'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -101,7 +101,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap any of the 4 font options to change the style.",
+                    context.tr('chooseFontInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -128,7 +128,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Preview Your Text",
+                    context.tr('previewText'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -137,7 +137,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "This is how your text will look with the selected font.",
+                    context.tr('previewTextInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -164,7 +164,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Adjust Text Size",
+                    context.tr('adjustButtonTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -173,7 +173,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Use the minus and plus buttons below to change the text size.",
+                    context.tr('adjustButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],

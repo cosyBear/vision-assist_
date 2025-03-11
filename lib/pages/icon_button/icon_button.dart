@@ -80,7 +80,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Sample Text",
+                    context.tr('sampleText'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -89,7 +89,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "This shows you how your text will look.",
+                    context.tr('sampleTextInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -114,7 +114,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Make Text Smaller",
+                    context.tr('decreaseButton'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -123,7 +123,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to decrease the text size.",
+                    context.tr('decreaseButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
@@ -148,7 +148,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Make Text Bigger",
+                    context.tr('increaseButton'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -157,7 +157,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Tap here to increase the text size.",
+                    context.tr('increaseButtonInstructions'),
                     style: TextStyle(color: textColor),
                   ),
                 ],
