@@ -97,6 +97,7 @@ class BookmarkManager extends StatelessWidget {
             width: screenWidth/2,
             child: Scrollbar(
               thumbVisibility: true,
+              controller: dialogScrollController, // Attach controller explicitly
               child: SingleChildScrollView(
                 controller: dialogScrollController, // Use the new controller
                 child: Column(
