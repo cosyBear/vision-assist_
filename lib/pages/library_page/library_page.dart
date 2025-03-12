@@ -128,24 +128,25 @@ class _LibraryState extends State<Library> {
 
   /// Helper widget for tutorial tooltips
   Widget _buildTooltip(String title, String description) {
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.black.withOpacity(0.7),
+      color:Colors.black.withValues(alpha: (0.7 * 255)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: settings.fontSize,
               color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             description,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
           ),
         ],
       ),

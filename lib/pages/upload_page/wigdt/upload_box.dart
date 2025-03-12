@@ -15,7 +15,7 @@ import 'send_button.dart';
 
 class UploadBox extends StatefulWidget {
   final TextEditingController controller;
-  UploadBox({super.key, required this.controller});
+  const UploadBox({super.key, required this.controller});
 
   @override
   _UploadBoxState createState() => _UploadBoxState();
@@ -88,6 +88,7 @@ class _UploadBoxState extends State<UploadBox> {
   }
 
   List<TargetFocus> _createTargets() {
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     return [
       // Target 1: Clip Icon
       TargetFocus(
@@ -107,14 +108,14 @@ class _UploadBoxState extends State<UploadBox> {
                     context.tr('attachAndUpload'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: settings.fontSize,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('uploadInstructions'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),
@@ -135,20 +136,20 @@ class _UploadBoxState extends State<UploadBox> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_downward, color: Colors.white, size: 30),
+                Icon(Icons.arrow_downward, color: Colors.white, size: settings.buttonIconsSize),
                 SizedBox(height: 10),
                 Text(
                   'Start',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: settings.fontSize,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('sendInstructions'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),

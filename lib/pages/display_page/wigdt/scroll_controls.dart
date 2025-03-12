@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../../general/app_setting_provider.dart';
 
 class ScrollControls extends StatefulWidget {
+  const ScrollControls({super.key});
+
   @override
   _ScrollControlsState createState() => _ScrollControlsState();
 }

@@ -12,7 +12,7 @@ import '../../general/app_setting_provider.dart';
 class MainPage extends StatefulWidget {
   final void Function(int) goToPage;
 
-  const MainPage({Key? key, required this.goToPage}) : super(key: key);
+  const MainPage({super.key, required this.goToPage});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -76,6 +76,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<TargetFocus> _createTargets() {
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     return [
       TargetFocus(
         identify: 'ReadNowButton',
@@ -93,21 +94,21 @@ class _MainPageState extends State<MainPage> {
                 Icon(
                   Icons.arrow_downward,
                   color: Colors.white,
-                  size: 40,
+                  size: settings.buttonIconsSize,
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('readNowButton'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: settings.fontSize,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('readNowButtonInstructions'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),

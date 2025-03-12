@@ -16,7 +16,7 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = Provider.of<AppSettingProvider>(context);
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     final viewInsets = MediaQuery.of(context).viewInsets; // Get keyboard's viewInsets
 
     return Scaffold(
