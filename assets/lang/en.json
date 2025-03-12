@@ -62,5 +62,10 @@
   "previewText": "Preview Your Text",
     "previewTextInstructions": "This is how your text will look with the selected font.",
   "adjustButtonTitle": "Adjust Text Size",
-    "adjustButtonInstructions": "Use the minus and plus buttons below to change the text size."
+    "adjustButtonInstructions": "Use the minus and plus buttons below to change the text size.",
+
+  "bookmarksTitle": "Bookmarks",
+  "noBookmarks": "No bookmarks yet.",
+  "nameBookmarks": "Name your new Bookmark",
+  "addBookmark": "Add Bookmark"
 }

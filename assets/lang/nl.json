@@ -61,6 +61,12 @@
   "previewText": "Bekijk je Tekst",
   "previewTextInstructions": "Zo zal je tekst eruitzien met het geselecteerde lettertype.",
   "adjustButtonTitle": "Tekstgrootte Aanpassen",
-  "adjustButtonInstructions": "Gebruik de min- en plusknoppen hieronder om de tekstgrootte te wijzigen."
+  "adjustButtonInstructions": "Gebruik de min- en plusknoppen hieronder om de tekstgrootte te wijzigen.",
+
+  "bookmarksTitle": "Bladwijzers",
+  "noBookmarks": "Nog geen bladwijzers.",
+  "nameBookmarks": "Geef uw nieuwe bladwijzer een naam",
+  "addBookmark": "Bladwijzer toevoegen"
+
 
 }

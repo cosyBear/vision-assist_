@@ -80,7 +80,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                             children: [
                               Text('🇺🇸', style: TextStyle(fontSize: setting.fontSize + 4)), // American flag
                               const SizedBox(width: 10),
-                              Text('English', style: TextStyle(fontSize: setting.fontSize, color: Colors.white)),
+                              Text('en', style: TextStyle(fontSize: setting.fontSize, color: Colors.white)),
                             ],
                           ),
                         ),
@@ -90,7 +90,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                             children: [
                               Text('🇧🇪', style: TextStyle(fontSize: setting.fontSize + 4)), // Belgian flag
                               const SizedBox(width: 10),
-                              Text('Nederlands', style: TextStyle(fontSize: setting.fontSize, color: Colors.white)),
+                              Text('nl', style: TextStyle(fontSize: setting.fontSize, color: Colors.white)),
                             ],
                           ),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
+import 'package:steady_eye_2/general/app_localizations.dart';
 
 class BookmarkManager extends StatelessWidget {
   final String? documentName;
@@ -78,7 +79,7 @@ class BookmarkManager extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Bookmarks",
+          context.tr('bookmarksTitle'),
                 style: TextStyle(
                     fontSize: fontSize * 1.3,
                     fontFamily: fontFamily,
@@ -102,7 +103,7 @@ class BookmarkManager extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     bookmarks.isEmpty
-                        ? const Text("No bookmarks yet.")
+                        ?  Text(context.tr('noBookmarks'))
                         : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: bookmarks.map((bookmark) {
@@ -134,7 +135,7 @@ class BookmarkManager extends StatelessWidget {
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                          labelText: "Name your new Bookmark",
+                          labelText: context.tr('nameBookmarks'),
                           labelStyle: TextStyle(
                               fontSize: fontSize, fontFamily: fontFamily)),
                       style: TextStyle(
@@ -159,7 +160,7 @@ class BookmarkManager extends StatelessWidget {
                     context, fontSize, fontFamily, buttonIconSize);
               },
               child: Text(
-                "Add Bookmark",
+              context.tr('addBookmark'),
                 style: TextStyle(
                     color: Color.fromRGBO(22, 173, 201, 1.0),
                     fontSize: fontSize),
