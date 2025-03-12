@@ -202,32 +202,12 @@ class _GlobalSettingState extends State<GlobalSetting> {
               settings: settings,
               borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
-            // Gradient border for the BUTTON (IconButtonSize).
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color.fromRGBO(203, 105, 156, 1.0),
-                    Color.fromRGBO(22, 173, 201, 1.0),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: SettingsButton(
-                  key: _iconButtonKey,
-                  text:  context.tr('button'),
-                  page: IconButtonSize(),
-                  settings: settings,
-                  borderColor: Colors.transparent,
-                ),
-              ),
+            SettingsButton(
+              key: _iconButtonKey,
+              text: context.tr('button'),
+              page: IconButtonSize(),
+              settings: settings,
+              borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
             // Attach GlobalKey to the COLOR SettingsButton.
             SettingsButton(
@@ -235,7 +215,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
               text: context.tr('color'),
               page: BackGroundTextColor(),
               settings: settings,
-              borderColor: const Color.fromRGBO(22, 173, 201, 1),
+              borderColor: const Color.fromRGBO(203, 105, 156, 1),
             ),
           ],
         ),
