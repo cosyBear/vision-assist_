@@ -255,7 +255,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 Text(
                   buttonIconsSize.toStringAsFixed(1),
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: fontSize,
                     color: settings.textColor,
                     fontWeight: FontWeight.bold,
                   ),
