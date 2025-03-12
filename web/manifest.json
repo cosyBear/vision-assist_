@@ -1,6 +1,6 @@
 {
-    "name": "steady_eye_2",
-    "short_name": "steady_eye_2",
+    "name": "SteadyEye",
+    "short_name": "SteadyEye",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

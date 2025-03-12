@@ -1,4 +1,4 @@
-package com.example.steady_eye_2
+package com.example.steadyeye
 
 import io.flutter.embedding.android.FlutterActivity
 

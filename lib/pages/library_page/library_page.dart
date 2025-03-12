@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-import 'package:steady_eye_2/pages/library_page/wigdt/book_list.dart';
-import 'package:steady_eye_2/pages/library_page/wigdt/search_bar.dart';
+import 'package:SteadyEye/pages/library_page/wigdt/book_list.dart';
+import 'package:SteadyEye/pages/library_page/wigdt/search_bar.dart';
 import '../../general/document_provider.dart';
 import '../../../general/app_setting_provider.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 class Library extends StatefulWidget {
   final void Function(int) goToPage; // Function to change pages

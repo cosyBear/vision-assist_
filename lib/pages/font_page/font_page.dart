@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 import '../../general/app_setting_provider.dart';
 import '../../general/navbar_with_return_button.dart';

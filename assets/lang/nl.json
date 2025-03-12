@@ -66,7 +66,17 @@
   "bookmarksTitle": "Bladwijzers",
   "noBookmarks": "Nog geen bladwijzers.",
   "nameBookmarks": "Geef uw nieuwe bladwijzer een naam",
-  "addBookmark": "Bladwijzer toevoegen"
+  "addBookmark": "Bladwijzer toevoegen",
+
+  "homeTitle": "Home",
+  "homeInstructions": "Tik hier om terug te keren naar de startpagina.",
+  "uploadTitle": "Uploaden",
+  "settingsTitle": "Instellingen",
+  "settingsInstructions": "Pas de app-voorkeuren aan.",
+  "libraryNavbarTitle": "Bibliotheek",
+  "libraryNavbarInstructions": "Bekijk opgeslagen documenten.",
+  "languageTitle": "Taal",
+  "languageInstructions": "Wijzig de app-taal."
 
 
 }

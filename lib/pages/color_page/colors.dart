@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:steady_eye_2/general/app_setting_provider.dart';
+import 'package:SteadyEye/general/app_setting_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:steady_eye_2/pages/color_page/wigdt/color_grid.dart';
-import 'package:steady_eye_2/pages/color_page/wigdt/text_preview.dart';
+import 'package:SteadyEye/pages/color_page/wigdt/color_grid.dart';
+import 'package:SteadyEye/pages/color_page/wigdt/text_preview.dart';
 import '../../general/navbar_with_return_button.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 /*
   This class is the main page for the BackGroundTextColor page.

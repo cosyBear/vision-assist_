@@ -1,4 +1,4 @@
-# steady_eye_2
+# SteadyEye
 
 A new Flutter project.
 

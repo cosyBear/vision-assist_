@@ -67,5 +67,15 @@
   "bookmarksTitle": "Bookmarks",
   "noBookmarks": "No bookmarks yet.",
   "nameBookmarks": "Name your new Bookmark",
-  "addBookmark": "Add Bookmark"
+  "addBookmark": "Add Bookmark",
+
+  "homeTitle": "Home",
+  "homeInstructions": "Tap here to return to the homepage.",
+  "uploadTitle": "Upload",
+    "settingsTitle": "Settings",
+    "settingsInstructions": "Customize app preferences.",
+    "libraryNavbarTitle": "Library",
+    "libraryNavbarInstructions": "View saved documents.",
+  "languageTitle": "Language",
+    "languageInstructions": "Change the app language."
 }
