@@ -185,7 +185,7 @@ class _DisplayPageState extends State<DisplayPage> {
   Widget _buildTooltip(String title, String description) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.black.withOpacity(0.7),
+      color: Colors.black.withValues(alpha: (0.7 * 255)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -214,6 +214,7 @@ class _DisplayPageState extends State<DisplayPage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = settings.fontSize;
     double buttonIconsSize = settings.buttonIconsSize;
+    Color backgroundColor = settings.backgroundColor;
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
@@ -222,7 +223,9 @@ class _DisplayPageState extends State<DisplayPage> {
 
     return Scaffold(
       appBar: NavbarWithReturnButton(
-          fontSize: fontSize, buttonIconsSize: buttonIconsSize),
+          fontSize: fontSize, buttonIconsSize: buttonIconsSize
+      ),
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {

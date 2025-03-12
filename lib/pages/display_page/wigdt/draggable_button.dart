@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../general/app_setting_provider.dart';
 
 class DraggableButton extends StatelessWidget {
   final double xPos, yPos;
@@ -13,15 +15,17 @@ class DraggableButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<AppSettingProvider>(context);
+    Color buttonColor = settings.textColor;
     return GestureDetector(
       onPanUpdate: (details) {
         // Pass the delta (dx, dy) instead of absolute positions
         onPositionChanged(details.delta.dx, details.delta.dy);
       },
 
-        child: const Icon(
+        child: Icon(
           Icons.add, // Big plus icon
-          color: Colors.white, // Icon color
+          color: buttonColor, // Icon color
           size: 100, // Bigger icon size
         ),
       );
