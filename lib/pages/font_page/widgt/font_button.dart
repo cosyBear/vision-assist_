@@ -46,6 +46,7 @@ class FontButton extends StatelessWidget {
             fontSize: fontSize,
             color: settings.textColor,
             fontFamily: fontFamily,
+            fontWeight: FontWeight.normal,
           ),
         ),
       ),

@@ -100,9 +100,11 @@ class _CameraRecognitionState extends State<CameraRecognition> {
     final fontSize = settings.fontSize;
     final buttonIconsSize = settings.buttonIconsSize;
     Color textColor = settings.textColor;
+    Color backgroundColor = settings.backgroundColor;
 
     return Scaffold(
       appBar: NavbarWithReturnButton(fontSize: fontSize, buttonIconsSize: buttonIconsSize),
+      backgroundColor: backgroundColor,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0), // Add padding for spacing
