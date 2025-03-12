@@ -94,7 +94,7 @@ class BookmarkManager extends StatelessWidget {
           ),
           // Wrap content with Container to set a custom width
           content: Container(
-            width: screenWidth/2,
+            width: screenWidth/1.2,
             child: Scrollbar(
               thumbVisibility: true,
               controller: dialogScrollController, // Attach controller explicitly
