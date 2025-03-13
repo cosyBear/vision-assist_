@@ -41,6 +41,6 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 }
 extension TranslateExtension on BuildContext {
   String tr(String key) {
-    return AppLocalizations.of(this)!.translate(key);
+    return AppLocalizations.of(this).translate(key);
   }
 }

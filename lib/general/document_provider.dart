@@ -19,8 +19,8 @@ class DocumentProvider extends ChangeNotifier {
   List<Document> _documents = [];
   List<Document> get documents => _documents;
 
-  Map<String, double> _scrollPositions = {};
-  Map<String, List<Map<String, dynamic>>> _bookmarkedPositions = {};
+  final Map<String, double> _scrollPositions = {};
+  final Map<String, List<Map<String, dynamic>>> _bookmarkedPositions = {};
 
   bool _loading = false;
   bool get loading => _loading;

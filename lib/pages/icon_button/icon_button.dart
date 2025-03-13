@@ -8,7 +8,7 @@ import 'package:steady_eye_2/general/app_localizations.dart';
 import '../../general/navbar_with_return_button.dart';
 
 class IconButtonSize extends StatefulWidget {
-  const IconButtonSize({Key? key}) : super(key: key);
+  const IconButtonSize({super.key});
 
   @override
   State<IconButtonSize> createState() => _IconButtonSizeState();
@@ -75,7 +75,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
             align: ContentAlign.bottom,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -109,7 +109,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
             align: ContentAlign.top,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -143,7 +143,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
             align: ContentAlign.top,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -255,7 +255,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 Text(
                   buttonIconsSize.toStringAsFixed(1),
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: fontSize,
                     color: settings.textColor,
                     fontWeight: FontWeight.bold,
                   ),

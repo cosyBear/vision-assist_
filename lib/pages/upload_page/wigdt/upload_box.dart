@@ -8,20 +8,20 @@ import 'package:steady_eye_2/general/app_localizations.dart';
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
-import '../../import_documents/DocumentHandler.dart';
+import '../../import_documents/document_handler.dart';
 import 'camera_recognition.dart';
 import 'dialogue.dart';
 import 'send_button.dart';
 
 class UploadBox extends StatefulWidget {
   final TextEditingController controller;
-  UploadBox({super.key, required this.controller});
+  const UploadBox({super.key, required this.controller});
 
   @override
-  _UploadBoxState createState() => _UploadBoxState();
+  UploadBoxState createState() => UploadBoxState();
 }
 
-class _UploadBoxState extends State<UploadBox> {
+class UploadBoxState extends State<UploadBox> {
   final ScrollController _scrollController = ScrollController();
   final DocumentHandler documentHandler = DocumentHandler();
 

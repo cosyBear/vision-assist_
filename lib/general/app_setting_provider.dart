@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import '../database/setting_box.dart'; // Import the settings box
 
@@ -44,7 +42,11 @@ class AppSettingProvider with ChangeNotifier {
   // ✅ Retrieve saved settings or use defaults
   void _loadSettings() {
     // Get screen width
-    double screenWidth = window.physicalSize.width / window.devicePixelRatio;
+    double screenWidth =
+        WidgetsBinding
+            .instance.platformDispatcher.views.first.physicalSize.width /
+        WidgetsBinding
+            .instance.platformDispatcher.views.first.devicePixelRatio;
 
     // Set default font size based on screen width
     _fontSize = screenWidth > 1000 ? 50 : 30;
@@ -77,13 +79,13 @@ class AppSettingProvider with ChangeNotifier {
   }
 
 
-  // ✅ Convert saved int value of FontWeight to FontWeight enum
+  // Convert saved int value of FontWeight to FontWeight enum
   FontWeight _getFontWeightFromHive(String key, FontWeight defaultWeight) {
     int? weightIndex = SettingBox.getSetting(key, null);
     return weightIndex != null ? FontWeight.values[weightIndex] : defaultWeight;
   }
 
-  // ✅ Save settings
+  // Save settings
   void setScrollSpeed(double speed) {
     _scrollSpeed = speed;
     SettingBox.saveSetting("scrollSpeed", speed);

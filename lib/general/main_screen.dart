@@ -12,12 +12,12 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  _MainScreenState createState() {
-    return _MainScreenState();
+  MainScreenState createState() {
+    return MainScreenState();
   }
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0; // Track the active page index
 

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -14,7 +13,6 @@ class _DialogueState extends State<Dialogue> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       backgroundColor: Colors.white,

@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import '../../../general/app_setting_provider.dart';
 
 class ScrollControls extends StatefulWidget {
+  const ScrollControls({super.key});
+
   @override
-  _ScrollControlsState createState() => _ScrollControlsState();
+  ScrollControlsState createState() => ScrollControlsState();
 }
 
-class _ScrollControlsState extends State<ScrollControls> {
+class ScrollControlsState extends State<ScrollControls> {
   String? _speedLabel;
 
   void _increaseScrollSpeed() {
@@ -40,7 +42,8 @@ class _ScrollControlsState extends State<ScrollControls> {
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
-    Color textColor = settings.textColor;
+    Color iconColor = settings.textColor;
+    double buttonIconsSize = settings.buttonIconsSize;
 
     return Align(
       alignment: Alignment.bottomCenter,
@@ -50,21 +53,21 @@ class _ScrollControlsState extends State<ScrollControls> {
           if (_speedLabel != null)
             Text(
               _speedLabel!,
-              style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.grey),
+              style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: iconColor),
             ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.remove_circle_outline, size: 50, color: textColor),
+                icon: Icon(Icons.remove_circle_outline, size: buttonIconsSize, color: iconColor),
                 onPressed: _decreaseScrollSpeed,
               ),
               IconButton(
-                icon: Icon(settings.isPaused ? Icons.play_circle : Icons.pause_circle, size: 50, color: textColor),
+                icon: Icon(settings.isPaused ? Icons.play_circle : Icons.pause_circle, size: buttonIconsSize, color: iconColor),
                 onPressed: _togglePause,
               ),
               IconButton(
-                icon: Icon(Icons.add_circle_outline, size: 50, color: textColor),
+                icon: Icon(Icons.add_circle_outline, size: buttonIconsSize, color: iconColor),
                 onPressed: _increaseScrollSpeed,
               ),
             ],

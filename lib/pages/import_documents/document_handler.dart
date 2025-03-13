@@ -54,12 +54,12 @@ class DocumentHandler {
     try {
       String? filePath = await pickDocument();
       if (filePath == null) {
-        print("No file selected.");
+        log("No file selected.");
         return null;
       }
       return await extractText(filePath);
     } catch (e) {
-      print("Error picking and extracting text: $e");
+      log("Error picking and extracting text: $e");
       return null;
     }
   }
@@ -79,14 +79,14 @@ class DocumentHandler {
           String extractedText = '';
           var body = document.findAllElements('w:t');
           for (var element in body) {
-            extractedText += element.text;
+            extractedText += element.innerText;
           }
           return extractedText;
         }
       }
       return null;
     } catch (e) {
-      print("Error extracting DOCX text: $e");
+      log("Error extracting DOCX text: $e");
       return null;
     }
   }
@@ -107,7 +107,7 @@ class DocumentHandler {
       document.dispose();
       return extractedText;
     } catch (e) {
-      print("Error extracting PDF text: $e");
+      log("Error extracting PDF text: $e");
       return null;
     }
   }
@@ -116,7 +116,7 @@ class DocumentHandler {
     try {
       return await File(filePath).readAsString();
     } catch (e) {
-      print("Error extracting TXT text: $e");
+      log("Error extracting TXT text: $e");
       return null;
     }
   }

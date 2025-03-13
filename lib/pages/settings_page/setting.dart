@@ -11,7 +11,7 @@ import '../icon_button/icon_button.dart';
 import 'widgt/settings_button.dart';
 
 class GlobalSetting extends StatefulWidget {
-  const GlobalSetting({Key? key}) : super(key: key);
+  const GlobalSetting({super.key});
 
   @override
   State<GlobalSetting> createState() => _GlobalSettingState();
@@ -80,7 +80,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             align: ContentAlign.right,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -118,7 +118,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             align: ContentAlign.top,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -156,7 +156,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             align: ContentAlign.left,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

@@ -6,20 +6,20 @@ import '../../../general/app_setting_provider.dart';
 class ScrollingTextView extends StatefulWidget {
   final String text;
   final double textOffset;
-  final ScrollController scrollController; // Add this line
+  final ScrollController scrollController;
 
   const ScrollingTextView({
     super.key,
     required this.text,
     required this.textOffset,
-    required this.scrollController, // Add this line
+    required this.scrollController,
   });
 
   @override
-  _ScrollingTextViewState createState() => _ScrollingTextViewState();
+  ScrollingTextViewState createState() => ScrollingTextViewState();
 }
 
-class _ScrollingTextViewState extends State<ScrollingTextView> {
+class ScrollingTextViewState extends State<ScrollingTextView> {
   late ScrollController _scrollController;
   Timer? _scrollTimer;
   bool _hasScrolledToEnd = false;

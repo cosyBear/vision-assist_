@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../general/document_provider.dart';
 import '../../display_page/display_page.dart';
-import '../../import_documents/DocumentHandler.dart';
+import '../../import_documents/document_handler.dart';
 import '../../../general/app_setting_provider.dart';
 import '../../upload_page/wigdt/dialogue.dart';
 
@@ -12,11 +12,11 @@ class FileProcessorWidget extends StatefulWidget {
   const FileProcessorWidget({super.key, required this.documentName});
 
   @override
-  _FileProcessorWidgetState createState() => _FileProcessorWidgetState();
+  FileProcessorWidgetState createState() => FileProcessorWidgetState();
 }
 
-class _FileProcessorWidgetState extends State<FileProcessorWidget> {
-  Future<void> _handleDocument(BuildContext context) async {
+class FileProcessorWidgetState extends State<FileProcessorWidget> {
+  Future<void> handleDocument(BuildContext context) async {
     // Show loading dialog
     showDialog(
       context: context,
@@ -72,7 +72,7 @@ class _FileProcessorWidgetState extends State<FileProcessorWidget> {
     double fontSize = settings.fontSize;
 
     return GestureDetector(
-      onTap: () => _handleDocument(context),
+      onTap: () => handleDocument(context),
       child: ListTile(
         title: Text(
           widget.documentName,
