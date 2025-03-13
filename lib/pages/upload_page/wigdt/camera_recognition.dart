@@ -11,10 +11,10 @@ class CameraRecognition extends StatefulWidget {
   const CameraRecognition({super.key});
 
   @override
-  _CameraRecognitionState createState() => _CameraRecognitionState();
+  CameraRecognitionState createState() => CameraRecognitionState();
 }
 
-class _CameraRecognitionState extends State<CameraRecognition> {
+class CameraRecognitionState extends State<CameraRecognition> {
   final ImagePicker _picker = ImagePicker();
   String extractedText = "";
   bool isDialogVisible = false;

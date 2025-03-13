@@ -185,7 +185,7 @@ class _DisplayPageState extends State<DisplayPage> {
   Widget _buildTooltip(String title, String description) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.black.withValues(alpha: (0.7 * 255)),
+      color: Colors.black.withValues(alpha: 0.7),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -222,6 +222,7 @@ class _DisplayPageState extends State<DisplayPage> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: NavbarWithReturnButton(
           fontSize: fontSize, buttonIconsSize: buttonIconsSize
       ),

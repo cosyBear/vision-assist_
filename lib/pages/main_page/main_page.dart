@@ -12,7 +12,7 @@ import '../../general/app_setting_provider.dart';
 class MainPage extends StatefulWidget {
   final void Function(int) goToPage;
 
-  const MainPage({Key? key, required this.goToPage}) : super(key: key);
+  const MainPage({super.key, required this.goToPage});
 
   @override
   State<MainPage> createState() => _MainPageState();

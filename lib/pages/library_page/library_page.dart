@@ -130,7 +130,7 @@ class _LibraryState extends State<Library> {
   Widget _buildTooltip(String title, String description) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.black.withOpacity(0.7),
+      color: Colors.black.withValues(alpha: 0.7),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
