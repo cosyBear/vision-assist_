@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:steady_eye_2/general/app_setting_provider.dart';
+import 'package:SteadyEye/general/app_setting_provider.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 import '../font_page/font_page.dart';
 import '../color_page/colors.dart';
@@ -65,7 +65,6 @@ class _GlobalSettingState extends State<GlobalSetting> {
   List<TargetFocus> _createTargets() {
     // Get the text color from your settings.
     final settings = Provider.of<AppSettingProvider>(context, listen: false);
-    final textColor = settings.textColor;
     return [
       // Target for the TEXT button: Show overlay content to the RIGHT.
       TargetFocus(
@@ -80,7 +79,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             align: ContentAlign.right,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withValues(alpha: 0.7),
+              color: Colors.black.withValues(alpha: (0.7 * 255)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -90,14 +89,14 @@ class _GlobalSettingState extends State<GlobalSetting> {
                     context.tr('settingsTextTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: textColor,
+                      fontSize: settings.fontSize,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     context.tr('settingsTextInstructions'),
-                    style: TextStyle(color: textColor),
+                    style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                   ),
                 ],
               ),
@@ -118,7 +117,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             align: ContentAlign.top,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withValues(alpha: 0.7),
+              color: Colors.black.withValues(alpha: (0.7 * 255)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -128,14 +127,14 @@ class _GlobalSettingState extends State<GlobalSetting> {
                     context.tr('settingsButtonTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: textColor,
+                      fontSize: settings.fontSize,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     context.tr('settingsButtonInstructions'),
-                    style: TextStyle(color: textColor),
+                    style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                   ),
                 ],
               ),
@@ -156,7 +155,7 @@ class _GlobalSettingState extends State<GlobalSetting> {
             align: ContentAlign.left,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withValues(alpha: 0.7),
+              color:  Colors.black.withValues(alpha: (0.7 * 255)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -166,14 +165,14 @@ class _GlobalSettingState extends State<GlobalSetting> {
                     context.tr('settingsColorTitle'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: textColor,
+                      fontSize: settings.fontSize,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     context.tr('settingsColorInstructions'),
-                    style: TextStyle(color: textColor),
+                    style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                   ),
                 ],
               ),

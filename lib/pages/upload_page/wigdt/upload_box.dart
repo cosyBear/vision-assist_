@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
@@ -28,6 +28,7 @@ class UploadBoxState extends State<UploadBox> {
   // 1. Create two GlobalKeys for clip icon and send button
   final GlobalKey _clipKey = GlobalKey();
   final GlobalKey _sendKey = GlobalKey();
+  final GlobalKey _cameraKey = GlobalKey();
 
   // Reference to the tutorial
   TutorialCoachMark? tutorialCoachMark;
@@ -56,7 +57,7 @@ class UploadBoxState extends State<UploadBox> {
 
   void _showTutorial() {
     // Debug: check offsets
-    if (_clipKey.currentContext == null || _sendKey.currentContext == null) {
+    if (_clipKey.currentContext == null || _sendKey.currentContext == null || _cameraKey.currentContext == null) {
       debugPrint("ERROR: One or both keys are not attached to widgets!");
     } else {
       final clipBox = _clipKey.currentContext!.findRenderObject() as RenderBox;
@@ -88,6 +89,7 @@ class UploadBoxState extends State<UploadBox> {
   }
 
   List<TargetFocus> _createTargets() {
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     return [
       // Target 1: Clip Icon
       TargetFocus(
@@ -107,14 +109,14 @@ class UploadBoxState extends State<UploadBox> {
                     context.tr('attachAndUpload'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: settings.fontSize,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('uploadInstructions'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),
@@ -122,7 +124,39 @@ class UploadBoxState extends State<UploadBox> {
         ],
       ),
 
-      // Target 2: Send Button
+      // Target 2: Camera Icon
+      TargetFocus(
+        identify: 'cameraIcon',
+        keyTarget: _cameraKey,
+        shape: ShapeLightFocus.Circle,
+        paddingFocus: 8.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: Column(
+              children: [
+                Icon(Icons.arrow_downward, color: Colors.white, size: 30),
+                SizedBox(height: 10),
+                Text(
+                  context.tr('cameraTitle'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: settings.fontSize,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  context.tr('cameraInstructions'),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+
+      // Target 3: Send Button
       TargetFocus(
         identify: 'sendButton',
         keyTarget: _sendKey,
@@ -135,20 +169,20 @@ class UploadBoxState extends State<UploadBox> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_downward, color: Colors.white, size: 30),
+                Icon(Icons.arrow_downward, color: Colors.white, size: settings.buttonIconsSize),
                 SizedBox(height: 10),
                 Text(
                   'Start',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: settings.fontSize,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('sendInstructions'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),
@@ -282,6 +316,7 @@ class UploadBoxState extends State<UploadBox> {
                     onPressed: _pickAndExtractDocument,
                   ),
                   IconButton(
+                    key: _cameraKey,
                     padding: EdgeInsets.zero,
                     icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
                     onPressed: () async {

@@ -1,0 +1,4 @@
+<resources>
+    <!-- Define the background color for the launcher -->
+    <color name="ic_launcher_background">#000000</color> <!-- black color -->
+</resources>

@@ -56,7 +56,7 @@ class MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(max(buttonIconsSize, fontSize) + 24),
-        child: Navbar(
+        child: NavbarWithTutorial(
           onIconPressed: _goToPage,
           currentIndex: _currentIndex, // Pass the active index to Navbar
         ),

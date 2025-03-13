@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
-import 'package:steady_eye_2/pages/library_page/wigdt/book_list.dart';
-import 'package:steady_eye_2/pages/library_page/wigdt/search_bar.dart';
+import 'package:SteadyEye/pages/library_page/wigdt/book_list.dart';
+import 'package:SteadyEye/pages/library_page/wigdt/search_bar.dart';
 import '../../general/document_provider.dart';
 import '../../../general/app_setting_provider.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 class Library extends StatefulWidget {
   final void Function(int) goToPage; // Function to change pages
@@ -128,24 +128,25 @@ class _LibraryState extends State<Library> {
 
   /// Helper widget for tutorial tooltips
   Widget _buildTooltip(String title, String description) {
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.black.withValues(alpha: 0.7),
+      color:Colors.black.withValues(alpha: (0.7 * 255)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: settings.fontSize,
               color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             description,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
           ),
         ],
       ),

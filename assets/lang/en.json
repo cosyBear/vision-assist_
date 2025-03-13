@@ -28,6 +28,8 @@
   "uploadInstructions": "Tap here to upload or attach a document.",
   "sendInstructions": "Tap here to process the text or document!",
   "extractionError": "No text extracted from the document.",
+  "cameraTitle": "Camera",
+  "cameraInstructions": "Take a picture or choose from your gallery, then the text will be extracted for you.",
 
   "scrollControlsTitle": "Scroll Controls",
   "scrollControlsInstructions": "Use these buttons to adjust the scrolling speed and pause/resume the text.",
@@ -67,5 +69,15 @@
   "bookmarksTitle": "Bookmarks",
   "noBookmarks": "No bookmarks yet.",
   "nameBookmarks": "Name your new Bookmark",
-  "addBookmark": "Add Bookmark"
+  "addBookmark": "Add Bookmark",
+
+  "homeTitle": "Home",
+  "homeInstructions": "Tap here to return to the homepage.",
+  "uploadTitle": "Upload",
+    "settingsTitle": "Settings",
+    "settingsInstructions": "Customize app preferences.",
+    "libraryNavbarTitle": "Library",
+    "libraryNavbarInstructions": "View saved documents.",
+  "languageTitle": "Language",
+    "languageInstructions": "Change the app language."
 }

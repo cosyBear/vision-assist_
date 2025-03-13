@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 import 'wigdt/logo.dart';
 import 'wigdt/read_now_button.dart';
@@ -76,6 +76,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<TargetFocus> _createTargets() {
+    final settings = Provider.of<AppSettingProvider>(context,listen: false);
     return [
       TargetFocus(
         identify: 'ReadNowButton',
@@ -93,21 +94,21 @@ class _MainPageState extends State<MainPage> {
                 Icon(
                   Icons.arrow_downward,
                   color: Colors.white,
-                  size: 40,
+                  size: settings.buttonIconsSize,
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('readNowButton'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: settings.fontSize,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 10),
                 Text(
                   context.tr('readNowButtonInstructions'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),

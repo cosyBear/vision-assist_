@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../general/app_setting_provider.dart';
 import '../../../general/document_provider.dart';
-import 'package:steady_eye_2/general/app_localizations.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
 
 class BookmarkManager extends StatelessWidget {
   final String? documentName;
@@ -93,7 +93,7 @@ class BookmarkManager extends StatelessWidget {
             ],
           ),
           // Wrap content with Container to set a custom width
-          content: Container(
+          content: SizedBox(
             width: screenWidth/1.2,
             child: Scrollbar(
               thumbVisibility: true,
