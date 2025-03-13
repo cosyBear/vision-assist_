@@ -28,6 +28,8 @@
   "uploadInstructions": "Tap here to upload or attach a document.",
   "sendInstructions": "Tap here to process the text or document!",
   "extractionError": "No text extracted from the document.",
+  "cameraTitle": "Camera",
+  "cameraInstructions": "Take a picture or choose from your gallery, then the text will be extracted for you.",
 
   "scrollControlsTitle": "Scroll Controls",
   "scrollControlsInstructions": "Use these buttons to adjust the scrolling speed and pause/resume the text.",

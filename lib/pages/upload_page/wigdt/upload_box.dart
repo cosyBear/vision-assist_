@@ -28,6 +28,7 @@ class _UploadBoxState extends State<UploadBox> {
   // 1. Create two GlobalKeys for clip icon and send button
   final GlobalKey _clipKey = GlobalKey();
   final GlobalKey _sendKey = GlobalKey();
+  final GlobalKey _cameraKey = GlobalKey();
 
   // Reference to the tutorial
   TutorialCoachMark? tutorialCoachMark;
@@ -56,7 +57,7 @@ class _UploadBoxState extends State<UploadBox> {
 
   void _showTutorial() {
     // Debug: check offsets
-    if (_clipKey.currentContext == null || _sendKey.currentContext == null) {
+    if (_clipKey.currentContext == null || _sendKey.currentContext == null || _cameraKey.currentContext == null) {
       debugPrint("ERROR: One or both keys are not attached to widgets!");
     } else {
       final clipBox = _clipKey.currentContext!.findRenderObject() as RenderBox;
@@ -123,7 +124,39 @@ class _UploadBoxState extends State<UploadBox> {
         ],
       ),
 
-      // Target 2: Send Button
+      // Target 2: Camera Icon
+      TargetFocus(
+        identify: 'cameraIcon',
+        keyTarget: _cameraKey,
+        shape: ShapeLightFocus.Circle,
+        paddingFocus: 8.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            child: Column(
+              children: [
+                Icon(Icons.arrow_downward, color: Colors.white, size: 30),
+                SizedBox(height: 10),
+                Text(
+                  context.tr('cameraTitle'),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: settings.fontSize,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  context.tr('cameraInstructions'),
+                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+
+      // Target 3: Send Button
       TargetFocus(
         identify: 'sendButton',
         keyTarget: _sendKey,
@@ -283,6 +316,7 @@ class _UploadBoxState extends State<UploadBox> {
                     onPressed: _pickAndExtractDocument,
                   ),
                   IconButton(
+                    key: _cameraKey,
                     padding: EdgeInsets.zero,
                     icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
                     onPressed: () async {
