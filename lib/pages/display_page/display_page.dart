@@ -135,7 +135,7 @@ class _DisplayPageState extends State<DisplayPage> {
       textSkip: "Skip Tutorial",
       paddingFocus: 10,
       skipWidget: Padding(
-        padding: const EdgeInsets.only(top: 30, right:30), // Add padding to the bottom
+        padding: const EdgeInsets.only(top: 10, right:10), // Add padding to the bottom
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
