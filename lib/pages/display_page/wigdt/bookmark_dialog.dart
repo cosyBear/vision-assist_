@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+import 'package:SteadyEye/general/app_localizations.dart';
+
+import '../../../general/app_setting_provider.dart';
 
 class BookmarkDialog extends StatefulWidget {
   final List<Map<String, dynamic>> bookmarks;
@@ -33,8 +36,11 @@ class BookmarkDialog extends StatefulWidget {
 }
 
 class _BookmarkDialogState extends State<BookmarkDialog> {
+
   final GlobalKey _addButtonKey = GlobalKey();
   final GlobalKey _deleteButtonKey = GlobalKey();
+  // New key for the bookmark name text field.
+  final GlobalKey _bookmarkNameFieldKey = GlobalKey();
   TutorialCoachMark? tutorialCoachMark;
   TextEditingController nameController = TextEditingController();
 
@@ -58,6 +64,30 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
   void _showDialogTutorial() {
     List<TargetFocus> targets = [];
 
+    // Target for the bookmark name input field.
+    targets.add(
+      TargetFocus(
+        identify: "BookmarkNameField",
+        keyTarget: _bookmarkNameFieldKey,
+        shape: ShapeLightFocus.RRect,
+        radius: 8,
+        paddingFocus: 10.0,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              color: Colors.black.withOpacity(0.7),
+              child: Text(
+                context.tr("BookMakeName"),
+                style: TextStyle(fontSize: widget.fontSize, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
     // Target for the Add Button.
     targets.add(
       TargetFocus(
@@ -73,7 +103,7 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
               padding: const EdgeInsets.all(8.0),
               color: Colors.black.withOpacity(0.7),
               child: Text(
-                "Tap here to add a new bookmark.",
+                context.tr("AddBookMark"),
                 style: TextStyle(fontSize: widget.fontSize, color: Colors.white),
               ),
             ),
@@ -83,7 +113,6 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
     );
 
     // Target for the Delete Button.
-    // We assign the global key only to the first delete button.
     if (widget.bookmarks.isNotEmpty) {
       targets.add(
         TargetFocus(
@@ -99,7 +128,7 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
                 padding: const EdgeInsets.all(8.0),
                 color: Colors.black.withOpacity(0.7),
                 child: Text(
-                  "Tap here to delete a bookmark.",
+                    context.tr("DeleteBookMark"),
                   style: TextStyle(fontSize: widget.fontSize, color: Colors.white),
                 ),
               ),
@@ -161,14 +190,11 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
                     return ListTile(
                       title: Text(
                         "${bookmark['name']}",
-                        style: TextStyle(
-                            fontSize: widget.fontSize, fontFamily: widget.fontFamily),
+                        style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
                       ),
                       trailing: IconButton(
-                        // Assign the global key only to the first delete button.
                         key: index == 0 ? _deleteButtonKey : null,
-                        icon: Icon(Icons.delete,
-                            color: Colors.red, size: widget.buttonIconSize),
+                        icon: Icon(Icons.delete, color: Colors.red, size: widget.buttonIconSize),
                         onPressed: () {
                           widget.onDeleteBookmark(bookmark['position']);
                           Navigator.pop(context);
@@ -181,10 +207,17 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
                     );
                   }).toList(),
                 ),
+                // Updated TextField with GlobalKey, hint text, and clear icon.
                 TextField(
+                  key: _bookmarkNameFieldKey,
                   controller: nameController,
                   decoration: InputDecoration(
                     labelText: "Bookmark Name",
+                    hintText: "Enter bookmark name",
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () => nameController.clear(),
+                    ),
                     labelStyle: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
                   ),
                   style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
