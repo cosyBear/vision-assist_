@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../general/app_setting_provider.dart';
 import 'language_provider.dart';
@@ -22,7 +23,7 @@ class NavbarWithTutorial extends StatefulWidget implements PreferredSizeWidget {
 class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
   TutorialCoachMark? tutorialCoachMark;
 
-  final GlobalKey _homeKey = GlobalKey();
+  final GlobalKey _steadyEyeKey = GlobalKey(); // Key for tutorial
   final GlobalKey _uploadKey = GlobalKey();
   final GlobalKey _settingsKey = GlobalKey();
   final GlobalKey _libraryKey = GlobalKey();
@@ -31,12 +32,9 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-    _showTutorialIfNeeded());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showTutorialIfNeeded());
   }
 
-
-  /// Checks SharedPreferences to see if the tutorial was already shown.
   Future<void> _showTutorialIfNeeded() async {
     final prefs = await SharedPreferences.getInstance();
     bool hasShown = prefs.getBool('navbarTutorialShown') ?? false;
@@ -52,11 +50,11 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
       alignSkip: Alignment.topRight,
       onFinish: () {
         debugPrint("Navbar tutorial finished");
-        return true; // Ensure it returns a value
+        return true; // ✅ Ensure it returns a boolean
       },
       onSkip: () {
         debugPrint("Navbar tutorial skipped");
-        return false; // Ensure it returns a value
+        return false; // ✅ Ensure it returns a boolean
       },
     );
     tutorialCoachMark?.show(context: context);
@@ -66,8 +64,8 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
   List<TargetFocus> _createTargets() {
     return [
       TargetFocus(
-        identify: "HomeIcon",
-        keyTarget: _homeKey,
+        identify: "SteadyEyeText",
+        keyTarget: _steadyEyeKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
         contents: [
@@ -145,6 +143,7 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
     final setting = Provider.of<AppSettingProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
     double buttonIconsSize = setting.buttonIconsSize;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     Color getIconColor(int index) {
       return widget.currentIndex == index ? const Color.fromRGBO(203, 105, 156, 1) : Colors.white;
@@ -154,56 +153,64 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
       height: buttonIconsSize + 24,
       color: const Color.fromRGBO(18, 18, 18, 1.0),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Stack(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05), // Dynamic padding
+        child: Row(
           children: [
-            Positioned(
-              left: 0,
-              child: IconButton(
-                key: _homeKey,
-                icon: Icon(Icons.home, color: getIconColor(0), size: buttonIconsSize),
-                onPressed: () => widget.onIconPressed(0),
-              ),
-            ),
-            Positioned(
-              right: 0,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    key: _uploadKey,
-                    icon: Icon(Icons.cloud_upload_outlined, color: getIconColor(1), size: buttonIconsSize),
-                    onPressed: () => widget.onIconPressed(1),
-                  ),
-                  IconButton(
-                    key: _settingsKey,
-                    icon: Icon(Icons.settings, color: getIconColor(2), size: buttonIconsSize),
-                    onPressed: () => widget.onIconPressed(2),
-                  ),
-                  IconButton(
-                    key: _libraryKey,
-                    icon: Icon(Icons.library_books_outlined, color: getIconColor(3), size: buttonIconsSize),
-                    onPressed: () => widget.onIconPressed(3),
-                  ),
-                  PopupMenuButton<Locale>(
-                    key: _languageKey,
-                    icon: Icon(Icons.language_outlined, color: Colors.white, size: buttonIconsSize),
-                    onSelected: (Locale locale) {
-                      languageProvider.changeLanguage(locale);
-                    },
-                    itemBuilder: (BuildContext context) => [
-                      PopupMenuItem(
-                        value: const Locale('en', 'US'),
-                        child: Text('🇺🇸 en', style: TextStyle(fontSize: setting.fontSize)),
-                      ),
-                      PopupMenuItem(
-                        value: const Locale('nl', 'BE'),
-                        child: Text('🇧🇪 nl', style: TextStyle(fontSize: setting.fontSize)),
-                      ),
-                    ],
-                  ),
+            // "SteadyEye" logo (Home button) at the left
+            GestureDetector(
+              key: _steadyEyeKey,
+              onTap: () => widget.onIconPressed(0),
+              child: GradientText(
+                context.tr("SteadyEye"),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: setting.fontSize, fontFamily: setting.fontFamily),
+                colors: const [
+                  Color.fromRGBO(203, 105, 156, 1.0),
+                  Color.fromRGBO(22, 173, 201, 1.0),
                 ],
               ),
+            ),
+
+            // Spacer to push icons to the right
+            Spacer(),
+
+            // Icons on the right side
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  key: _uploadKey,
+                  icon: Icon(Icons.cloud_upload_outlined, color: getIconColor(1), size: buttonIconsSize),
+                  onPressed: () => widget.onIconPressed(1),
+                ),
+                IconButton(
+                  key: _settingsKey,
+                  icon: Icon(Icons.settings, color: getIconColor(2), size: buttonIconsSize),
+                  onPressed: () => widget.onIconPressed(2),
+                ),
+                IconButton(
+                  key: _libraryKey,
+                  icon: Icon(Icons.library_books_outlined, color: getIconColor(3), size: buttonIconsSize),
+                  onPressed: () => widget.onIconPressed(3),
+                ),
+                PopupMenuButton<Locale>(
+                  key: _languageKey,
+                  icon: Icon(Icons.language_outlined, color: Colors.white, size: buttonIconsSize),
+                  onSelected: (Locale locale) {
+                    languageProvider.changeLanguage(locale);
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    PopupMenuItem(
+                      value: const Locale('en', 'US'),
+                      child: Text('🇺🇸 en', style: TextStyle(fontSize: setting.fontSize)),
+                    ),
+                    PopupMenuItem(
+                      value: const Locale('nl', 'BE'),
+                      child: Text('🇧🇪 nl', style: TextStyle(fontSize: setting.fontSize)),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
