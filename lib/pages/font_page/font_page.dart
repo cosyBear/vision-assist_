@@ -56,16 +56,37 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
   void _showTutorial() {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
-      alignSkip: Alignment.topRight,
+      alignSkip: Alignment.bottomCenter, // Moves "Skip" to the bottom
+      textSkip: "Skip Tutorial", // Customize text
+      paddingFocus: 10, // Add some padding around the highlight
+      skipWidget: Padding(
+        padding: const EdgeInsets.only(bottom: 30), // Add spacing from the bottom
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent, // Highlight color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // Rounded corners for the border
+              side: const BorderSide(color: Color.fromRGBO(203, 105, 156, 1), width: 4), // Pink border with width
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12), // Bigger button
+            textStyle: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold), // Bigger text
+          ),
+          onPressed: () {
+            tutorialCoachMark?.skip();
+          },
+          child: const Text("Next", style: TextStyle(color: Colors.white)),
+        ),
+      ),
       onFinish: () {
-        debugPrint('Tutorial finished');
+        debugPrint("Tutorial finished");
         return true;
       },
       onSkip: () {
-        debugPrint('Tutorial skipped');
-        return true;
+        debugPrint("Tutorial skipped");
+        return false;
       },
     );
+
     tutorialCoachMark?.show(context: context);
   }
 

@@ -15,6 +15,7 @@ import 'send_button.dart';
 
 class UploadBox extends StatefulWidget {
   final TextEditingController controller;
+
   const UploadBox({super.key, required this.controller});
 
   @override
@@ -57,7 +58,9 @@ class UploadBoxState extends State<UploadBox> {
 
   void _showTutorial() {
     // Debug: check offsets
-    if (_clipKey.currentContext == null || _sendKey.currentContext == null || _cameraKey.currentContext == null) {
+    if (_clipKey.currentContext == null ||
+        _sendKey.currentContext == null ||
+        _cameraKey.currentContext == null) {
       debugPrint("ERROR: One or both keys are not attached to widgets!");
     } else {
       final clipBox = _clipKey.currentContext!.findRenderObject() as RenderBox;
@@ -72,24 +75,54 @@ class UploadBoxState extends State<UploadBox> {
     // 3. Build the tutorial with two targets
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
-      alignSkip: Alignment.topRight,
-      // Return bool in these callbacks
+      alignSkip: Alignment.bottomCenter,
+      // Moves "Skip" to the bottom
+      textSkip: "Skip Tutorial",
+      // Customize text
+      paddingFocus: 10,
+      // Add some padding around the highlight
+      skipWidget: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        // Add spacing from the bottom
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            // Highlight color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              // Rounded corners for the border
+              side: const BorderSide(
+                  color: Color.fromRGBO(203, 105, 156, 1),
+                  width: 4), // Pink border with width
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+            // Bigger button
+            textStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.bold), // Bigger text
+          ),
+          onPressed: () {
+            tutorialCoachMark?.skip();
+          },
+          child: const Text("Next", style: TextStyle(color: Colors.white)),
+        ),
+      ),
       onFinish: () {
-        debugPrint('Tutorial finished');
-        return true; // <-- Return a bool
+        debugPrint("Tutorial finished");
+        return true;
       },
       onSkip: () {
-        debugPrint('Tutorial skipped');
-        return true; // <-- Return a bool
+        debugPrint("Tutorial skipped");
+        return false;
       },
     );
 
-    // Show the tutorial
     tutorialCoachMark?.show(context: context);
   }
 
   List<TargetFocus> _createTargets() {
-    final settings = Provider.of<AppSettingProvider>(context,listen: false);
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
     return [
       // Target 1: Clip Icon
       TargetFocus(
@@ -106,7 +139,7 @@ class UploadBoxState extends State<UploadBox> {
                 Icon(Icons.arrow_downward, color: Colors.white, size: 30),
                 SizedBox(height: 10),
                 Text(
-                    context.tr('attachAndUpload'),
+                  context.tr('attachAndUpload'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: settings.fontSize,
@@ -116,7 +149,8 @@ class UploadBoxState extends State<UploadBox> {
                 SizedBox(height: 10),
                 Text(
                   context.tr('uploadInstructions'),
-                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),
@@ -148,7 +182,8 @@ class UploadBoxState extends State<UploadBox> {
                 SizedBox(height: 10),
                 Text(
                   context.tr('cameraInstructions'),
-                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),
@@ -169,7 +204,8 @@ class UploadBoxState extends State<UploadBox> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.arrow_downward, color: Colors.white, size: settings.buttonIconsSize),
+                Icon(Icons.arrow_downward,
+                    color: Colors.white, size: settings.buttonIconsSize),
                 SizedBox(height: 10),
                 Text(
                   'Start',
@@ -182,7 +218,8 @@ class UploadBoxState extends State<UploadBox> {
                 SizedBox(height: 10),
                 Text(
                   context.tr('sendInstructions'),
-                  style: TextStyle(color: Colors.white, fontSize: settings.fontSize),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: settings.fontSize),
                 ),
               ],
             ),
@@ -204,7 +241,7 @@ class UploadBoxState extends State<UploadBox> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return Dialogue(message:  context.tr('selectAndWait'));
+          return Dialogue(message: context.tr('selectAndWait'));
         },
       );
 
@@ -218,14 +255,19 @@ class UploadBoxState extends State<UploadBox> {
 
       if (extractedText == null || extractedText.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(content: Text(context.tr('extractionError'),)),
+          SnackBar(
+              content: Text(
+            context.tr('extractionError'),
+          )),
         );
         return;
       }
 
       // Step 5: Save document details.
-      String fileName = documentHandler.lastSelectedFileName ?? "Untitled Document";
-      final documentProvider = Provider.of<DocumentProvider>(context, listen: false);
+      String fileName =
+          documentHandler.lastSelectedFileName ?? "Untitled Document";
+      final documentProvider =
+          Provider.of<DocumentProvider>(context, listen: false);
       documentProvider.addDocument(fileName, filePath);
 
       // Step 6: Update the text field and navigate.
@@ -263,7 +305,8 @@ class UploadBoxState extends State<UploadBox> {
 
     if (screenWidth < 1000) {
       fontSize = settings.fontSize > 40 ? 40 : settings.fontSize;
-      buttonIconsSize = settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+      buttonIconsSize =
+          settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
     }
 
     return Padding(
@@ -282,7 +325,8 @@ class UploadBoxState extends State<UploadBox> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
                     controller: _scrollController,
                     child: TextField(
                       controller: widget.controller,
@@ -294,7 +338,7 @@ class UploadBoxState extends State<UploadBox> {
                         color: settings.textColor,
                       ),
                       decoration: InputDecoration(
-                        hintText:  context.tr('enterText'),
+                        hintText: context.tr('enterText'),
                         border: InputBorder.none,
                       ),
                     ),
@@ -318,15 +362,18 @@ class UploadBoxState extends State<UploadBox> {
                   IconButton(
                     key: _cameraKey,
                     padding: EdgeInsets.zero,
-                    icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
+                    icon: Icon(Icons.camera_alt,
+                        color: textColor, size: buttonIconsSize),
                     onPressed: () async {
                       final extractedText = await Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const CameraRecognition()),
+                        MaterialPageRoute(
+                            builder: (context) => const CameraRecognition()),
                       );
                       if (extractedText != null) {
                         setState(() {
-                          widget.controller.text = extractedText;  // Set the extracted text in the text controller
+                          widget.controller.text =
+                              extractedText; // Set the extracted text in the text controller
                         });
                       }
                     },

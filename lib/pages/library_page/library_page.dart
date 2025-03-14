@@ -52,20 +52,40 @@ class _LibraryState extends State<Library> {
     }
   }
 
-  /// Displays the tutorial with highlighted UI elements
   void _showTutorial() {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
-      alignSkip: Alignment.topRight,
+      alignSkip: Alignment.bottomCenter, // Moves "Skip" to the bottom
+      textSkip: "Skip Tutorial", // Customize text
+      paddingFocus: 10, // Add some padding around the highlight
+      skipWidget: Padding(
+        padding: const EdgeInsets.only(bottom: 30), // Add spacing from the bottom
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent, // Highlight color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // Rounded corners for the border
+              side: const BorderSide(color: Color.fromRGBO(203, 105, 156, 1), width: 4), // Pink border with width
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12), // Bigger button
+            textStyle: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold), // Bigger text
+          ),
+          onPressed: () {
+            tutorialCoachMark?.skip();
+          },
+          child: const Text("Next", style: TextStyle(color: Colors.white)),
+        ),
+      ),
       onFinish: () {
-        debugPrint('Tutorial finished');
+        debugPrint("Tutorial finished");
         return true;
       },
       onSkip: () {
-        debugPrint('Tutorial skipped');
-        return true;
+        debugPrint("Tutorial skipped");
+        return false;
       },
     );
+
     tutorialCoachMark?.show(context: context);
   }
 
@@ -78,7 +98,6 @@ class _LibraryState extends State<Library> {
         keyTarget: _searchBarKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
-        paddingFocus: 10.0,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -95,9 +114,9 @@ class _LibraryState extends State<Library> {
         keyTarget: _bookListKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
-        paddingFocus: 10.0,
         contents: [
           TargetContent(
+            padding: const EdgeInsets.only(top: 50),
             align: ContentAlign.top,
             child: _buildTooltip(
               context.tr('libraryTitle'),
@@ -112,7 +131,6 @@ class _LibraryState extends State<Library> {
         keyTarget: _addButtonKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
-        paddingFocus: 10.0,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -128,6 +146,7 @@ class _LibraryState extends State<Library> {
 
   /// Helper widget for tutorial tooltips
   Widget _buildTooltip(String title, String description) {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
     return Container(
       padding: const EdgeInsets.all(8.0),
       color:Colors.black.withValues(alpha: (0.7 * 255)),
@@ -136,16 +155,16 @@ class _LibraryState extends State<Library> {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: settings.fontSize,
               color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             description,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,  fontSize: settings.fontSize),
           ),
         ],
       ),

@@ -65,7 +65,7 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
           onPressed: () {
             tutorialCoachMark?.skip();
           },
-          child: const Text("Skip", style: TextStyle(color: Colors.white)),
+          child: const Text("Next", style: TextStyle(color: Colors.white)),
         ),
       ),
       onFinish: () {

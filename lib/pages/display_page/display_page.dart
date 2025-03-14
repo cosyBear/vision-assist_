@@ -113,22 +113,58 @@ class _DisplayPageState extends State<DisplayPage> {
     }
   }
 
-  /// Initializes and shows the tutorial.
   void _showTutorial() {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      buttonIconsSize =
+      settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
+
+    // Pause scrolling when the tutorial starts
+    if (!settings.isPaused) {
+      settings.togglePause();
+    }
+
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
       alignSkip: Alignment.topRight,
+      textSkip: "Skip Tutorial",
+      paddingFocus: 10,
+      skipWidget: Padding(
+        padding: const EdgeInsets.only(top: 30, right:30), // Add padding to the bottom
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(buttonIconsSize * 0.4),
+              side: BorderSide(color: Color.fromRGBO(203, 105, 156, 1), width: buttonIconsSize / 15),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16), // Increased padding
+            textStyle: TextStyle(fontSize: buttonIconsSize * 0.8, fontWeight: FontWeight.bold),
+          ),
+          onPressed: () {
+            tutorialCoachMark?.skip();
+          },
+          child: const Text("Next", style: TextStyle(color: Colors.white)),
+        ),
+      ),
       onFinish: () {
-        debugPrint('Tutorial finished');
+        debugPrint("Tutorial finished");
         return true;
       },
       onSkip: () {
-        debugPrint('Tutorial skipped');
-        return true;
+        debugPrint("Tutorial skipped");
+        return false;
       },
     );
+
     tutorialCoachMark?.show(context: context);
   }
+
 
   /// Creates the list of tutorial targets.
   List<TargetFocus> _createTargets() {
@@ -172,7 +208,7 @@ class _DisplayPageState extends State<DisplayPage> {
         paddingFocus: 10.0,
         contents: [
           TargetContent(
-            align: ContentAlign.bottom,
+            align: ContentAlign.top,
             child: _buildTooltip(context.tr('bookmarkTitle'),
               context.tr('bookmarkInstructions'),),
           ),
