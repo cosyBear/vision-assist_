@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'package:SteadyEye/general/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_gallery_saver/flutter_image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:provider/provider.dart';
 import '../../../general/app_setting_provider.dart';
 import '../../../general/navbar_with_return_button.dart';
 import '../../display_page/display_page.dart';
+import 'dart:typed_data';
 
 class CameraRecognition extends StatefulWidget {
   const CameraRecognition({super.key});
@@ -22,10 +25,54 @@ class CameraRecognitionState extends State<CameraRecognition> {
   Future<void> _pickImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
+      if (source == ImageSource.camera) {
+        bool saveToGallery = await _askToSaveImage();
+        if (saveToGallery) {
+          await _saveImageToGallery(File(image.path));
+        }
+      }
+
+      if (!mounted) return; // Check if the widget is still mounted
       _showLoadingDialog();
       await _extractTextFromImage(File(image.path));
     }
   }
+
+  Future<bool> _askToSaveImage() async {
+    return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(context.tr('saveImageTitle')),
+          content: Text(context.tr('saveImageContent')),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(context.tr('no')),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(context.tr('yes')),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
+  }
+
+  Future<void> _saveImageToGallery(File imageFile) async {
+    try {
+      final Uint8List bytes = await imageFile.readAsBytes();
+      await FlutterImageGallerySaver.saveImage(bytes); // No need to assign result here
+
+      if (!mounted) return; // Check if the widget is still mounted
+      _showSnackBar(context.tr('imageSaved')); // Show the snackbar when done
+    } catch (e) {
+      if (!mounted) return; // Check if the widget is still mounted
+      _showSnackBar('${context.tr('error')}: $e'); // Show error message
+    }
+  }
+
 
   Future<void> _extractTextFromImage(File imageFile) async {
     final inputImage = InputImage.fromFile(imageFile);
@@ -35,6 +82,7 @@ class CameraRecognitionState extends State<CameraRecognition> {
       final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
       String extracted = recognizedText.text;
 
+      if (!mounted) return; // Check if the widget is still mounted
       _dismissLoadingDialog();
 
       if (extracted.isNotEmpty) {
@@ -53,10 +101,11 @@ class CameraRecognitionState extends State<CameraRecognition> {
         // After DisplayPage is closed, navigate back to Upload Page
         if (mounted) Navigator.pop(context);
       } else {
-        _showSnackBar("No text found in the image.");
+        _showSnackBar(context.tr('noTextFound'));
       }
     } catch (e) {
-      _showSnackBar("Error extracting text: $e");
+      if (!mounted) return; // Check if the widget is still mounted
+      _showSnackBar('${context.tr('errorExtractingText')}: $e');
     } finally {
       textRecognizer.close();
     }
@@ -83,6 +132,7 @@ class CameraRecognitionState extends State<CameraRecognition> {
   }
 
   void _showSnackBar(String message) {
+    if (!mounted) return; // Check if the widget is still mounted
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
@@ -107,36 +157,34 @@ class CameraRecognitionState extends State<CameraRecognition> {
       backgroundColor: backgroundColor,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0), // Add padding for spacing
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Vertically center widgets
-            crossAxisAlignment: CrossAxisAlignment.center, // Align widgets horizontally
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Camera Icon with text description
               Column(
                 children: [
                   IconButton(
                     icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
-                    onPressed: () => _pickImage(ImageSource.camera), // Call _pickImage with camera as source
-                    tooltip: "Capture image with camera", // Accessibility description
+                    onPressed: () => _pickImage(ImageSource.camera),
+                    tooltip: context.tr('captureImage'),
                   ),
                   Text(
-                    "Take a Photo",
+                    context.tr('takePhoto'),
                     style: TextStyle(fontSize: fontSize, color: textColor),
                   ),
                 ],
               ),
-              const SizedBox(height: 20), // Add space between buttons
-              // Gallery Icon with text description
+              const SizedBox(height: 20),
               Column(
                 children: [
                   IconButton(
                     icon: Icon(Icons.image, color: textColor, size: buttonIconsSize),
-                    onPressed: () => _pickImage(ImageSource.gallery), // Call _pickImage with gallery as source
-                    tooltip: "Select image from gallery", // Accessibility description
+                    onPressed: () => _pickImage(ImageSource.gallery),
+                    tooltip: (context.tr('selectImage')),
                   ),
                   Text(
-                    "Choose from Gallery",
+                    context.tr('chooseFromGallery'),
                     style: TextStyle(fontSize: fontSize, color: textColor),
                   ),
                 ],
