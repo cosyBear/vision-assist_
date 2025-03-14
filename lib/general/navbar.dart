@@ -47,18 +47,40 @@ class _NavbarWithTutorialState extends State<NavbarWithTutorial> {
   void _showTutorial() {
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
-      alignSkip: Alignment.topRight,
+      alignSkip: Alignment.bottomCenter, // Moves "Skip" to the bottom
+      textSkip: "Skip Tutorial", // Customize text
+      paddingFocus: 10, // Add some padding around the highlight
+      skipWidget: Padding(
+        padding: const EdgeInsets.only(bottom: 30), // Add spacing from the bottom
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent, // Highlight color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20), // Rounded corners for the border
+              side: const BorderSide(color: Color.fromRGBO(203, 105, 156, 1), width: 4), // Pink border with width
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12), // Bigger button
+            textStyle: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold), // Bigger text
+          ),
+          onPressed: () {
+            tutorialCoachMark?.skip();
+          },
+          child: const Text("Skip", style: TextStyle(color: Colors.white)),
+        ),
+      ),
       onFinish: () {
         debugPrint("Navbar tutorial finished");
-        return true; // ✅ Ensure it returns a boolean
+        return true;
       },
       onSkip: () {
         debugPrint("Navbar tutorial skipped");
-        return false; // ✅ Ensure it returns a boolean
+        return false;
       },
     );
+
     tutorialCoachMark?.show(context: context);
   }
+
 
 
   List<TargetFocus> _createTargets() {
