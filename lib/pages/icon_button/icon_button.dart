@@ -207,6 +207,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
     final screenWidth = MediaQuery.of(context).size.width;
     final spacing = screenWidth * 0.05;
     double maxButtonSize = 100.0; // Maximum button size
+    double minButtonSize = 20;
 
     double fontSize = settings.fontSize;
     if (screenWidth < 1000) {
@@ -228,11 +229,28 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.favorite,
-                      color: textColor, size: buttonIconsSize),
+
+                  GestureDetector(
+                    onScaleUpdate: (ScaleUpdateDetails details) {
+                      setState(() {
+                        double newSize = (buttonIconsSize * details.scale).clamp(minButtonSize, maxButtonSize);
+                        settings.setButtonIconsSize(newSize);
+                      });
+                    },
+                    child:  Icon(Icons.favorite,
+                        color: textColor, size: buttonIconsSize),
+                  ),
                   SizedBox(width: spacing),
                   // Sample text button, showing "I love reading".
-                  TextButton(
+
+                  GestureDetector(
+                    onScaleUpdate: (ScaleUpdateDetails details) {
+                      setState(() {
+                        double newSize = (buttonIconsSize * details.scale).clamp(minButtonSize, maxButtonSize);
+                        settings.setButtonIconsSize(newSize);
+                      });
+                    },
+                    child: TextButton(
                     key: _sampleTextKey,
                     onPressed: () {}, // For demonstration only.
                     style: TextButton.styleFrom(
@@ -258,6 +276,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                       ),
                     ),
                   ),
+                  ),
                 ],
               ),
             ),
@@ -274,7 +293,7 @@ class _IconButtonSizeState extends State<IconButtonSize> {
                   icon: Icon(Icons.remove_circle_outline,
                       color: textColor, size: buttonIconsSize),
                   onPressed: () {
-                    if (settings.buttonIconsSize > 20) {
+                    if (settings.buttonIconsSize > minButtonSize) {
                       settings.setButtonIconsSize(settings.buttonIconsSize - 5);
                     }
                   },
