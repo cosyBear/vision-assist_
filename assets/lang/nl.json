@@ -79,7 +79,20 @@
   "libraryNavbarTitle": "Bibliotheek",
   "libraryNavbarInstructions": "Bekijk opgeslagen documenten.",
   "languageTitle": "Taal",
-  "languageInstructions": "Wijzig de app-taal."
+  "languageInstructions": "Wijzig de app-taal.",
 
+  "saveImageTitle": "Afbeelding opslaan",
+  "saveImageContent": "Wilt u deze afbeelding opslaan in de galerij?",
+  "no": "Nee",
+  "yes": "Ja",
+  "imageSaved": "Afbeelding opgeslagen in de galerij.",
+  "imageSaveFailed": "Opslaan van de afbeelding mislukt.",
+  "error": "Fout",
+  "noTextFound": "Geen tekst gevonden in de afbeelding.",
+  "errorExtractingText": "Fout bij het extraheren van tekst",
+  "captureImage": "Maak foto met camera",
+  "takePhoto": "Maak een foto",
+  "selectImage": "Selecteer afbeelding uit galerij",
+  "chooseFromGallery": "Kies uit galerij"
 
 }
