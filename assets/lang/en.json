@@ -79,5 +79,20 @@
     "libraryNavbarTitle": "Library",
     "libraryNavbarInstructions": "View saved documents.",
   "languageTitle": "Language",
-    "languageInstructions": "Change the app language."
+    "languageInstructions": "Change the app language.",
+
+  "saveImageTitle": "Save Image",
+  "saveImageContent": "Do you want to save this image to the gallery?",
+  "no": "No",
+  "yes": "Yes",
+  "imageSaved": "Image saved to gallery.",
+  "imageSaveFailed": "Failed to save image.",
+  "error": "Error",
+  "noTextFound": "No text found in the image.",
+  "errorExtractingText": "Error extracting text",
+  "captureImage": "Capture image with camera",
+  "takePhoto": "Take a Photo",
+  "selectImage": "Select image from gallery",
+  "chooseFromGallery": "Choose from Gallery"
+
 }
