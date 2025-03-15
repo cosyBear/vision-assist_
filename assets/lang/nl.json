@@ -9,6 +9,8 @@
   "uploadText": "Upload, voeg in of maak een foto",
   "enterText": "Voer tekst in...",
   "selectAndWait": "Selecteer een bestand en wacht...",
+  "AddBookMark": "Klik op Bladwijzer toevoegen om een nieuwe bladwijzer toe te voegen",
+  "DeleteBookMark" : "Klik op de prullenbak om een bladwijzer te verwijderen",
 
   "text": "TEKST",
   "color": "KLEUR",
