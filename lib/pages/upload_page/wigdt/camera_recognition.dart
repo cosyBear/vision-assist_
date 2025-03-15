@@ -22,11 +22,11 @@ class CameraRecognitionState extends State<CameraRecognition> {
   String extractedText = "";
   bool isDialogVisible = false;
 
-  Future<void> _pickImage(ImageSource source) async {
+  Future<void> _pickImage(ImageSource source, double fontSize) async {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
       if (source == ImageSource.camera) {
-        bool saveToGallery = await _askToSaveImage();
+        bool saveToGallery = await _askToSaveImage(fontSize);
         if (saveToGallery) {
           await _saveImageToGallery(File(image.path));
         }
@@ -38,21 +38,21 @@ class CameraRecognitionState extends State<CameraRecognition> {
     }
   }
 
-  Future<bool> _askToSaveImage() async {
+  Future<bool> _askToSaveImage(double fontSize) async {
     return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(context.tr('saveImageTitle')),
-          content: Text(context.tr('saveImageContent')),
+          title: Text(context.tr('saveImageTitle'), style: TextStyle(fontSize: fontSize)),
+          content: Text(context.tr('saveImageContent'), style: TextStyle(fontSize: fontSize * 0.8)),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text(context.tr('no')),
+              child: Text(context.tr('no'), style: TextStyle(fontSize: fontSize * 0.8)),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text(context.tr('yes')),
+              child: Text(context.tr('yes'), style: TextStyle(fontSize: fontSize * 0.8)),
             ),
           ],
         );
@@ -166,7 +166,7 @@ class CameraRecognitionState extends State<CameraRecognition> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.camera_alt, color: textColor, size: buttonIconsSize),
-                    onPressed: () => _pickImage(ImageSource.camera),
+                    onPressed: () => _pickImage(ImageSource.camera, fontSize),
                     tooltip: context.tr('captureImage'),
                   ),
                   Text(
@@ -180,7 +180,7 @@ class CameraRecognitionState extends State<CameraRecognition> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.image, color: textColor, size: buttonIconsSize),
-                    onPressed: () => _pickImage(ImageSource.gallery),
+                    onPressed: () => _pickImage(ImageSource.gallery, fontSize),
                     tooltip: (context.tr('selectImage')),
                   ),
                   Text(
