@@ -212,6 +212,7 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
     ];
   }
 
+
   @override
   Widget build(BuildContext context) {
     final settings = Provider.of<AppSettingProvider>(context);
@@ -276,18 +277,28 @@ class _TextSizeFontsState extends State<TextSizeFonts> {
                 ),
                 const SizedBox(height: 20),
                 // Sample text display with a GlobalKey.
-                Container(
-                  key: _sampleTextKey,
-                  child: Text(
-                    context.tr('placeholderText'),
-                    style: TextStyle(
-                      fontSize: currentFontSize,
-                      color: settings.textColor,
-                      fontFamily: settings.fontFamily,
-                      decoration: TextDecoration.none,
+                GestureDetector(
+                  onScaleUpdate: (ScaleUpdateDetails details) {
+                    setState(() {
+                      double newSize = (currentFontSize * details.scale).clamp(10, maxFontSize);
+                      settings.setFontSize(newSize);
+                      currentFontSize = newSize;
+                    });
+                  },
+                  child: Container(
+                    key: _sampleTextKey,
+                    child: Text(
+                      context.tr('placeholderText'),
+                      style: TextStyle(
+                        fontSize: currentFontSize,
+                        color: settings.textColor,
+                        fontFamily: settings.fontFamily,
+                        decoration: TextDecoration.none,
+                      ),
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
                 // Adjust buttons row with a GlobalKey.
                 Container(
