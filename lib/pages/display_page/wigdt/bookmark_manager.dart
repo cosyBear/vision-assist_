@@ -74,100 +74,105 @@ class BookmarkManager extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-          context.tr('bookmarksTitle'),
-                style: TextStyle(
-                    fontSize: fontSize * 1.3,
-                    fontFamily: fontFamily,
-                    color: Color.fromRGBO(203, 105, 156, 1.0)),
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          body: SingleChildScrollView(
+            child: AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+              context.tr('bookmarksTitle'),
+                    style: TextStyle(
+                        fontSize: fontSize * 1.3,
+                        fontFamily: fontFamily,
+                        color: Color.fromRGBO(203, 105, 156, 1.0)),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close,
+                        color: Colors.black, size: buttonIconSize),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               ),
-              IconButton(
-                icon: Icon(Icons.close,
-                    color: Colors.black, size: buttonIconSize),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-          // Wrap content with Container to set a custom width
-          content: SizedBox(
-            width: screenWidth/1.2,
-            child: Scrollbar(
-              thumbVisibility: true,
-              controller: dialogScrollController, // Attach controller explicitly
-              child: SingleChildScrollView(
-                controller: dialogScrollController, // Use the new controller
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    bookmarks.isEmpty
-                        ?  Text(context.tr('noBookmarks'))
-                        : Column(
+              // Wrap content with Container to set a custom width
+              content: SizedBox(
+                width: screenWidth/1.2,
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  controller: dialogScrollController, // Attach controller explicitly
+                  child: SingleChildScrollView(
+                    controller: dialogScrollController, // Use the new controller
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: bookmarks.map((bookmark) {
-                        return ListTile(
-                          title: Text(
-                            "${bookmark['name']}",
-                            style: TextStyle(
-                                fontSize: fontSize,
-                                fontFamily: fontFamily),
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete,
-                                color: Colors.red, size: buttonIconSize),
-                            onPressed: () {
-                              documentProvider.removeBookmark(
-                                  documentName!, bookmark['position']);
-                              Navigator.pop(context);
-                              _showBookmarkDialog(context, fontSize,
-                                  fontFamily, buttonIconSize);
-                            },
-                          ),
-                          onTap: () {
-                            scrollController.jumpTo(bookmark['position']);
-                            Navigator.pop(context);
-                          },
-                        );
-                      }).toList(),
+                      children: [
+                        bookmarks.isEmpty
+                            ?  Text(context.tr('noBookmarks'))
+                            : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: bookmarks.map((bookmark) {
+                            return ListTile(
+                              title: Text(
+                                "${bookmark['name']}",
+                                style: TextStyle(
+                                    fontSize: fontSize,
+                                    fontFamily: fontFamily),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete,
+                                    color: Colors.red, size: buttonIconSize),
+                                onPressed: () {
+                                  documentProvider.removeBookmark(
+                                      documentName!, bookmark['position']);
+                                  Navigator.pop(context);
+                                  _showBookmarkDialog(context, fontSize,
+                                      fontFamily, buttonIconSize);
+                                },
+                              ),
+                              onTap: () {
+                                scrollController.jumpTo(bookmark['position']);
+                                Navigator.pop(context);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                              labelText: context.tr('nameBookmarks'),
+                              labelStyle: TextStyle(
+                                  fontSize: fontSize, fontFamily: fontFamily)),
+                          style: TextStyle(
+                              fontSize: fontSize, fontFamily: fontFamily),
+                        ),
+                      ],
                     ),
-                    TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                          labelText: context.tr('nameBookmarks'),
-                          labelStyle: TextStyle(
-                              fontSize: fontSize, fontFamily: fontFamily)),
-                      style: TextStyle(
-                          fontSize: fontSize, fontFamily: fontFamily),
-                    ),
-                  ],
+                  ),
                 ),
               ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    String bookmarkName = nameController.text.isNotEmpty
+                        ? nameController.text
+                        : "Bookmark ${bookmarks.length + 1}";
+                    documentProvider.addBookmark(
+                        documentName!, scrollController.offset,
+                        name: bookmarkName);
+                    Navigator.pop(context);
+                    _showBookmarkDialog(
+                        context, fontSize, fontFamily, buttonIconSize);
+                  },
+                  child: Text(
+                  context.tr('addBookmark'),
+                    style: TextStyle(
+                        color: Color.fromRGBO(22, 173, 201, 1.0),
+                        fontSize: fontSize),
+                  ),
+                ),
+              ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                String bookmarkName = nameController.text.isNotEmpty
-                    ? nameController.text
-                    : "Bookmark ${bookmarks.length + 1}";
-                documentProvider.addBookmark(
-                    documentName!, scrollController.offset,
-                    name: bookmarkName);
-                Navigator.pop(context);
-                _showBookmarkDialog(
-                    context, fontSize, fontFamily, buttonIconSize);
-              },
-              child: Text(
-              context.tr('addBookmark'),
-                style: TextStyle(
-                    color: Color.fromRGBO(22, 173, 201, 1.0),
-                    fontSize: fontSize),
-              ),
-            ),
-          ],
         );
       },
     );
