@@ -52,20 +52,49 @@ class _LibraryState extends State<Library> {
     }
   }
 
-  /// Displays the tutorial with highlighted UI elements
   void _showTutorial() {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double buttonIconsSize = settings.buttonIconsSize;
+
+    if (screenWidth < 1000) {
+      buttonIconsSize =
+      settings.buttonIconsSize > 60 ? 60 : settings.buttonIconsSize;
+    }
     tutorialCoachMark = TutorialCoachMark(
       targets: _createTargets(),
-      alignSkip: Alignment.topRight,
+      alignSkip: Alignment.topRight, // Moves "Skip" to the bottom
+      textSkip: "Skip Tutorial", // Customize text
+      paddingFocus: 10, // Add some padding around the highlight
+      skipWidget: Padding(
+        padding: const EdgeInsets.only(top: 30, right:10),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(buttonIconsSize * 0.4),
+              side: BorderSide(color: Color.fromRGBO(203, 105, 156, 1), width: buttonIconsSize / 15),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16), // Increased padding
+            textStyle: TextStyle(fontSize: buttonIconsSize * 0.8, fontWeight: FontWeight.bold),
+          ),
+          onPressed: () {
+            tutorialCoachMark?.skip();
+          },
+          child: const Text("Next", style: TextStyle(color: Colors.white)),
+        ),
+      ),
       onFinish: () {
-        debugPrint('Tutorial finished');
+        debugPrint("Tutorial finished");
         return true;
       },
       onSkip: () {
-        debugPrint('Tutorial skipped');
-        return true;
+        debugPrint("Tutorial skipped");
+        return false;
       },
     );
+
     tutorialCoachMark?.show(context: context);
   }
 
@@ -78,7 +107,6 @@ class _LibraryState extends State<Library> {
         keyTarget: _searchBarKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
-        paddingFocus: 10.0,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -95,9 +123,9 @@ class _LibraryState extends State<Library> {
         keyTarget: _bookListKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
-        paddingFocus: 10.0,
         contents: [
           TargetContent(
+            padding: const EdgeInsets.only(top: 50),
             align: ContentAlign.top,
             child: _buildTooltip(
               context.tr('libraryTitle'),
@@ -112,7 +140,6 @@ class _LibraryState extends State<Library> {
         keyTarget: _addButtonKey,
         shape: ShapeLightFocus.RRect,
         radius: 8,
-        paddingFocus: 10.0,
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
@@ -128,6 +155,7 @@ class _LibraryState extends State<Library> {
 
   /// Helper widget for tutorial tooltips
   Widget _buildTooltip(String title, String description) {
+    final settings = Provider.of<AppSettingProvider>(context, listen: false);
     return Container(
       padding: const EdgeInsets.all(8.0),
       color:Colors.black.withValues(alpha: (0.7 * 255)),
@@ -136,16 +164,16 @@ class _LibraryState extends State<Library> {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: settings.fontSize,
               color: Colors.white,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             description,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,  fontSize: settings.fontSize),
           ),
         ],
       ),
