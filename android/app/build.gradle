@@ -1,53 +1,42 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
     namespace = "com.example.steadyeye"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 35  // ✅ Updated for latest plugins
+    ndkVersion = "25.1.8937393"  // ✅ Ensure correct NDK version
 
-    dependencies {
-        implementation 'com.google.mlkit:text-recognition:16.0.0'
-        implementation 'com.google.mlkit:text-recognition-chinese:16.0.0'
-        implementation 'com.google.mlkit:text-recognition-devanagari:16.0.0'
-        implementation 'com.google.mlkit:text-recognition-japanese:16.0.0'
-        implementation 'com.google.mlkit:text-recognition-korean:16.0.0'
+    defaultConfig {
+        applicationId "com.example.steadyeye"
+        minSdkVersion 21  // ✅ Ensure it's 21 or higher
+        targetSdkVersion 35  // ✅ Match compileSdk version
+        versionCode 1  // ✅ Set manually
+        versionName "1.0.0"
     }
 
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "17"
     }
-
-    defaultConfig {
-        // Specify your own unique Application ID
-        applicationId = "com.example.steadyeye"
-        // Set minSdkVersion explicitly
-        minSdkVersion 21  // Make sure this is 21 or higher as required by your app
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutter.versionCode
-        versionName flutter.versionName
-    }
-
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.debug
         }
     }
 }
 
-flutter {
-    source = "../.."
+dependencies {
+    implementation 'com.google.mlkit:text-recognition:16.0.0'
+    implementation 'com.google.mlkit:text-recognition-chinese:16.0.0'
+    implementation 'com.google.mlkit:text-recognition-devanagari:16.0.0'
+    implementation 'com.google.mlkit:text-recognition-japanese:16.0.0'
+    implementation 'com.google.mlkit:text-recognition-korean:16.0.0'
 }

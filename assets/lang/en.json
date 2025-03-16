@@ -6,6 +6,12 @@
   "change_language": "Change Language",
   "readButton": "Read now",
 
+  "BookMarkName":"Enter the name for your bookmark here"
+  ,
+  "AddBookMark": "click the Add BookMark to add a new BookMark",
+
+
+  "DeleteBookMark" : "Click the trash can To delete a bookMark",
 
   "uploadText": " Upload, insert or take a picture",
   "enterText": "Enter text...",
