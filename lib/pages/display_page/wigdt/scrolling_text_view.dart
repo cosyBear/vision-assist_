@@ -25,6 +25,15 @@ class ScrollingTextViewState extends State<ScrollingTextView> {
   bool _hasScrolledToEnd = false;
   bool _isShortText = false;
 
+  // Split the text into smaller chunks (e.g., each chunk representing a sentence or a paragraph)
+  List<String> getChunks(String text, int chunkSize) {
+    List<String> chunks = [];
+    for (int i = 0; i < text.length; i += chunkSize) {
+      chunks.add(text.substring(i, i + chunkSize < text.length ? i + chunkSize : text.length));
+    }
+    return chunks;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +76,9 @@ class ScrollingTextViewState extends State<ScrollingTextView> {
     double containerWidth = screenWidth < 600 ? 400 : screenWidth;
     double startPadding = containerWidth;
 
+    // Break the text into chunks
+    List<String> textChunks = getChunks(widget.text, 1000); // Example: Split by 1000 characters
+
     return Positioned(
       top: MediaQuery.of(context).size.height / 2 - 100 + widget.textOffset,
       left: 0,
@@ -74,7 +86,32 @@ class ScrollingTextViewState extends State<ScrollingTextView> {
       child: SizedBox(
         width: containerWidth,
         height: settings.fontSize * 1.2,
-        child: SingleChildScrollView(
+        child: widget.text.length > 1000 // Check if the text is long
+            ? ListView.builder(
+          scrollDirection: Axis.horizontal,
+          controller: _scrollController,
+          itemCount: textChunks.length + 1, // One extra for ensuring text exits screen fully
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              // Add padding at the start of the text to make it start off-screen
+              return SizedBox(width: startPadding);
+            } else if (index < textChunks.length) {
+              return Text(
+                textChunks[index - 1].replaceAll('\n', ' '),
+                style: TextStyle(
+                  color: settings.textColor,
+                  fontSize: settings.fontSize,
+                  fontFamily: settings.fontFamily,
+                  fontWeight: settings.fontWeight,
+                  decoration: TextDecoration.none,
+                ),
+              );
+            } else {
+              return SizedBox(width: _isShortText ? screenWidth : containerWidth); // Empty space to ensure exit
+            }
+          },
+        )
+            : SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
           child: Row(
