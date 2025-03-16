@@ -41,6 +41,11 @@ class ScrollingTextViewState extends State<ScrollingTextView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _determineTextType();
       _startScrollingAnimation();
+
+      // Ensure the layout updates properly with a small delay
+      Future.delayed(Duration(milliseconds: 100), () {
+        setState(() {});
+      });
     });
   }
 
@@ -86,7 +91,7 @@ class ScrollingTextViewState extends State<ScrollingTextView> {
       child: SizedBox(
         width: containerWidth,
         height: settings.fontSize * 1.2,
-        child: widget.text.length > 1000 // Check if the text is long
+        child: widget.text.length > 50000  // Check if the text is long
             ? ListView.builder(
           scrollDirection: Axis.horizontal,
           controller: _scrollController,
