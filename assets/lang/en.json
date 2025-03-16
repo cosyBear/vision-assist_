@@ -11,7 +11,7 @@
   "AddBookMark": "click the Add BookMark to add a new BookMark",
 
 
-  "DeleteBookMark" : "Click the trash can To delete a bookMark",
+  "DeleteBookMark" : "Click the trash can to delete a bookMark",
 
   "uploadText": " Upload, insert or take a picture",
   "enterText": "Enter text...",
@@ -42,7 +42,7 @@
   "fixationPointTitle": "Fixation Point",
   "fixationPointInstructions": "Drag this button to adjust your reading focus position.",
   "bookmarkTitle": "Bookmark",
-    "bookmarkInstructions": "Tap here to bookmark your current reading position.",
+  "bookmarkInstructions": "Tap here to bookmark your current reading position.",
 
   "searchTitle": "Search for Books",
     "searchInstructions": "Use the search bar to quickly find books by name.",

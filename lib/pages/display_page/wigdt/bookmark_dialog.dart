@@ -3,8 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:SteadyEye/general/app_localizations.dart';
 
-import '../../../general/app_setting_provider.dart';
-
 class BookmarkDialog extends StatefulWidget {
   final List<Map<String, dynamic>> bookmarks;
   final Function(String bookmarkName) onAddBookmark;
@@ -18,7 +16,7 @@ class BookmarkDialog extends StatefulWidget {
   final String addBookmarkText;
 
   const BookmarkDialog({
-    Key? key,
+    super.key,
     required this.bookmarks,
     required this.onAddBookmark,
     required this.onDeleteBookmark,
@@ -29,7 +27,7 @@ class BookmarkDialog extends StatefulWidget {
     required this.bookmarksTitle,
     required this.noBookmarksText,
     required this.addBookmarkText,
-  }) : super(key: key);
+  });
 
   @override
   _BookmarkDialogState createState() => _BookmarkDialogState();
@@ -77,9 +75,9 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
             align: ContentAlign.bottom,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Text(
-                context.tr("BookMakeName"),
+                context.tr("BookMarkName"),
                 style: TextStyle(fontSize: widget.fontSize, color: Colors.white),
               ),
             ),
@@ -101,7 +99,7 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
             align: ContentAlign.top,
             child: Container(
               padding: const EdgeInsets.all(8.0),
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
               child: Text(
                 context.tr("AddBookMark"),
                 style: TextStyle(fontSize: widget.fontSize, color: Colors.white),
@@ -126,7 +124,7 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
               align: ContentAlign.bottom,
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                color: Colors.black.withOpacity(0.7),
+                color: Colors.black.withValues(alpha: 0.7),
                 child: Text(
                     context.tr("DeleteBookMark"),
                   style: TextStyle(fontSize: widget.fontSize, color: Colors.white),
@@ -154,95 +152,100 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            widget.bookmarksTitle,
-            style: TextStyle(
-              fontSize: widget.fontSize * 1.3,
-              fontFamily: widget.fontFamily,
-              color: const Color.fromRGBO(203, 105, 156, 1.0),
-            ),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.bookmarksTitle,
+                style: TextStyle(
+                  fontSize: widget.fontSize * 1.3,
+                  fontFamily: widget.fontFamily,
+                  color: const Color.fromRGBO(203, 105, 156, 1.0),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close, color: Colors.black, size: widget.buttonIconSize),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
           ),
-          IconButton(
-            icon: Icon(Icons.close, color: Colors.black, size: widget.buttonIconSize),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      ),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width / 1.2,
-        child: Scrollbar(
-          thumbVisibility: true,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                widget.bookmarks.isEmpty
-                    ? Text(widget.noBookmarksText)
-                    : Column(
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width / 1.2,
+            child: Scrollbar(
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: widget.bookmarks.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    Map<String, dynamic> bookmark = entry.value;
-                    return ListTile(
-                      title: Text(
-                        "${bookmark['name']}",
-                        style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
-                      ),
-                      trailing: IconButton(
-                        key: index == 0 ? _deleteButtonKey : null,
-                        icon: Icon(Icons.delete, color: Colors.red, size: widget.buttonIconSize),
-                        onPressed: () {
-                          widget.onDeleteBookmark(bookmark['position']);
-                          Navigator.pop(context);
-                        },
-                      ),
-                      onTap: () {
-                        widget.scrollController.jumpTo(bookmark['position']);
-                        Navigator.pop(context);
-                      },
-                    );
-                  }).toList(),
-                ),
-                // Updated TextField with GlobalKey, hint text, and clear icon.
-                TextField(
-                  key: _bookmarkNameFieldKey,
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: "Bookmark Name",
-                    hintText: "Enter bookmark name",
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () => nameController.clear(),
+                  children: [
+                    widget.bookmarks.isEmpty
+                        ? Text(widget.noBookmarksText)
+                        : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: widget.bookmarks.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        Map<String, dynamic> bookmark = entry.value;
+                        return ListTile(
+                          title: Text(
+                            "${bookmark['name']}",
+                            style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
+                          ),
+                          trailing: IconButton(
+                            key: index == 0 ? _deleteButtonKey : null,
+                            icon: Icon(Icons.delete, color: Colors.red, size: widget.buttonIconSize),
+                            onPressed: () {
+                              widget.onDeleteBookmark(bookmark['position']);
+                              Navigator.pop(context);
+                            },
+                          ),
+                          onTap: () {
+                            widget.scrollController.jumpTo(bookmark['position']);
+                            Navigator.pop(context);
+                          },
+                        );
+                      }).toList(),
                     ),
-                    labelStyle: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
-                  ),
-                  style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
+                    // Updated TextField with GlobalKey, hint text, and clear icon.
+                    TextField(
+                      key: _bookmarkNameFieldKey,
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: "Bookmark Name",
+                        hintText: "Enter bookmark name",
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () => nameController.clear(),
+                        ),
+                        labelStyle: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
+                      ),
+                      style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
+          actions: [
+            TextButton(
+              key: _addButtonKey,
+              onPressed: () {
+                String bookmarkName = nameController.text.isNotEmpty
+                    ? nameController.text
+                    : "Bookmark ${widget.bookmarks.length + 1}";
+                widget.onAddBookmark(bookmarkName);
+                Navigator.pop(context);
+              },
+              child: Text(
+                widget.addBookmarkText,
+                style: TextStyle(color: const Color.fromRGBO(22, 173, 201, 1.0), fontSize: widget.fontSize),
+              ),
+            ),
+          ],
         ),
       ),
-      actions: [
-        TextButton(
-          key: _addButtonKey,
-          onPressed: () {
-            String bookmarkName = nameController.text.isNotEmpty
-                ? nameController.text
-                : "Bookmark ${widget.bookmarks.length + 1}";
-            widget.onAddBookmark(bookmarkName);
-            Navigator.pop(context);
-          },
-          child: Text(
-            widget.addBookmarkText,
-            style: TextStyle(color: const Color.fromRGBO(22, 173, 201, 1.0), fontSize: widget.fontSize),
-          ),
-        ),
-      ],
     );
   }
 }
