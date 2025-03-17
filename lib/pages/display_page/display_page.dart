@@ -195,7 +195,7 @@ class _DisplayPageState extends State<DisplayPage> {
         paddingFocus: 10.0,
         contents: [
           TargetContent(
-            align: ContentAlign.bottom,
+            align: ContentAlign.top,
             child: _buildTooltip(
               context.tr('bookmarkTitle'),
               context.tr('bookmarkInstructions'),
