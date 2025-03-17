@@ -182,7 +182,12 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     widget.bookmarks.isEmpty
-                        ? Text(widget.noBookmarksText)
+                        ? Text(
+                        widget.noBookmarksText,
+                        style: TextStyle(
+                            fontSize: widget.fontSize,
+                            fontFamily: widget.fontFamily
+                        ))
                         : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: widget.bookmarks.asMap().entries.map((entry) {
@@ -240,7 +245,11 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
               },
               child: Text(
                 widget.addBookmarkText,
-                style: TextStyle(color: const Color.fromRGBO(22, 173, 201, 1.0), fontSize: widget.fontSize),
+                style: TextStyle(
+                    color: const Color.fromRGBO(22, 173, 201, 1.0),
+                    fontSize: widget.fontSize,
+                    fontFamily: widget.fontFamily
+                ),
               ),
             ),
           ],

@@ -8,10 +8,10 @@
 
   "BookMarkName":"Enter the name for your bookmark here"
   ,
-  "AddBookMark": "click the Add BookMark to add a new BookMark",
+  "AddBookMark": "click the 'Add Bookmark' to add a new Bookmark",
 
 
-  "DeleteBookMark" : "Click the trash can to delete a bookMark",
+  "DeleteBookMark" : "Click the trash can to delete a Bookmark",
 
   "uploadText": " Upload, insert or take a picture",
   "enterText": "Enter text...",

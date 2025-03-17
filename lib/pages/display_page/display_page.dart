@@ -40,6 +40,8 @@ class _DisplayPageState extends State<DisplayPage> {
   @override
   void initState() {
     super.initState();
+    xPos = 0;
+    yPos = 0;
     _scrollController = ScrollController();
 
     if (widget.documentName != null) {
@@ -195,7 +197,7 @@ class _DisplayPageState extends State<DisplayPage> {
         paddingFocus: 10.0,
         contents: [
           TargetContent(
-            align: ContentAlign.bottom,
+            align: ContentAlign.top,
             child: _buildTooltip(
               context.tr('bookmarkTitle'),
               context.tr('bookmarkInstructions'),
