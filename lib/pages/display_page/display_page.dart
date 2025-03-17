@@ -40,6 +40,8 @@ class _DisplayPageState extends State<DisplayPage> {
   @override
   void initState() {
     super.initState();
+    xPos = 0;
+    yPos = 0;
     _scrollController = ScrollController();
 
     if (widget.documentName != null) {
