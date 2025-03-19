@@ -193,23 +193,26 @@ class _BookmarkDialogState extends State<BookmarkDialog> {
                       children: widget.bookmarks.asMap().entries.map((entry) {
                         int index = entry.key;
                         Map<String, dynamic> bookmark = entry.value;
-                        return ListTile(
-                          title: Text(
-                            "${bookmark['name']}",
-                            style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
-                          ),
-                          trailing: IconButton(
-                            key: index == 0 ? _deleteButtonKey : null,
-                            icon: Icon(Icons.delete, color: Colors.red, size: widget.buttonIconSize),
-                            onPressed: () {
-                              widget.onDeleteBookmark(bookmark['position']);
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                          child: ListTile(
+                            title: Text(
+                              "${bookmark['name']}",
+                              style: TextStyle(fontSize: widget.fontSize, fontFamily: widget.fontFamily),
+                            ),
+                            trailing: IconButton(
+                              key: index == 0 ? _deleteButtonKey : null,
+                              icon: Icon(Icons.delete, color: Colors.red, size: widget.buttonIconSize),
+                              onPressed: () {
+                                widget.onDeleteBookmark(bookmark['position']);
+                                Navigator.pop(context);
+                              },
+                            ),
+                            onTap: () {
+                              widget.scrollController.jumpTo(bookmark['position']);
                               Navigator.pop(context);
                             },
                           ),
-                          onTap: () {
-                            widget.scrollController.jumpTo(bookmark['position']);
-                            Navigator.pop(context);
-                          },
                         );
                       }).toList(),
                     ),

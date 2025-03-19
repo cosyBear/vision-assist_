@@ -282,6 +282,7 @@ class _DisplayPageState extends State<DisplayPage> {
                     key: _draggableButtonKey,
                     xPos: xPos,
                     yPos: yPos,
+                    isRotated: yPos < (availableHeight / 2) - 40,
                     onPositionChanged: (dx, dy) {
                       setState(() {
                         xPos += dx;
@@ -305,6 +306,7 @@ class _DisplayPageState extends State<DisplayPage> {
                         }
                       });
                     },
+
                   ),
                 ),
                 Align(
