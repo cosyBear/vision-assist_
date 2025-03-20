@@ -38,7 +38,7 @@ class SettingBox {
       settingsBox.put('fontSize', defaultFontSize); // Use adjusted default
     }
     if (!settingsBox.containsKey('fontFamily')) {
-      settingsBox.put('fontFamily', 'Times');
+      settingsBox.put('fontFamily', 'Verdana');
     }
     if (!settingsBox.containsKey('fontWeight')) {
       settingsBox.put('fontWeight', FontWeight.normal.index);
