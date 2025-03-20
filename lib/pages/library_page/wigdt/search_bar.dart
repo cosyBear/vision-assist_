@@ -24,6 +24,8 @@ class SearchBarWidget extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.6,
         child: TextField(
+          autocorrect: false,
+          enableSuggestions: false,
           controller: searchController,
           onChanged: onSearch,
           decoration: InputDecoration(

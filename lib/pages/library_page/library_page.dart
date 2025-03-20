@@ -212,47 +212,52 @@ class _LibraryState extends State<Library> {
     return Scaffold(
       backgroundColor: settings.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
               children: [
-                // Search Bar (With GlobalKey for tutorial)
-                Expanded(
-                  child: Container(
-                    key: _searchBarKey, // Attach key
-                    child: SearchBarWidget(
-                      searchController: searchController,
-                      onSearch: (query) {
-                        setState(() {
-                          filteredBooks = books
-                              .where((book) => book.toLowerCase().contains(query.toLowerCase()))
-                              .toList();
-                        });
-                      },
+                Row(
+                  children: [
+                    // Search Bar (With GlobalKey for tutorial)
+                    Expanded(
+                      child: Container(
+                        key: _searchBarKey,
+                        child: SearchBarWidget(
+                          searchController: searchController,
+                          onSearch: (query) {
+                            setState(() {
+                              filteredBooks = books
+                                  .where((book) => book.toLowerCase().contains(query.toLowerCase()))
+                                  .toList();
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      key: _addButtonKey,
+                      icon: Icon(Icons.add_circle_outline, size: buttonIconsSize, color: iconColor),
+                      onPressed: () => widget.goToPage(1),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(height: 20),
 
-                // Plus Button (With GlobalKey for tutorial)
-                IconButton(
-                  key: _addButtonKey, // Attach key
-                  icon: Icon(Icons.add_circle_outline, size: buttonIconsSize, color: iconColor),
-                  onPressed: () => widget.goToPage(1), // Navigate to Upload Page
+                // Use Flexible here as well
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Container(
+                    key: _bookListKey,
+                    child: BookList(categorizedBooks: categorizedBooks),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-
-            // Book List (With GlobalKey for tutorial)
-            Expanded(
-              child: Container(
-                key: _bookListKey, // Attach key
-                child: BookList(categorizedBooks: categorizedBooks),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
