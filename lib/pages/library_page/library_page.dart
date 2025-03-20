@@ -212,7 +212,7 @@ class _LibraryState extends State<Library> {
     return Scaffold(
       backgroundColor: settings.backgroundColor,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
         child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),
           child: SizedBox(
